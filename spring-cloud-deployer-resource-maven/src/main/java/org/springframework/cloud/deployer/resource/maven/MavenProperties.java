@@ -34,13 +34,13 @@ public class MavenProperties {
 	/**
 	 * Default file path to a locally available maven repository.
 	 */
-	private static String DEFAULT_LOCAL_REPO = System.getProperty("user.home") +
+	private static String defaultLocalRepo = System.getProperty("user.home") +
 			File.separator + ".m2" + File.separator + "repository";
 
 	/**
 	 * File path to a locally available maven repository, where artifacts will be downloaded.
 	 */
-	private String localRepository = DEFAULT_LOCAL_REPO;
+	private String localRepository = defaultLocalRepo;
 
 	/**
 	 * Locations of remote maven repositories from which artifacts will be downloaded, if not available locally.
@@ -78,7 +78,7 @@ public class MavenProperties {
 	/**
 	 * Add the ConsoleRepositoryListener to the session for debugging of artifact resolution.
 	 */
-	private boolean enableRepositoryListener = false;
+	private boolean enableRepositoryListener;
 
 	/**
 	 * Use maven wagon based transport for http based artifacts.
@@ -242,12 +242,12 @@ public class MavenProperties {
 		}
 	}
 
-	public static enum WagonHttpMethod {
+	public enum WagonHttpMethod {
 		// directly maps to http methods in org.apache.maven.wagon.shared.http.HttpConfiguration
 		all,
 		get,
 		put,
-		head;
+		head
 	}
 
 	public static class WagonHttpMethodProperties {

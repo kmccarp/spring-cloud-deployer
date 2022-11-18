@@ -56,6 +56,6 @@ public enum LaunchState {
 	/**
 	 * The task is not known to the system.
 	 */
-	unknown;
+	unknown
 
 }

@@ -192,11 +192,11 @@ public abstract class AbstractSchedulerIntegrationJUnit5Tests {
 
 	@Test
 	public void testInvalidCronExpression() {
-		final String INVALID_EXPRESSION = "BAD";
+		final String invalidExpression = "BAD";
 		String definitionName = randomName();
 		String scheduleName = scheduleName() + definitionName;
 		Map<String, String> properties = new HashMap<>(getDeploymentProperties());
-		properties.put(SchedulerPropertyKeys.CRON_EXPRESSION, INVALID_EXPRESSION);
+		properties.put(SchedulerPropertyKeys.CRON_EXPRESSION, invalidExpression);
 		AppDefinition definition = new AppDefinition(definitionName, properties);
 		ScheduleRequest request = new ScheduleRequest(definition, properties, getCommandLineArgs(), scheduleName, testApplication());
         assertThatThrownBy(() -> {
