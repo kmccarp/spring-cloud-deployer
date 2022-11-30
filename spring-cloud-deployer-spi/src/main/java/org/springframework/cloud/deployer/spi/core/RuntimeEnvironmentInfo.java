@@ -28,7 +28,7 @@ import org.springframework.util.Assert;
  *
  * @author Thomas Risberg
  */
-public class RuntimeEnvironmentInfo {
+public final class RuntimeEnvironmentInfo {
 
 	/**
 	 * The SPI version used by this implementation.

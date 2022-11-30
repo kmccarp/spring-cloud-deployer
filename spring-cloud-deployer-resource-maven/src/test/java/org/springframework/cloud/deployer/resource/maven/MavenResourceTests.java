@@ -212,11 +212,11 @@ public class MavenResourceTests {
 		assertEquals("fail", repositorySystemSession.getUpdatePolicy());
 		for (RemoteRepository remoteRepository : remoteRepositoryList) {
 			assertEquals(2, remoteRepositoryList.size());
-			assertEquals(true, remoteRepositoryList.get(0).getId().equals("repo1")
-					|| remoteRepositoryList.get(0).getId().equals("repo2"));
-			assertEquals(true, remoteRepositoryList.get(1).getId().equals("repo2")
-					|| remoteRepositoryList.get(1).getId().equals("repo1"));
-			if (remoteRepository.getId().equals("repo1")) {
+			assertEquals(true, "repo1".equals(remoteRepositoryList.get(0).getId())
+					|| "repo2".equals(remoteRepositoryList.get(0).getId()));
+			assertEquals(true, "repo2".equals(remoteRepositoryList.get(1).getId())
+					|| "repo1".equals(remoteRepositoryList.get(1).getId()));
+			if ("repo1".equals(remoteRepository.getId())) {
 				RepositoryPolicy snapshotPolicy1 = remoteRepository.getPolicy(true);
 				assertEquals(true, snapshotPolicy1.isEnabled());
 				assertEquals("always", snapshotPolicy1.getUpdatePolicy());
@@ -226,7 +226,7 @@ public class MavenResourceTests {
 				assertEquals("interval", releasePolicy1.getUpdatePolicy());
 				assertEquals("ignore", releasePolicy1.getChecksumPolicy());
 			}
-			else if (remoteRepository.getId().equals("repo2")) {
+			else if ("repo2".equals(remoteRepository.getId())) {
 				RepositoryPolicy snapshotPolicy2 = remoteRepository.getPolicy(true);
 				assertEquals(true, snapshotPolicy2.isEnabled());
 				assertEquals("daily", snapshotPolicy2.getUpdatePolicy());

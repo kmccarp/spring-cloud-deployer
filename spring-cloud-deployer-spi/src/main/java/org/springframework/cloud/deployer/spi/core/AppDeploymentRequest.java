@@ -95,10 +95,10 @@ public class AppDeploymentRequest {
 		this.definition = definition;
 		this.resource = resource;
 		this.deploymentProperties = deploymentProperties == null
-				? Collections.<String, String>emptyMap()
+				? Collections.emptyMap()
 				: Collections.unmodifiableMap(deploymentProperties);
 		this.commandlineArguments = commandlineArguments == null
-				? Collections.<String>emptyList()
+				? Collections.emptyList()
 				: Collections.unmodifiableList(commandlineArguments);
 	}
 
