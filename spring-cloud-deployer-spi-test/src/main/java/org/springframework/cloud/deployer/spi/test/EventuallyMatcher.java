@@ -74,10 +74,10 @@ public class EventuallyMatcher<U> extends DiagnosingMatcher<U> {
 	}
 
 	public static <T> EventuallyMatcher<T> eventually(Matcher<T> delegate) {
-		return new EventuallyMatcher<T>(delegate);
+		return new EventuallyMatcher<>(delegate);
 	}
 
 	public static <T> EventuallyMatcher<T> eventually(Matcher<T> delegate, int noAttempts, int pause) {
-		return new EventuallyMatcher<T>(delegate, noAttempts, pause);
+		return new EventuallyMatcher<>(delegate, noAttempts, pause);
 	}
 }
