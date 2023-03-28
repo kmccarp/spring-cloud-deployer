@@ -186,9 +186,9 @@ class MavenArtifactResolver {
 	 * @return boolean true if the proxy settings are provided.
 	 */
 	private boolean isProxyEnabled() {
-		return (this.properties.getProxy() != null &&
+		return this.properties.getProxy() != null &&
 				this.properties.getProxy().getHost() != null &&
-				this.properties.getProxy().getPort() > 0);
+				this.properties.getProxy().getPort() > 0;
 	}
 
 	/**
@@ -197,10 +197,10 @@ class MavenArtifactResolver {
 	 * @return boolean true if both the username/password are set
 	 */
 	private boolean proxyHasCredentials() {
-		return (this.properties.getProxy() != null &&
+		return this.properties.getProxy() != null &&
 				this.properties.getProxy().getAuth() != null &&
 				this.properties.getProxy().getAuth().getUsername() != null &&
-				this.properties.getProxy().getAuth().getPassword() != null);
+				this.properties.getProxy().getAuth().getPassword() != null;
 	}
 
 	/**
