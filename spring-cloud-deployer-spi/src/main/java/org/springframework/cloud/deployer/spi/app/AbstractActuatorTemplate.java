@@ -131,7 +131,7 @@ public abstract class AbstractActuatorTemplate implements ActuatorOperations {
 
 		//Any pass-thru auth overrides the default.
 		if (!requestHeaders.containsKey(HttpHeaders.AUTHORIZATION)) {
-			this.defaultAuthenticationHeaderValue.ifPresent(auth -> requestHeaders.setBasicAuth(auth));
+			this.defaultAuthenticationHeaderValue.ifPresent(requestHeaders::setBasicAuth);
 		}
 
 		requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
