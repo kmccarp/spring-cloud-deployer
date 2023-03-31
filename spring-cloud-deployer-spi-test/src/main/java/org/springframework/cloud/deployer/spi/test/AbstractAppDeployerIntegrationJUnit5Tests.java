@@ -480,7 +480,7 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 	}
 
 	protected void doTestScale(Boolean indexed) {
-		final int DESIRED_COUNT = 3;
+		final int desiredCount = 3;
 
 		Map<String, String> deploymentProperties =
 			Collections.singletonMap(AppDeployer.INDEXED_PROPERTY_KEY, indexed.toString());
@@ -501,9 +501,9 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
 		});
 
-		log.info("Scaling {} to {} instances...", request.getDefinition().getName(), DESIRED_COUNT);
+		log.info("Scaling {} to {} instances...", request.getDefinition().getName(), desiredCount);
 
-		appDeployer().scale(new AppScaleRequest(deploymentId, DESIRED_COUNT));
+		appDeployer().scale(new AppScaleRequest(deploymentId, desiredCount));
 
 		await().pollInterval(Duration.ofMillis(timeout.pause))
 				.atMost(Duration.ofMillis(timeout.maxAttempts * timeout.pause))
@@ -514,7 +514,7 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 		await().pollInterval(Duration.ofMillis(timeout.pause))
 				.atMost(Duration.ofMillis(timeout.maxAttempts * timeout.pause))
 				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getInstances()).hasSize(DESIRED_COUNT);
+			assertThat(appDeployer().status(deploymentId).getInstances()).hasSize(desiredCount);
 		});
 
 		List<DeploymentState> individualStates = new ArrayList<>();
@@ -524,7 +524,7 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 
 		assertThat(individualStates).allMatch(is -> is == DeploymentState.deployed);
 
-		log.info("Scaling {} from {} to 1 instance...", request.getDefinition().getName(), DESIRED_COUNT);
+		log.info("Scaling {} from {} to 1 instance...", request.getDefinition().getName(), desiredCount);
 
 		appDeployer().scale(new AppScaleRequest(deploymentId, 1));
 
