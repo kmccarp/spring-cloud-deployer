@@ -24,7 +24,7 @@ import org.springframework.cloud.deployer.spi.core.AppDeploymentRequest;
  * @author David Turanski
  * @since 2.4
  */
-class CfEnvAwareAppDeploymentRequest extends AppDeploymentRequest {
+final class CfEnvAwareAppDeploymentRequest extends AppDeploymentRequest {
 
 	static CfEnvAwareAppDeploymentRequest of(AppDeploymentRequest appDeploymentRequest) {
 		return new CfEnvAwareAppDeploymentRequest(appDeploymentRequest);

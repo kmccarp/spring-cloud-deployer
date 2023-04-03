@@ -58,7 +58,7 @@ import org.springframework.util.StringUtils;
  * @author Corneil du Plessis
  */
 public class DefaultContainerFactory implements ContainerFactory {
-    private static Log logger = LogFactory.getLog(DefaultContainerFactory.class);
+	private static final Log logger = LogFactory.getLog(DefaultContainerFactory.class);
     private static final String SPRING_APPLICATION_JSON = "SPRING_APPLICATION_JSON";
     private static final String SPRING_CLOUD_APPLICATION_GUID = "SPRING_CLOUD_APPLICATION_GUID";
 

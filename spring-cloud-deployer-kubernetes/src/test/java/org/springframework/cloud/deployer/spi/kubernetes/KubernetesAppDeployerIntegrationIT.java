@@ -393,11 +393,11 @@ public class KubernetesAppDeployerIntegrationIT extends AbstractAppDeployerInteg
                 .atMost(Duration.ofMillis(timeout.maxAttempts * timeout.pause))
                 .untilAsserted(() -> {
                     assertThat(appDeployer.status(deploymentId).getInstances().values().stream()
-                            .map(ais -> ais.getAttributes()).filter(a ->
+                            .map(AppInstanceStatus::getAttributes).filter(a ->
                                     StringUtils.hasText(a.get("pod.ip")))
                             .findFirst()).isPresent();
                     assertThat(appDeployer.status(deploymentId).getInstances().values().stream()
-                            .map(ais -> ais.getAttributes()).filter(a ->
+                            .map(AppInstanceStatus::getAttributes).filter(a ->
                                     StringUtils.hasText(a.get("actuator.path")))
                             .map(a -> a.get("actuator.path"))
                             .findFirst().get()).isEqualTo("/actuator");
@@ -1325,9 +1325,9 @@ public class KubernetesAppDeployerIntegrationIT extends AbstractAppDeployerInteg
 
         assertThat(servicePorts).hasSize(2);
         assertThat(servicePorts.stream().anyMatch(o -> o.getPort().equals(8080))).isTrue();
-        assertThat(servicePorts.stream().anyMatch(o -> o.getName().equals("port-8080"))).isTrue();
+        assertThat(servicePorts.stream().anyMatch(o -> "port-8080".equals(o.getName()))).isTrue();
         assertThat(servicePorts.stream().anyMatch(o -> o.getPort().equals(9090))).isTrue();
-        assertThat(servicePorts.stream().anyMatch(o -> o.getName().equals("port-9090"))).isTrue();
+        assertThat(servicePorts.stream().anyMatch(o -> "port-9090".equals(o.getName()))).isTrue();
 
         log.info("Undeploying {}...", deploymentId);
         timeout = undeploymentTimeout();
@@ -1362,7 +1362,7 @@ public class KubernetesAppDeployerIntegrationIT extends AbstractAppDeployerInteg
         Deployment deployment = kubernetesClient.apps().deployments().withName(request.getDefinition().getName()).get();
         List<Container> initContainers = deployment.getSpec().getTemplate().getSpec().getInitContainers();
 
-        Optional<Container> initContainer = initContainers.stream().filter(i -> i.getName().equals("test")).findFirst();
+        Optional<Container> initContainer = initContainers.stream().filter(i -> "test".equals(i.getName())).findFirst();
         assertThat(initContainer.isPresent()).as("Init container not found").isTrue();
 
         Container testInitContainer = initContainer.get();
@@ -1407,7 +1407,7 @@ public class KubernetesAppDeployerIntegrationIT extends AbstractAppDeployerInteg
         Deployment deployment = kubernetesClient.apps().deployments().withName(request.getDefinition().getName()).get();
         List<Container> initContainers = deployment.getSpec().getTemplate().getSpec().getInitContainers();
 
-        Optional<Container> initContainer = initContainers.stream().filter(i -> i.getName().equals("test")).findFirst();
+        Optional<Container> initContainer = initContainers.stream().filter(i -> "test".equals(i.getName())).findFirst();
         assertThat(initContainer.isPresent()).as("Init container not found").isTrue();
 
         Container testInitContainer = initContainer.get();
@@ -1464,7 +1464,7 @@ public class KubernetesAppDeployerIntegrationIT extends AbstractAppDeployerInteg
         Deployment deployment = kubernetesClient.apps().deployments().withName(request.getDefinition().getName()).get();
         List<Container> initContainers = deployment.getSpec().getTemplate().getSpec().getInitContainers();
 
-        Optional<Container> initContainer = initContainers.stream().filter(i -> i.getName().equals("test")).findFirst();
+        Optional<Container> initContainer = initContainers.stream().filter(i -> "test".equals(i.getName())).findFirst();
         assertThat(initContainer.isPresent()).as("Init container not found").isTrue();
 
         Container testInitContainer = initContainer.get();
@@ -1534,7 +1534,7 @@ public class KubernetesAppDeployerIntegrationIT extends AbstractAppDeployerInteg
 
         assertThat(containers).hasSize(3);
 
-        Optional<Container> additionalContainer1 = containers.stream().filter(i -> i.getName().equals("c1")).findFirst();
+        Optional<Container> additionalContainer1 = containers.stream().filter(i -> "c1".equals(i.getName())).findFirst();
         assertThat(additionalContainer1.isPresent()).isTrue();
 
         Container testAdditionalContainer1 = additionalContainer1.get();
@@ -1553,7 +1553,7 @@ public class KubernetesAppDeployerIntegrationIT extends AbstractAppDeployerInteg
         assertThat(volumeMounts.get(0).getMountPath()).isEqualTo("/tmp");
         assertThat(volumeMounts.get(0).getReadOnly()).isTrue();
 
-        Optional<Container> additionalContainer2 = containers.stream().filter(i -> i.getName().equals("c2")).findFirst();
+        Optional<Container> additionalContainer2 = containers.stream().filter(i -> "c2".equals(i.getName())).findFirst();
         assertThat(additionalContainer2.isPresent()).as("Additional container c2 not found").isTrue();
 
         Container testAdditionalContainer2 = additionalContainer2.get();
@@ -1624,7 +1624,7 @@ public class KubernetesAppDeployerIntegrationIT extends AbstractAppDeployerInteg
         assertThat(containers).hasSize(4);
 
         // c1 from the deployment properties should have overridden the c1 from the original deployer properties
-        Optional<Container> additionalContainer1 = containers.stream().filter(i -> i.getName().equals("c1")).findFirst();
+        Optional<Container> additionalContainer1 = containers.stream().filter(i -> "c1".equals(i.getName())).findFirst();
         assertThat(additionalContainer1.isPresent()).as("Additional container c1 not found").isTrue();
 
         Container testAdditionalContainer1 = additionalContainer1.get();
@@ -1643,7 +1643,7 @@ public class KubernetesAppDeployerIntegrationIT extends AbstractAppDeployerInteg
         assertThat(volumeMounts.get(0).getMountPath()).isEqualTo("/tmp");
         assertThat(volumeMounts.get(0).getReadOnly()).isTrue();
 
-        Optional<Container> additionalContainer2 = containers.stream().filter(i -> i.getName().equals("c2")).findFirst();
+        Optional<Container> additionalContainer2 = containers.stream().filter(i -> "c2".equals(i.getName())).findFirst();
         assertThat(additionalContainer2.isPresent()).as("Additional container c2 not found").isTrue();
 
         Container testAdditionalContainer2 = additionalContainer2.get();
@@ -1656,7 +1656,7 @@ public class KubernetesAppDeployerIntegrationIT extends AbstractAppDeployerInteg
         assertThat(container2Commands).contains("sh", "-c", "echo hello2");
 
         // Verifying the additional container passed from the root deployer properties
-        Optional<Container> additionalContainer3 = containers.stream().filter(i -> i.getName().equals("container2")).findFirst();
+        Optional<Container> additionalContainer3 = containers.stream().filter(i -> "container2".equals(i.getName())).findFirst();
         assertThat(additionalContainer3.isPresent()).as("Additional container c2 not found").isTrue();
 
         Container testAdditionalContainer3 = additionalContainer3.get();
@@ -1815,7 +1815,7 @@ public class KubernetesAppDeployerIntegrationIT extends AbstractAppDeployerInteg
 			assertThat(statefulSets).hasSize(1)
 					.element(0, InstanceOfAssertFactories.type(StatefulSet.class))
 					.extracting("spec.template.spec", InstanceOfAssertFactories.type(PodSpec.class))
-					.satisfies((podSpec) -> {
+					.satisfies(podSpec -> {
 						assertThat(podSpec.getSecurityContext()).isEqualTo(expectedPodSecurityContext);
 						assertThat(podSpec.getInitContainers())
 								.hasSize(1)
@@ -1836,7 +1836,7 @@ public class KubernetesAppDeployerIntegrationIT extends AbstractAppDeployerInteg
 	private void assertThatContainerExistsWithSecurityContext(List<Container> containers, String expectedName, SecurityContext expectedSecurityContext) {
 		assertThat(containers
 				.stream().filter(c -> c.getName().equals(expectedName)).findFirst())
-				.hasValueSatisfying((initContainer) -> assertThat(initContainer.getSecurityContext()).isEqualTo(expectedSecurityContext));
+				.hasValueSatisfying(initContainer -> assertThat(initContainer.getSecurityContext()).isEqualTo(expectedSecurityContext));
 	}
 
     @Test
