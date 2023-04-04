@@ -131,11 +131,11 @@ public class CloudFoundryAppSchedulerTests {
 
 	private SchedulerClient noServiceClient;
 
-	private CloudFoundryConnectionProperties properties = new CloudFoundryConnectionProperties();
+	private final CloudFoundryConnectionProperties properties = new CloudFoundryConnectionProperties();
 
-	private CloudFoundrySchedulerProperties schedulerProperties = new CloudFoundrySchedulerProperties();
+	private final CloudFoundrySchedulerProperties schedulerProperties = new CloudFoundrySchedulerProperties();
 
-	private CloudFoundryDeploymentProperties deploymentProperties = new CloudFoundryDeploymentProperties();
+	private final CloudFoundryDeploymentProperties deploymentProperties = new CloudFoundryDeploymentProperties();
 
 	@BeforeEach
 	public void setUp() {
@@ -168,7 +168,7 @@ public class CloudFoundryAppSchedulerTests {
 	public void testEmptySchedulerProperties(boolean isDeprecated) {
 		Resource resource = new FileSystemResource("src/test/resources/demo-0.0.1-SNAPSHOT.jar");
 		AppDefinition definition = new AppDefinition("bar", null);
-		ScheduleRequest request = (isDeprecated) ? new ScheduleRequest(definition, null, null, null, "testschedule", resource)
+		ScheduleRequest request = isDeprecated ? new ScheduleRequest(definition, null, null, null, "testschedule", resource)
 		: new ScheduleRequest(definition, null, (List<String>) null, "testschedule", resource);
 		assertThatThrownBy(() -> {
 			getCloudFoundryAppScheduler(isDeprecated).schedule(request);
@@ -182,7 +182,7 @@ public class CloudFoundryAppSchedulerTests {
 
 		mockAppResultsInAppList();
 		AppDefinition definition = new AppDefinition("test-application-1", null);
-		ScheduleRequest request = (isDeprecated) ? new ScheduleRequest(definition, getDefaultScheduleProperties(),null, null, "test-schedule", resource)
+		ScheduleRequest request = isDeprecated ? new ScheduleRequest(definition, getDefaultScheduleProperties(),null, null, "test-schedule", resource)
 				: new ScheduleRequest(definition, getDefaultDeploymentProperties(), (List<String>) null, "test-schedule", resource);
 
 		getCloudFoundryAppScheduler(isDeprecated).schedule(request);
@@ -201,7 +201,7 @@ public class CloudFoundryAppSchedulerTests {
 		Map<String, String> badCronMap = new HashMap<>();
 		badCronMap.put(SchedulerPropertyKeys.CRON_EXPRESSION, BAD_CRON_EXPRESSION);
 
-		ScheduleRequest request = (isDeprecated) ? new ScheduleRequest(definition,
+		ScheduleRequest request = isDeprecated ? new ScheduleRequest(definition,
 				Collections.singletonMap(SchedulerPropertyKeys.CRON_EXPRESSION, BAD_CRON_EXPRESSION), null, null, "test-schedule", resource)
 		: new ScheduleRequest(definition, Collections.singletonMap(CloudFoundryAppScheduler.CRON_EXPRESSION_KEY, BAD_CRON_EXPRESSION),
 				(List<String>) null, "test-schedule", resource);
@@ -249,7 +249,7 @@ public class CloudFoundryAppSchedulerTests {
 
 		mockAppResultsInAppList();
 		AppDefinition definition = new AppDefinition("test-application-1", null);
-		ScheduleRequest request = (isDeprecated) ? new ScheduleRequest(definition,
+		ScheduleRequest request = isDeprecated ? new ScheduleRequest(definition,
 				Collections.singletonMap(SchedulerPropertyKeys.CRON_EXPRESSION, CRON_EXPRESSION_FOR_SIX_MIN), null, null, "test-schedule", resource) :
 				new ScheduleRequest(definition, Collections.singletonMap(CloudFoundryAppScheduler.CRON_EXPRESSION_KEY, CRON_EXPRESSION_FOR_SIX_MIN),
 						(List<String>) null, "test-schedule", resource);
@@ -381,7 +381,7 @@ public class CloudFoundryAppSchedulerTests {
 
 		mockAppResultsInAppList();
 		AppDefinition definition = new AppDefinition("test-application-1", null);
-		ScheduleRequest request = (isDeprecated) ? new ScheduleRequest(definition, getDefaultScheduleProperties(), null, null, "test-schedule", resource) :
+		ScheduleRequest request = isDeprecated ? new ScheduleRequest(definition, getDefaultScheduleProperties(), null, null, "test-schedule", resource) :
 		new ScheduleRequest(definition, getDefaultDeploymentProperties(), (List<String>) null, "test-schedule", resource);
 
 		assertThatThrownBy(() -> {
@@ -409,7 +409,7 @@ public class CloudFoundryAppSchedulerTests {
 	}
 
 	private static class TestSchedulerClient implements SchedulerClient {
-		private Jobs jobs;
+		private final Jobs jobs;
 
 		public TestSchedulerClient() {
 			jobs = new TestJobs();
@@ -427,7 +427,7 @@ public class CloudFoundryAppSchedulerTests {
 	}
 
 	private static class NoServiceTestSchedulerClient implements SchedulerClient {
-		private Jobs jobs;
+		private final Jobs jobs;
 
 		public NoServiceTestSchedulerClient() {
 			jobs = new NoServiceTestJobs();
@@ -459,9 +459,9 @@ public class CloudFoundryAppSchedulerTests {
 	private static class TestJobs implements Jobs {
 		private CreateJobResponse createJobResponse;
 
-		private List<Job> jobResources = new ArrayList<>();
+		private final List<Job> jobResources = new ArrayList<>();
 
-		private List<JobSchedule> jobScheduleResources = new ArrayList<>();
+		private final List<JobSchedule> jobScheduleResources = new ArrayList<>();
 
 		@Override
 		public Mono<CreateJobResponse> create(CreateJobRequest request) {
@@ -547,7 +547,7 @@ public class CloudFoundryAppSchedulerTests {
 		}
 
 		public CreateJobResponse getCreateJobResponse() {
-			if(this.jobResources.size() == 0) {
+			if(this.jobResources.isEmpty()) {
 				this.createJobResponse = null;
 			}
 			return createJobResponse;
