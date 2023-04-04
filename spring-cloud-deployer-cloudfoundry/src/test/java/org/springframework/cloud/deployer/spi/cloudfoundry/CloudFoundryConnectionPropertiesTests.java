@@ -52,7 +52,7 @@ public class CloudFoundryConnectionPropertiesTests {
 				StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, map));
 			})
 			.withUserConfiguration(Config1.class)
-			.run((context) -> {
+			.run(context -> {
 				CloudFoundryConnectionProperties properties = context.getBean(CloudFoundryConnectionProperties.class);
 				assertThat(properties.getOrg()).isEqualTo("org");
 				assertThat(properties.getSpace()).isEqualTo("space");

@@ -36,7 +36,7 @@ public class DeployerIntegrationTestProperties {
 	 * The delay in milliseconds to stall the initialization of this app.
 	 * Useful for testing the 'deploying' state of a app.
 	 */
-	private int initDelay = 0;
+	private int initDelay;
 
 	/**
 	 * The delay in milliseconds after which this app will kill itself.
