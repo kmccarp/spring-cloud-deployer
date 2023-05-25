@@ -885,6 +885,7 @@ public class KubernetesDeployerProperties {
     }
 
     static class Container extends io.fabric8.kubernetes.api.model.Container {
+		private static final long serialVersionUID = 1;
     }
 
     public static class ContainerProperties {
@@ -1000,12 +1001,12 @@ public class KubernetesDeployerProperties {
      */
     public static final String ENV_KEY_KUBERNETES_NAMESPACE = "KUBERNETES_NAMESPACE";
 
-    private static String KUBERNETES_NAMESPACE = System.getenv("KUBERNETES_NAMESPACE");
+    private static String kubernetesNamespace = System.getenv("KUBERNETES_NAMESPACE");
 
     /**
      * Namespace to use.
      */
-    private String namespace = KUBERNETES_NAMESPACE;
+    private String namespace = kubernetesNamespace;
 
     /**
      * Secrets for a access a private registry to pull images.
@@ -1053,7 +1054,7 @@ public class KubernetesDeployerProperties {
     /**
      * Port that app container has to respond on for liveness check.
      */
-    private Integer livenessHttpProbePort = null;
+    private Integer livenessHttpProbePort;
 
     /**
      * Schema that app container has to respond on for liveness check.
@@ -1155,12 +1156,12 @@ public class KubernetesDeployerProperties {
     /**
      * Port that app container has to respond on for readiness check.
      */
-    private Integer readinessHttpProbePort = null;
+    private Integer readinessHttpProbePort;
 
     /**
      * Port that app container has to respond on for startup check.
      */
-    private Integer startupHttpProbePort = null;
+    private Integer startupHttpProbePort;
     /**
      * Delay in seconds when the liveness TCP check should start checking
      */
@@ -1178,7 +1179,7 @@ public class KubernetesDeployerProperties {
     /**
      * The TCP port the liveness probe should check
      */
-    private Integer livenessTcpProbePort = null;
+    private Integer livenessTcpProbePort;
 
     /**
      * Delay in seconds when the readiness TCP check should start checking
@@ -1193,7 +1194,7 @@ public class KubernetesDeployerProperties {
     /**
      * The TCP port the readiness probe should check
      */
-    private Integer readinessTcpProbePort = null;
+    private Integer readinessTcpProbePort;
 
     /**
      * Delay in seconds when the readiness command check should start checking
@@ -1208,7 +1209,7 @@ public class KubernetesDeployerProperties {
     /**
      * The command the readiness probe should use to check
      */
-    private String readinessCommandProbeCommand = null;
+    private String readinessCommandProbeCommand;
 
     /**
      * Delay in seconds when the readiness TCP check should start checking
@@ -1225,7 +1226,7 @@ public class KubernetesDeployerProperties {
     /**
      * The TCP port the readiness probe should check
      */
-    private Integer startupTcpProbePort = null;
+    private Integer startupTcpProbePort;
 
     /**
      * Delay in seconds when the readiness command check should start checking
@@ -1240,7 +1241,7 @@ public class KubernetesDeployerProperties {
     /**
      * The command the readiness probe should use to check
      */
-    private String startupCommandProbeCommand = null;
+    private String startupCommandProbeCommand;
 
     /**
      * Delay in seconds when the liveness command check should start checking
@@ -1258,7 +1259,7 @@ public class KubernetesDeployerProperties {
     /**
      * The command the liveness probe should use to check
      */
-    private String livenessCommandProbeCommand = null;
+    private String livenessCommandProbeCommand;
 
     /**
      * The secret name containing the credentials to use when accessing secured probe
@@ -1328,12 +1329,12 @@ public class KubernetesDeployerProperties {
      * Create a "LoadBalancer" for the service created for each app. This facilitates
      * assignment of external IP to app.
      */
-    private boolean createLoadBalancer = false;
+    private boolean createLoadBalancer;
 
     /**
      * Service annotations to set for the service created for each app.
      */
-    private String serviceAnnotations = null;
+    private String serviceAnnotations;
 
     /**
      * Pod annotations to set for the pod created for each deployment.
@@ -1387,13 +1388,13 @@ public class KubernetesDeployerProperties {
      * specified as a deployer property or as an app deployment property. Deployment
      * properties will override deployer properties.
      */
-    private boolean hostNetwork = false;
+    private boolean hostNetwork;
 
     /**
      * Create a "Job" instead of just a "Pod" when launching tasks. See
      * https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/
      */
-    private boolean createJob = false;
+    private boolean createJob;
 
     /**
      * The node selector to use in key:value format, comma separated

@@ -193,11 +193,11 @@ public abstract class AbstractSchedulerIntegrationJUnit5Tests {
 
 	@Test
 	public void testInvalidCronExpression() {
-		final String INVALID_EXPRESSION = "BAD";
+		final String invalidExpression = "BAD";
 		String definitionName = randomName();
 		String scheduleName = scheduleName() + definitionName;
 		Map<String, String> properties = new HashMap<>(getDeploymentProperties());
-		properties.put(SchedulerPropertyKeys.CRON_EXPRESSION, INVALID_EXPRESSION);
+		properties.put(SchedulerPropertyKeys.CRON_EXPRESSION, invalidExpression);
 		AppDefinition definition = new AppDefinition(definitionName, properties);
 		ScheduleRequest request = new ScheduleRequest(definition, properties, getCommandLineArgs(), scheduleName, testApplication());
         assertThatThrownBy(() -> {
@@ -317,7 +317,7 @@ public abstract class AbstractSchedulerIntegrationJUnit5Tests {
 
         public ListScheduleInfoAssert hasSchedule(String scheduleName) {
             isNotNull();
-            if (!actual.stream().map(si -> si.getScheduleName()).anyMatch(sc -> sc.equals(scheduleName))) {
+            if (!actual.stream().map(ScheduleInfo::getScheduleName).anyMatch(sc -> sc.equals(scheduleName))) {
                 failWithMessage("unable to find specified scheduleName <%s> ", scheduleName);
             }
             return this;
@@ -325,7 +325,7 @@ public abstract class AbstractSchedulerIntegrationJUnit5Tests {
 
         public ListScheduleInfoAssert hasNotSchedule(String scheduleName) {
             isNotNull();
-            if (actual.stream().map(si -> si.getScheduleName()).anyMatch(sc -> sc.equals(scheduleName))) {
+            if (actual.stream().map(ScheduleInfo::getScheduleName).anyMatch(sc -> sc.equals(scheduleName))) {
                 failWithMessage("found specified scheduleName <%s> ", scheduleName);
             }
             return this;
@@ -337,7 +337,7 @@ public abstract class AbstractSchedulerIntegrationJUnit5Tests {
 				failWithMessage("given schedule info list doesn't match expected count <%s>, was <%s>",
 						expectedScheduleCount, actual.size());
 			}
-            if (!actual.stream().map(si -> si.getTaskDefinitionName()).anyMatch(sc -> sc.equals(taskDefinitionName))) {
+            if (!actual.stream().map(ScheduleInfo::getTaskDefinitionName).anyMatch(sc -> sc.equals(taskDefinitionName))) {
                 failWithMessage("found specified scheduleName <%s> ", taskDefinitionName);
             }
             return this;

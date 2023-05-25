@@ -58,19 +58,19 @@ import org.springframework.util.StringUtils;
  * @author Venil Noronha
  * @author Ilayaperumal Gopinathan
  */
-public class MavenResource extends AbstractResource {
+public final class MavenResource extends AbstractResource {
 
 	public static String URI_SCHEME = "maven";
 
 	/**
 	 * The default extension for the artifact.
 	 */
-	final static String DEFAULT_EXTENSION = "jar";
+	static final String DEFAULT_EXTENSION = "jar";
 
 	/**
 	 * String representing an empty classifier.
 	 */
-	final static String EMPTY_CLASSIFIER = "";
+	static final String EMPTY_CLASSIFIER = "";
 
 	/**
 	 * Group ID for artifact; generally this includes the name of the

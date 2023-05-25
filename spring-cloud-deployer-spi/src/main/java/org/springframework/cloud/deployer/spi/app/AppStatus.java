@@ -52,7 +52,7 @@ public class AppStatus {
 	 * Map of {@link AppInstanceStatus} keyed by a unique identifier
 	 * for each app deployment instance.
 	 */
-	private final Map<String, AppInstanceStatus> instances = new HashMap<String, AppInstanceStatus>();
+	private final Map<String, AppInstanceStatus> instances = new HashMap<>();
 
 	private final DeploymentState generalState;
 
@@ -91,7 +91,7 @@ public class AppStatus {
 		for (Map.Entry<String, AppInstanceStatus> entry : instances.entrySet()) {
 			states.add(entry.getValue().getState());
 		}
-		if (states.size() == 0) {
+		if (states.isEmpty()) {
 			return DeploymentState.unknown;
 		}
 		if (states.size() == 1) {
@@ -144,7 +144,7 @@ public class AppStatus {
 	 * Utility class constructing an instance of {@link AppStatus}
 	 * using a builder pattern.
 	 */
-	public static class Builder {
+	public static final class Builder {
 
 		private final String id;
 

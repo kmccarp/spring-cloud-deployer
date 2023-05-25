@@ -62,7 +62,7 @@ public class KubernetesTaskLauncherIntegrationIT extends AbstractKubernetesTaskL
 		logTestInfo(testInfo);
 		launchTaskPodAndValidateCreatedPodWithCleanup(
 				Collections.singletonMap("spring.cloud.deployer.kubernetes.jobAnnotations", "key1:val1,key2:val2,key3:val31:val32"),
-				(pod) -> {
+				pod -> {
 					assertThat(pod.getSpec().getContainers()).isNotEmpty()
 							.element(0).extracting(Container::getPorts).asList().isEmpty();
 					assertThat(pod.getMetadata().getAnnotations()).isNotEmpty()
@@ -75,7 +75,7 @@ public class KubernetesTaskLauncherIntegrationIT extends AbstractKubernetesTaskL
 		logTestInfo(testInfo);
 		launchTaskPodAndValidateCreatedPodWithCleanup(
 				Collections.singletonMap("spring.cloud.deployer.kubernetes.deploymentLabels", "label1:value1,label2:value2"),
-				(pod) -> {
+				pod -> {
 					assertThat(pod.getSpec().getContainers()).isNotEmpty()
 							.element(0).extracting(Container::getPorts).asList().isEmpty();
 					assertThat(pod.getMetadata().getLabels()).isNotEmpty()
@@ -89,7 +89,7 @@ public class KubernetesTaskLauncherIntegrationIT extends AbstractKubernetesTaskL
 		launchTaskPodAndValidateCreatedPodWithCleanup(
 				Collections.singletonMap("spring.cloud.deployer.kubernetes.additionalContainers",
 						"[{name: 'test', image: 'busybox:latest', command: ['sh', '-c', 'echo hello']}]"),
-				(pod) -> assertThat(pod.getSpec().getContainers()).hasSize(2)
+				pod -> assertThat(pod.getSpec().getContainers()).hasSize(2)
 						.filteredOn("name", "test").singleElement()
 						.hasFieldOrPropertyWithValue("image", "busybox:latest")
 						.hasFieldOrPropertyWithValue("command", Arrays.asList("sh", "-c", "echo hello")));

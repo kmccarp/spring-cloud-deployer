@@ -131,7 +131,7 @@ public class CloudFoundryTaskLauncher extends AbstractCloudFoundryTaskLauncher {
 		List<LogMessage> logMessageList = getLogMessage(taskAppName).collectList().block(Duration.ofSeconds(this.deploymentProperties.getApiTimeout()));
 		StringBuilder stringBuilder = new StringBuilder();
 		for (LogMessage logMessage: logMessageList) {
-			stringBuilder.append(logMessage.getMessage() + System.lineSeparator());
+			stringBuilder.append(logMessage.getMessage()).append(System.lineSeparator());
 		}
 		return stringBuilder.toString();
 	}

@@ -195,7 +195,7 @@ public class AbstractKubernetesDeployer {
 		List<String> imagePullSecrets = this.deploymentPropertiesResolver.getImagePullSecrets(deploymentProperties);
 
 		if (imagePullSecrets != null) {
-			imagePullSecrets.forEach(imgPullsecret -> podSpec.addNewImagePullSecret(imgPullsecret));
+			imagePullSecrets.forEach(podSpec::addNewImagePullSecret);
 		}
 
 		boolean hostNetwork = this.deploymentPropertiesResolver.getHostNetwork(deploymentProperties);
@@ -307,8 +307,8 @@ public class AbstractKubernetesDeployer {
 
 		List<Container> additionalContainers = this.deploymentPropertiesResolver.getAdditionalContainers(deploymentProperties);
 		if (containerSecurityContext != null && !CollectionUtils.isEmpty(additionalContainers)) {
-			additionalContainers.stream().filter((c) -> c.getSecurityContext() == null)
-					.forEach((c) -> c.setSecurityContext(containerSecurityContext));
+			additionalContainers.stream().filter(c -> c.getSecurityContext() == null)
+					.forEach(c -> c.setSecurityContext(containerSecurityContext));
 		}
 		podSpec.addAllToContainers(additionalContainers);
 		return podSpec.build();

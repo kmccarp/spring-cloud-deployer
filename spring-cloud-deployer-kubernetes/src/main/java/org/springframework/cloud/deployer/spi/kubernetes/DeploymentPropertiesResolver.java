@@ -83,8 +83,8 @@ class DeploymentPropertiesResolver {
 
 	private final Log logger = LogFactory.getLog(getClass().getName());
 
-	private String propertyPrefix;
-	private KubernetesDeployerProperties properties;
+	private final String propertyPrefix;
+	private final KubernetesDeployerProperties properties;
 
 	DeploymentPropertiesResolver(String propertyPrefix, KubernetesDeployerProperties properties) {
 		this.propertyPrefix = propertyPrefix;
@@ -187,7 +187,7 @@ class DeploymentPropertiesResolver {
 			gpuCount = properties.getLimits().getGpuCount();
 		}
 
-		Map<String,Quantity> limits = new HashMap<String,Quantity>();
+		Map<String,Quantity> limits = new HashMap<>();
 
 		if (StringUtils.hasText(memory)) {
 			limits.put("memory", new Quantity(memory));
@@ -257,7 +257,7 @@ class DeploymentPropertiesResolver {
 
 		logger.debug("Using requests - cpu: " + cpuOverride + " mem: " + memOverride);
 
-		Map<String,Quantity> requests = new HashMap<String, Quantity>();
+		Map<String,Quantity> requests = new HashMap<>();
 
 		if (memOverride != null) {
 			requests.put("memory", new Quantity(memOverride));
@@ -460,7 +460,7 @@ class DeploymentPropertiesResolver {
 		}
 		if (!CollectionUtils.isEmpty(deployerProperties.getPodSecurityContext().getSysctls()))  {
 			List<Sysctl> sysctls = deployerProperties.getPodSecurityContext().getSysctls().stream()
-					.map((sysctlInfo) -> new SysctlBuilder().withName(sysctlInfo.getName())
+					.map(sysctlInfo -> new SysctlBuilder().withName(sysctlInfo.getName())
 							.withValue(sysctlInfo.getValue()).build())
 					.collect(Collectors.toList());
 			podSecurityContextBuilder.withSysctls(sysctls);
@@ -654,8 +654,7 @@ class DeploymentPropertiesResolver {
 				this.propertyPrefix + ".additionalContainers", "additionalContainers" );
 
 		if (deployerProperties.getAdditionalContainers() != null) {
-			deployerProperties.getAdditionalContainers().forEach(container ->
-					containers.add(container));
+			deployerProperties.getAdditionalContainers().forEach(containers::add);
 		}
 
 		// Add the containers from the original properties excluding the containers with the matching names from the
@@ -663,7 +662,7 @@ class DeploymentPropertiesResolver {
 		if (this.properties.getAdditionalContainers() != null) {
 			this.properties.getAdditionalContainers().stream()
 					.filter(container -> containers.stream().noneMatch(existing -> existing.getName().equals(container.getName())))
-					.forEachOrdered(container -> containers.add(container));
+					.forEachOrdered(containers::add);
 		}
 
 		return containers;
@@ -699,8 +698,7 @@ class DeploymentPropertiesResolver {
 
 		// Add deployment labels set at the deployer level.
 		String updatedLabels = StringUtils.hasText(this.properties.getDeploymentLabels()) ?
-				new StringBuilder().append(deploymentLabels).append(StringUtils.hasText(deploymentLabels) ? ",": "")
-						.append(this.properties.getDeploymentLabels()).toString() : deploymentLabels;
+				deploymentLabels + (StringUtils.hasText(deploymentLabels) ? ",": "") + this.properties.getDeploymentLabels() : deploymentLabels;
 
 		if (StringUtils.hasText(updatedLabels)) {
 			String[] deploymentLabel = updatedLabels.split(",");

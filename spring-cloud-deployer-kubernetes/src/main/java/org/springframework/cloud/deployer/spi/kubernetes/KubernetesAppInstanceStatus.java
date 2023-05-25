@@ -162,7 +162,7 @@ public class KubernetesAppInstanceStatus implements AppInstanceStatus {
                     result.put("service.external.ip", externalIp);
                     List<ServicePort> ports = service.getSpec().getPorts();
                     int port = 0;
-                    if (ports != null && ports.size() > 0) {
+                    if (ports != null && !ports.isEmpty()) {
                         port = ports.get(0).getPort();
                         result.put("service.external.port", String.valueOf(port));
                     }
