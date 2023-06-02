@@ -37,33 +37,33 @@ public class CloudFoundryConnectionPropertiesTests {
 	@Test
 	public void setAllProperties() {
 		this.contextRunner
-		.withInitializer(context -> {
-			Map<String, Object> map = new HashMap<>();
-			map.put("spring.cloud.deployer.cloudfoundry.org", "org");
-			map.put("spring.cloud.deployer.cloudfoundry.space", "space");
-			map.put("spring.cloud.deployer.cloudfoundry.url", "http://example.com");
-			map.put("spring.cloud.deployer.cloudfoundry.username", "username");
-			map.put("spring.cloud.deployer.cloudfoundry.password", "password");
-			map.put("spring.cloud.deployer.cloudfoundry.client-id", "id");
-			map.put("spring.cloud.deployer.cloudfoundry.client-secret", "secret");
-			map.put("spring.cloud.deployer.cloudfoundry.login-hint", "hint");
-			map.put("spring.cloud.deployer.cloudfoundry.skip-ssl-validation", "true");
-			context.getEnvironment().getPropertySources().addLast(new SystemEnvironmentPropertySource(
-				StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, map));
-			})
-			.withUserConfiguration(Config1.class)
-			.run((context) -> {
-				CloudFoundryConnectionProperties properties = context.getBean(CloudFoundryConnectionProperties.class);
-				assertThat(properties.getOrg()).isEqualTo("org");
-				assertThat(properties.getSpace()).isEqualTo("space");
-				assertThat(properties.getUrl().toString()).isEqualTo("http://example.com");
-				assertThat(properties.getUsername()).isEqualTo("username");
-				assertThat(properties.getPassword()).isEqualTo("password");
-				assertThat(properties.getClientId()).isEqualTo("id");
-				assertThat(properties.getClientSecret()).isEqualTo("secret");
-				assertThat(properties.getLoginHint()).isEqualTo("hint");
-				assertThat(properties.isSkipSslValidation()).isTrue();
-			});
+	.withInitializer(context -> {
+		Map<String, Object> map = new HashMap<>();
+		map.put("spring.cloud.deployer.cloudfoundry.org", "org");
+		map.put("spring.cloud.deployer.cloudfoundry.space", "space");
+		map.put("spring.cloud.deployer.cloudfoundry.url", "http://example.com");
+		map.put("spring.cloud.deployer.cloudfoundry.username", "username");
+		map.put("spring.cloud.deployer.cloudfoundry.password", "password");
+		map.put("spring.cloud.deployer.cloudfoundry.client-id", "id");
+		map.put("spring.cloud.deployer.cloudfoundry.client-secret", "secret");
+		map.put("spring.cloud.deployer.cloudfoundry.login-hint", "hint");
+		map.put("spring.cloud.deployer.cloudfoundry.skip-ssl-validation", "true");
+		context.getEnvironment().getPropertySources().addLast(new SystemEnvironmentPropertySource(
+	StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, map));
+	})
+	.withUserConfiguration(Config1.class)
+	.run((context) -> {
+		CloudFoundryConnectionProperties properties = context.getBean(CloudFoundryConnectionProperties.class);
+		assertThat(properties.getOrg()).isEqualTo("org");
+		assertThat(properties.getSpace()).isEqualTo("space");
+		assertThat(properties.getUrl().toString()).isEqualTo("http://example.com");
+		assertThat(properties.getUsername()).isEqualTo("username");
+		assertThat(properties.getPassword()).isEqualTo("password");
+		assertThat(properties.getClientId()).isEqualTo("id");
+		assertThat(properties.getClientSecret()).isEqualTo("secret");
+		assertThat(properties.getLoginHint()).isEqualTo("hint");
+		assertThat(properties.isSkipSslValidation()).isTrue();
+	});
 	}
 
 	@EnableConfigurationProperties

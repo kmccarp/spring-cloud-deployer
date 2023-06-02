@@ -36,71 +36,71 @@ public class MavenPropertiesTests {
 	@Test
 	public void testDefaults() {
 		this.contextRunner
-			.withUserConfiguration(Config1.class)
-			.run((context) -> {
-				MavenProperties properties = context.getBean(MavenProperties.class);
-				assertThat(properties.isUseWagon()).isFalse();
-			});
+	.withUserConfiguration(Config1.class)
+	.run((context) -> {
+		MavenProperties properties = context.getBean(MavenProperties.class);
+		assertThat(properties.isUseWagon()).isFalse();
+	});
 	}
 
 	@Test
 	public void testPreemtiveEnabled() {
 		this.contextRunner
-			.withInitializer(context -> {
-				Map<String, Object> map = new HashMap<>();
-				map.put("maven.use-wagon", "true");
-				context.getEnvironment().getPropertySources().addLast(new SystemEnvironmentPropertySource(
-					StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, map));
-			})
-			.withUserConfiguration(Config1.class)
-			.run((context) -> {
-				MavenProperties properties = context.getBean(MavenProperties.class);
-				assertThat(properties.isUseWagon()).isTrue();
-			});
+	.withInitializer(context -> {
+		Map<String, Object> map = new HashMap<>();
+		map.put("maven.use-wagon", "true");
+		context.getEnvironment().getPropertySources().addLast(new SystemEnvironmentPropertySource(
+	StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, map));
+	})
+	.withUserConfiguration(Config1.class)
+	.run((context) -> {
+		MavenProperties properties = context.getBean(MavenProperties.class);
+		assertThat(properties.isUseWagon()).isTrue();
+	});
 	}
 
 	@Test
 	public void testRemoteRepositories() {
 		this.contextRunner
-			.withInitializer(context -> {
-				Map<String, Object> map = new HashMap<>();
-				map.put("maven.remote-repositories.repo1.url", "url1");
-				map.put("maven.remote-repositories.repo1.wagon.http.all.use-preemptive", "true");
-				map.put("maven.remote-repositories.repo1.wagon.http.all.use-default-headers", "true");
-				map.put("maven.remote-repositories.repo1.wagon.http.all.connection-timeout", "2");
-				map.put("maven.remote-repositories.repo1.wagon.http.all.read-timeout", "3");
-				map.put("maven.remote-repositories.repo1.wagon.http.all.headers.header1", "value1");
-				map.put("maven.remote-repositories.repo1.wagon.http.all.params.http.connection.timeout", "1");
-				context.getEnvironment().getPropertySources().addLast(new SystemEnvironmentPropertySource(
-					StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, map));
-			})
-			.withUserConfiguration(Config1.class)
-			.run((context) -> {
-				MavenProperties properties = context.getBean(MavenProperties.class);
-				assertThat(properties.getRemoteRepositories().size()).isEqualTo(1);
-				assertThat(properties.getRemoteRepositories()).containsOnlyKeys("repo1");
-				assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp().size())
-					.isEqualTo(1);
-				assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
-					.get(WagonHttpMethod.all).isUsePreemptive()).isTrue();
-				assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
-					.get(WagonHttpMethod.all).isUseDefaultHeaders()).isTrue();
-				assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
-					.get(WagonHttpMethod.all).getConnectionTimeout()).isEqualTo(2);
-				assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
-					.get(WagonHttpMethod.all).getReadTimeout()).isEqualTo(3);
-				assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
-					.get(WagonHttpMethod.all).getHeaders()).containsOnlyKeys("header1");
-				assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
-					.get(WagonHttpMethod.all).getHeaders().get("header1")).isEqualTo("value1");
-				assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
-					.get(WagonHttpMethod.all).getParams()).containsOnlyKeys("http.connection.timeout");
-				assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
-					.get(WagonHttpMethod.all).getParams().get("http.connection.timeout")).isEqualTo("1");
-				});
+	.withInitializer(context -> {
+		Map<String, Object> map = new HashMap<>();
+		map.put("maven.remote-repositories.repo1.url", "url1");
+		map.put("maven.remote-repositories.repo1.wagon.http.all.use-preemptive", "true");
+		map.put("maven.remote-repositories.repo1.wagon.http.all.use-default-headers", "true");
+		map.put("maven.remote-repositories.repo1.wagon.http.all.connection-timeout", "2");
+		map.put("maven.remote-repositories.repo1.wagon.http.all.read-timeout", "3");
+		map.put("maven.remote-repositories.repo1.wagon.http.all.headers.header1", "value1");
+		map.put("maven.remote-repositories.repo1.wagon.http.all.params.http.connection.timeout", "1");
+		context.getEnvironment().getPropertySources().addLast(new SystemEnvironmentPropertySource(
+	StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, map));
+	})
+	.withUserConfiguration(Config1.class)
+	.run((context) -> {
+		MavenProperties properties = context.getBean(MavenProperties.class);
+		assertThat(properties.getRemoteRepositories().size()).isEqualTo(1);
+		assertThat(properties.getRemoteRepositories()).containsOnlyKeys("repo1");
+		assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp().size())
+	.isEqualTo(1);
+		assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
+	.get(WagonHttpMethod.all).isUsePreemptive()).isTrue();
+		assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
+	.get(WagonHttpMethod.all).isUseDefaultHeaders()).isTrue();
+		assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
+	.get(WagonHttpMethod.all).getConnectionTimeout()).isEqualTo(2);
+		assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
+	.get(WagonHttpMethod.all).getReadTimeout()).isEqualTo(3);
+		assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
+	.get(WagonHttpMethod.all).getHeaders()).containsOnlyKeys("header1");
+		assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
+	.get(WagonHttpMethod.all).getHeaders().get("header1")).isEqualTo("value1");
+		assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
+	.get(WagonHttpMethod.all).getParams()).containsOnlyKeys("http.connection.timeout");
+		assertThat(properties.getRemoteRepositories().get("repo1").getWagon().getHttp()
+	.get(WagonHttpMethod.all).getParams().get("http.connection.timeout")).isEqualTo("1");
+	});
 	}
 
-	@EnableConfigurationProperties({ MavenConfigurationProperties.class })
+	@EnableConfigurationProperties({MavenConfigurationProperties.class})
 	private static class Config1 {
 	}
 

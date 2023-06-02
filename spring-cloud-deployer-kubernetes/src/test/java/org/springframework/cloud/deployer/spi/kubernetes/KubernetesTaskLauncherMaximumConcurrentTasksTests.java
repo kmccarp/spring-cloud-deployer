@@ -48,8 +48,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author David Turanski
  **/
-@SpringBootTest(classes = { KubernetesAutoConfiguration.class }, properties = {
-		"spring.cloud.deployer.kubernetes.maximum-concurrent-tasks=10" })
+@SpringBootTest(classes = {KubernetesAutoConfiguration.class}, properties = {"spring.cloud.deployer.kubernetes.maximum-concurrent-tasks=10"})
 @ExtendWith(SpringExtension.class)
 public class KubernetesTaskLauncherMaximumConcurrentTasksTests {
 
@@ -81,7 +80,7 @@ public class KubernetesTaskLauncherMaximumConcurrentTasksTests {
 
 		when(podsOperation.withName(anyString())).thenAnswer(invocation -> {
 			Pod p = pods.stream().filter(pod -> pod.getMetadata().getName().equals(invocation.getArgument(0)))
-					.findFirst().orElse(null);
+		.findFirst().orElse(null);
 			PodResource podResource = mock(PodResource.class);
 			when(podResource.get()).thenReturn(p);
 			return podResource;
@@ -95,12 +94,12 @@ public class KubernetesTaskLauncherMaximumConcurrentTasksTests {
 
 		AppDefinition appDefinition = new AppDefinition("task", Collections.emptyMap());
 		AppDeploymentRequest request = new AppDeploymentRequest(appDefinition, mock(Resource.class),
-				Collections.emptyMap());
+	Collections.emptyMap());
 
 		assertThatThrownBy(() -> {
 			taskLauncher.launch(request);
 		}).isInstanceOf(IllegalStateException.class).hasMessageContaining(
-				"Cannot launch task task. The maximum concurrent task executions is at its limit [10].");
+	"Cannot launch task task. The maximum concurrent task executions is at its limit [10].");
 
 	}
 
@@ -108,10 +107,10 @@ public class KubernetesTaskLauncherMaximumConcurrentTasksTests {
 		List<Pod> items = new ArrayList<>();
 		for (int i = 0; i < numTasks; i++) {
 			items.add(new PodBuilder().withNewMetadata()
-					.withName("task-" + i).endMetadata()
-					.withNewStatus()
-					.withPhase("Running")
-					.endStatus().build());
+		.withName("task-" + i).endMetadata()
+		.withNewStatus()
+		.withPhase("Running")
+		.endStatus().build());
 		}
 		return items;
 	}

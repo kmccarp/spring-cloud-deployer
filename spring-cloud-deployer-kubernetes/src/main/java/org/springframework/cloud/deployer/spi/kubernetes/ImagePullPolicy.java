@@ -30,18 +30,18 @@ import org.springframework.boot.context.properties.source.MapConfigurationProper
  */
 public enum ImagePullPolicy {
 
-    Always,
-    IfNotPresent,
-    Never;
+	Always,
+	IfNotPresent,
+	Never;
 
-    /**
-     * Tries to convert {@code name} to an {@link ImagePullPolicy} by ignoring case, dashes, underscores
-     * and so on in a relaxed fashion.
-     *
-     * @param name The name to convert to an {@link ImagePullPolicy}.
-     * @return The {@link ImagePullPolicy} for {@code name} or {@code null} if the conversion was not possible.
-     */
-    public static ImagePullPolicy relaxedValueOf(String name) {
+	/**
+	* Tries to convert {@code name} to an {@link ImagePullPolicy} by ignoring case, dashes, underscores
+	* and so on in a relaxed fashion.
+	*
+	* @param name The name to convert to an {@link ImagePullPolicy}.
+	* @return The {@link ImagePullPolicy} for {@code name} or {@code null} if the conversion was not possible.
+	*/
+	public static ImagePullPolicy relaxedValueOf(String name) {
 		// 'value' is just a dummy key as you can't bind a single value to an enum
 		Map<String, String> props = new HashMap<>();
 		props.put("value", name);
@@ -52,7 +52,7 @@ public enum ImagePullPolicy {
 		} catch (Exception e) {
 			// error means we couldn't bind, caller seem to handle null
 		}
-        return null;
-    }
+		return null;
+	}
 
 }

@@ -61,9 +61,9 @@ public class PropertyParserUtils {
 	}
 
 	public static String getDeploymentPropertyValue(Map<String, String> deploymentProperties, String propertyName,
-			String defaultValue) {
+String defaultValue) {
 		RelaxedNames relaxedNames = new RelaxedNames(propertyName);
-		for (Iterator<String> itr = relaxedNames.iterator(); itr.hasNext();) {
+		for (Iterator<String> itr = relaxedNames.iterator(); itr.hasNext(); ) {
 			String relaxedName = itr.next();
 			if (deploymentProperties.containsKey(relaxedName)) {
 				return deploymentProperties.get(relaxedName);

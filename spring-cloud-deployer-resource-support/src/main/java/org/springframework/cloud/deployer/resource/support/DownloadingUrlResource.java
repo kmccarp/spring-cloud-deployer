@@ -78,7 +78,7 @@ public class DownloadingUrlResource extends UrlResource {
 			if (simpleName != null) {
 				try {
 					this.file = new File(Files.createTempDirectory("spring-cloud-deployer").toFile(),
-							fileName + "-" + simpleName);
+				fileName + "-" + simpleName);
 				} catch (IOException e) {
 					logger.info("Could not create simple temp file name using last part of URL");
 				}

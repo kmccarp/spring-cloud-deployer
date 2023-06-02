@@ -30,64 +30,64 @@ import org.springframework.util.Assert;
  * @since 2.1.0
  */
 public class AppScaleRequest {
-    private final int count;
-    private final String deploymentId;
-    private final Optional<Map<String,String>> properties;
+	private final int count;
+	private final String deploymentId;
+	private final Optional<Map<String, String>> properties;
 
-    /**
-     *
-     * @param deploymentId the unique deployment ID of the application.
-     * @param count the desired instance count.
-     */
-    public AppScaleRequest(String deploymentId, int count) {
-        this(deploymentId, count, null);
-    }
+	/**
+	*
+	* @param deploymentId the unique deployment ID of the application.
+	* @param count the desired instance count.
+	*/
+	public AppScaleRequest(String deploymentId, int count) {
+		this(deploymentId, count, null);
+	}
 
-    /**
-     *
-     * @param deploymentId the unique deployment ID of the application.
-     * @param count the desired instance count.
-     * @param properties optional properties that may be applied during the scale operation.
-     */
-    public AppScaleRequest(String deploymentId, int count, @Nullable  Map<String, String> properties) {
-        Assert.hasText(deploymentId,"'deploymentId', must not be empty or null");
-        Assert.state(count >= 0, "'count' must be >= 0");
-        this.deploymentId = deploymentId;
-        this.count = count;
-        this.properties = Optional.ofNullable(properties);
-    }
+	/**
+	*
+	* @param deploymentId the unique deployment ID of the application.
+	* @param count the desired instance count.
+	* @param properties optional properties that may be applied during the scale operation.
+	*/
+	public AppScaleRequest(String deploymentId, int count, @Nullable  Map<String, String> properties) {
+		Assert.hasText(deploymentId, "'deploymentId', must not be empty or null");
+		Assert.state(count >= 0, "'count' must be >= 0");
+		this.deploymentId = deploymentId;
+		this.count = count;
+		this.properties = Optional.ofNullable(properties);
+	}
 
-    /**
-     *
-     * @return the desired instance count.
-     */
-    public int getCount() {
-        return count;
-    }
+	/**
+	*
+	* @return the desired instance count.
+	*/
+	public int getCount() {
+		return count;
+	}
 
-    /**
-     *
-     * @return the deployment ID.
-     */
-    public String getDeploymentId() {
-        return deploymentId;
-    }
+	/**
+	*
+	* @return the deployment ID.
+	*/
+	public String getDeploymentId() {
+		return deploymentId;
+	}
 
-    /**
-     *
-     * @return the {@link Optional} properties.
-     */
-    public Optional<Map<String, String>> getProperties() {
-        return properties;
-    }
+	/**
+	*
+	* @return the {@link Optional} properties.
+	*/
+	public Optional<Map<String, String>> getProperties() {
+		return properties;
+	}
 
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("AppScaleRequest{");
-        sb.append("count=").append(count);
-        sb.append(", deploymentId='").append(deploymentId).append('\'');
-        sb.append(", properties=").append(properties);
-        sb.append('}');
-        return sb.toString();
-    }
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer("AppScaleRequest{");
+		sb.append("count=").append(count);
+		sb.append(", deploymentId='").append(deploymentId).append('\'');
+		sb.append(", properties=").append(properties);
+		sb.append('}');
+		return sb.toString();
+	}
 }

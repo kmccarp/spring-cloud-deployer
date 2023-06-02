@@ -95,16 +95,16 @@ public class AbstractKubernetesDeployer {
 	 */
 	protected RuntimeEnvironmentInfo createRuntimeEnvironmentInfo(Class spiClass, Class implementationClass) {
 		return new RuntimeEnvironmentInfo.Builder()
-				.spiClass(spiClass)
-				.implementationName(implementationClass.getSimpleName())
-				.implementationVersion(RuntimeVersionUtils.getVersion(implementationClass))
-				.platformType("Kubernetes")
-				.platformApiVersion(client.getApiVersion())
-				.platformClientVersion(RuntimeVersionUtils.getVersion(client.getClass()))
-				.platformHostVersion("unknown")
-				.addPlatformSpecificInfo("master-url", String.valueOf(client.getMasterUrl()))
-				.addPlatformSpecificInfo("namespace", client.getNamespace())
-				.build();
+	.spiClass(spiClass)
+	.implementationName(implementationClass.getSimpleName())
+	.implementationVersion(RuntimeVersionUtils.getVersion(implementationClass))
+	.platformType("Kubernetes")
+	.platformApiVersion(client.getApiVersion())
+	.platformClientVersion(RuntimeVersionUtils.getVersion(client.getClass()))
+	.platformHostVersion("unknown")
+	.addPlatformSpecificInfo("master-url", String.valueOf(client.getMasterUrl()))
+	.addPlatformSpecificInfo("namespace", client.getNamespace())
+	.build();
 	}
 
 	/**
@@ -141,19 +141,19 @@ public class AbstractKubernetesDeployer {
 				String deploymentKey = pod.getMetadata().getLabels().get(SPRING_DEPLOYMENT_KEY);
 				for (Service svc : services.getItems()) {
 					// handle case of when the version provided by skipper has been removed
-					if(deploymentKey.startsWith(svc.getMetadata().getName())) {
+					if (deploymentKey.startsWith(svc.getMetadata().getName())) {
 						service = svc;
 						break;
 					}
 				}
 				//find the container with the correct env var
-				for(Container container : pod.getSpec().getContainers()) {
-					if(container.getEnv().stream().anyMatch(envVar -> "SPRING_CLOUD_APPLICATION_GUID".equals(envVar.getName()))) {
+				for (Container container : pod.getSpec().getContainers()) {
+					if (container.getEnv().stream().anyMatch(envVar -> "SPRING_CLOUD_APPLICATION_GUID".equals(envVar.getName()))) {
 						//find container status for this container
 						Optional<ContainerStatus> containerStatusOptional =
-							pod.getStatus().getContainerStatuses()
-							   .stream().filter(containerStatus -> container.getName().equals(containerStatus.getName()))
-							   .findFirst();
+					pod.getStatus().getContainerStatuses()
+				.stream().filter(containerStatus -> container.getName().equals(containerStatus.getName()))
+				.findFirst();
 
 						statusBuilder.with(new KubernetesAppInstanceStatus(pod, service, properties, containerStatusOptional.orElse(null)));
 
@@ -168,7 +168,7 @@ public class AbstractKubernetesDeployer {
 	protected void logPossibleDownloadResourceMessage(Resource resource) {
 		if (logger.isInfoEnabled()) {
 			logger.info("Preparing to run a container from  " + resource
-					+ ". This may take some time if the image must be downloaded from a remote container registry.");
+		+ ". This may take some time if the image must be downloaded from a remote container registry.");
 		}
 	}
 
@@ -201,8 +201,8 @@ public class AbstractKubernetesDeployer {
 		boolean hostNetwork = this.deploymentPropertiesResolver.getHostNetwork(deploymentProperties);
 
 		ContainerConfiguration containerConfiguration = new ContainerConfiguration(appId, appDeploymentRequest)
-				.withProbeCredentialsSecret(getProbeCredentialsSecret(deploymentProperties))
-				.withHostNetwork(hostNetwork);
+	.withProbeCredentialsSecret(getProbeCredentialsSecret(deploymentProperties))
+	.withHostNetwork(hostNetwork);
 
 		if (KubernetesAppDeployer.class.isAssignableFrom(this.getClass())) {
 			containerConfiguration.withExternalPort(getExternalPort(appDeploymentRequest));
@@ -219,18 +219,18 @@ public class AbstractKubernetesDeployer {
 		container.setImagePullPolicy(pullPolicy.name());
 
 		KubernetesDeployerProperties.Lifecycle lifecycle =
-				this.deploymentPropertiesResolver.getLifeCycle(deploymentProperties);
+	this.deploymentPropertiesResolver.getLifeCycle(deploymentProperties);
 
 		Lifecycle f8Lifecycle = new Lifecycle();
 		if (lifecycle.getPostStart() != null) {
 			f8Lifecycle.setPostStart(new LifecycleHandlerBuilder()
-					.withNewExec()
-					.addAllToCommand(lifecycle.getPostStart().getExec().getCommand()).and().build());
+		.withNewExec()
+		.addAllToCommand(lifecycle.getPostStart().getExec().getCommand()).and().build());
 		}
 		if (lifecycle.getPreStop() != null) {
 			f8Lifecycle.setPreStop(new LifecycleHandlerBuilder()
-					.withNewExec()
-					.addAllToCommand(lifecycle.getPreStop().getExec().getCommand()).and().build());
+		.withNewExec()
+		.addAllToCommand(lifecycle.getPreStop().getExec().getCommand()).and().build());
 		}
 
 		if (f8Lifecycle.getPostStart() != null || f8Lifecycle.getPreStop() != null) {
@@ -251,9 +251,9 @@ public class AbstractKubernetesDeployer {
 
 		// only add volumes with corresponding volume mounts
 		podSpec.withVolumes(this.deploymentPropertiesResolver.getVolumes(deploymentProperties).stream()
-				.filter(volume -> container.getVolumeMounts().stream()
-						.anyMatch(volumeMount -> volumeMount.getName().equals(volume.getName())))
-				.collect(Collectors.toList()));
+	.filter(volume -> container.getVolumeMounts().stream()
+.anyMatch(volumeMount -> volumeMount.getName().equals(volume.getName())))
+	.collect(Collectors.toList()));
 
 		if (hostNetwork) {
 			podSpec.withHostNetwork(true);
@@ -282,8 +282,8 @@ public class AbstractKubernetesDeployer {
 		Affinity affinity = this.deploymentPropertiesResolver.getAffinityRules(deploymentProperties);
 		// Make sure there is at least some rule.
 		if (affinity.getNodeAffinity() != null
-				|| affinity.getPodAffinity() != null
-				|| affinity.getPodAntiAffinity() != null) {
+	|| affinity.getPodAffinity() != null
+	|| affinity.getPodAntiAffinity() != null) {
 			podSpec.withAffinity(affinity);
 		}
 
@@ -308,7 +308,7 @@ public class AbstractKubernetesDeployer {
 		List<Container> additionalContainers = this.deploymentPropertiesResolver.getAdditionalContainers(deploymentProperties);
 		if (containerSecurityContext != null && !CollectionUtils.isEmpty(additionalContainers)) {
 			additionalContainers.stream().filter((c) -> c.getSecurityContext() == null)
-					.forEach((c) -> c.setSecurityContext(containerSecurityContext));
+		.forEach((c) -> c.setSecurityContext(containerSecurityContext));
 		}
 		podSpec.addAllToContainers(additionalContainers);
 		return podSpec.build();
@@ -344,7 +344,7 @@ public class AbstractKubernetesDeployer {
 	 */
 	Secret getProbeCredentialsSecret(Map<String, String> kubernetesDeployerProperties) {
 		String secretName = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.deploymentPropertiesResolver.getPropertyPrefix() + ".probeCredentialsSecret");
+	this.deploymentPropertiesResolver.getPropertyPrefix() + ".probeCredentialsSecret");
 
 		if (StringUtils.hasText(secretName)) {
 			return this.client.secrets().withName(secretName).get();

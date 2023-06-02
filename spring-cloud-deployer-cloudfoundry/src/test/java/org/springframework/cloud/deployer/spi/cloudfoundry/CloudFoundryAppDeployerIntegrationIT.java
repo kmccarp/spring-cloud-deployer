@@ -37,8 +37,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 
 
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.NONE,
-	properties = {"spring.cloud.deployer.cloudfoundry.enableRandomAppNamePrefix=false"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE,properties = {"spring.cloud.deployer.cloudfoundry.enableRandomAppNamePrefix=false"})
 @ContextConfiguration(classes = CloudFoundryAppDeployerIntegrationIT.Config.class)
 public class CloudFoundryAppDeployerIntegrationIT extends AbstractAppDeployerIntegrationJUnit5Tests {
 

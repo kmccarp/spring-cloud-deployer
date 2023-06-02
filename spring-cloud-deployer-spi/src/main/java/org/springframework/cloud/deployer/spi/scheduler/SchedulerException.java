@@ -22,7 +22,7 @@ package org.springframework.cloud.deployer.spi.scheduler;
  * @author Glenn Renfro
  * @author Ilayaperumal Gopinathan
  */
-public class SchedulerException extends RuntimeException{
+public class SchedulerException extends RuntimeException {
 
 	public SchedulerException(String exceptionMessage) {
 		super(exceptionMessage);

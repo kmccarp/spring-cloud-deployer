@@ -25,12 +25,12 @@ public class DefaultRunningPhaseDeploymentStateResolver extends CompositeDeploym
 
 	public DefaultRunningPhaseDeploymentStateResolver(KubernetesDeployerProperties properties) {
 		super(
-			new PredicateRunningPhaseDeploymentStateResolver.ContainerReady(properties),
-			new PredicateRunningPhaseDeploymentStateResolver.ContainerCrashed(properties),
-			new PredicateRunningPhaseDeploymentStateResolver.RestartsDueToTheSameError(properties),
-			new PredicateRunningPhaseDeploymentStateResolver.CrashLoopBackOffRestarts(properties),
-			new PredicateRunningPhaseDeploymentStateResolver.ContainerTerminated(properties),
-			//default
-			containerStatus -> DeploymentState.deploying);
+	new PredicateRunningPhaseDeploymentStateResolver.ContainerReady(properties),
+	new PredicateRunningPhaseDeploymentStateResolver.ContainerCrashed(properties),
+	new PredicateRunningPhaseDeploymentStateResolver.RestartsDueToTheSameError(properties),
+	new PredicateRunningPhaseDeploymentStateResolver.CrashLoopBackOffRestarts(properties),
+	new PredicateRunningPhaseDeploymentStateResolver.ContainerTerminated(properties),
+	//default
+	containerStatus -> DeploymentState.deploying);
 	}
 }

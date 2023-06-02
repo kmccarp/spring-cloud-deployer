@@ -42,10 +42,10 @@ public class WagonHttpTests {
 		mavenProperties.setUseWagon(true);
 		Map<String, MavenProperties.RemoteRepository> remoteRepositoryMap = new HashMap<>();
 		remoteRepositoryMap.put("default",
-				new MavenProperties.RemoteRepository("http://localhost:" + server.getPort() + "/public"));
+	new MavenProperties.RemoteRepository("http://localhost:" + server.getPort() + "/public"));
 		mavenProperties.setRemoteRepositories(remoteRepositoryMap);
 		MavenResource resource = MavenResource
-				.parse("org.example:doesnotexist:jar:1.0.0.RELEASE", mavenProperties);
+	.parse("org.example:doesnotexist:jar:1.0.0.RELEASE", mavenProperties);
 		assertThat(resource.exists()).isFalse();
 	}
 
@@ -56,10 +56,10 @@ public class WagonHttpTests {
 		mavenProperties.setUseWagon(true);
 		Map<String, MavenProperties.RemoteRepository> remoteRepositoryMap = new HashMap<>();
 		remoteRepositoryMap.put("default",
-				new MavenProperties.RemoteRepository("http://localhost:" + server.getPort() + "/public"));
+	new MavenProperties.RemoteRepository("http://localhost:" + server.getPort() + "/public"));
 		mavenProperties.setRemoteRepositories(remoteRepositoryMap);
 		MavenResource resource = MavenResource
-				.parse("org.example:app:jar:1.0.0.RELEASE", mavenProperties);
+	.parse("org.example:app:jar:1.0.0.RELEASE", mavenProperties);
 		assertThat(resource.exists()).isTrue();
 	}
 
@@ -75,7 +75,7 @@ public class WagonHttpTests {
 		remoteRepositories.put("default", remoteRepository);
 		mavenProperties.setRemoteRepositories(remoteRepositories);
 		MavenResource resource = MavenResource
-				.parse("org.example:secured:jar:1.0.0.RELEASE", mavenProperties);
+	.parse("org.example:secured:jar:1.0.0.RELEASE", mavenProperties);
 		assertThat(resource.exists()).isTrue();
 	}
 
@@ -103,7 +103,7 @@ public class WagonHttpTests {
 		remoteRepositories.put("default", remoteRepository);
 		mavenProperties.setRemoteRepositories(remoteRepositories);
 		MavenResource resource = MavenResource
-				.parse("org.example:preemptive:jar:1.0.0.RELEASE", mavenProperties);
+	.parse("org.example:preemptive:jar:1.0.0.RELEASE", mavenProperties);
 		assertThat(resource.exists()).isTrue();
 	}
 }

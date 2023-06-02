@@ -40,15 +40,15 @@ public class DeployerIntegrationTest {
 		String parameterThatMayNeedEscaping = properties.getParameterThatMayNeedEscaping();
 		if (parameterThatMayNeedEscaping != null && !DeployerIntegrationTestProperties.FUNNY_CHARACTERS.equals(parameterThatMayNeedEscaping)) {
 			throw new IllegalArgumentException(
-					String.format("Expected 'parameterThatMayNeedEscaping' value to be equal to '%s', but was '%s'",
-							DeployerIntegrationTestProperties.FUNNY_CHARACTERS, parameterThatMayNeedEscaping));
+		String.format("Expected 'parameterThatMayNeedEscaping' value to be equal to '%s', but was '%s'",
+	DeployerIntegrationTestProperties.FUNNY_CHARACTERS, parameterThatMayNeedEscaping));
 		}
 
 		String commandLineArgValueThatMayNeedEscaping = properties.getCommandLineArgValueThatMayNeedEscaping();
 		if (commandLineArgValueThatMayNeedEscaping != null && !DeployerIntegrationTestProperties.FUNNY_CHARACTERS.equals(commandLineArgValueThatMayNeedEscaping)) {
 			throw new IllegalArgumentException(String.format(
-					"Expected 'commandLineArgValueThatMayNeedEscaping' value to be equal to '%s', but was '%s'",
-					DeployerIntegrationTestProperties.FUNNY_CHARACTERS, commandLineArgValueThatMayNeedEscaping));
+		"Expected 'commandLineArgValueThatMayNeedEscaping' value to be equal to '%s', but was '%s'",
+		DeployerIntegrationTestProperties.FUNNY_CHARACTERS, commandLineArgValueThatMayNeedEscaping));
 		}
 
 		Assert.notNull(properties.getInstanceIndex(), "instanceIndex should have been set by deployer or runtime");

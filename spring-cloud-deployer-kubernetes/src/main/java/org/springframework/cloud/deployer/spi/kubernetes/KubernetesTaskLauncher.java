@@ -74,32 +74,32 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 
 	@Autowired
 	public KubernetesTaskLauncher(KubernetesDeployerProperties properties,
-			KubernetesClient client) {
+KubernetesClient client) {
 		this(properties, new KubernetesTaskLauncherProperties(), client, new DefaultContainerFactory(properties));
 	}
 
 	@Autowired
 	public KubernetesTaskLauncher(KubernetesDeployerProperties properties,
-			KubernetesClient client, ContainerFactory containerFactory) {
+KubernetesClient client, ContainerFactory containerFactory) {
 		this(properties, new KubernetesTaskLauncherProperties(), client, containerFactory);
 	}
 
 	@Autowired
 	public KubernetesTaskLauncher(KubernetesDeployerProperties deployerProperties,
-			KubernetesTaskLauncherProperties taskLauncherProperties, KubernetesClient client) {
+KubernetesTaskLauncherProperties taskLauncherProperties, KubernetesClient client) {
 		this(deployerProperties, taskLauncherProperties, client, new DefaultContainerFactory(deployerProperties));
 	}
 
 	@Autowired
 	public KubernetesTaskLauncher(KubernetesDeployerProperties kubernetesDeployerProperties,
-			KubernetesTaskLauncherProperties taskLauncherProperties,
-	                             KubernetesClient client, ContainerFactory containerFactory) {
+KubernetesTaskLauncherProperties taskLauncherProperties,
+KubernetesClient client, ContainerFactory containerFactory) {
 		this.properties = kubernetesDeployerProperties;
 		this.taskLauncherProperties = taskLauncherProperties;
 		this.client = client;
 		this.containerFactory = containerFactory;
 		this.deploymentPropertiesResolver = new DeploymentPropertiesResolver(
-				KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX, properties);
+	KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX, properties);
 	}
 
 	@Override
@@ -113,8 +113,8 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 
 		if (this.maxConcurrentExecutionsReached()) {
 			throw new IllegalStateException(
-				String.format("Cannot launch task %s. The maximum concurrent task executions is at its limit [%d].",
-					request.getDefinition().getName(), this.getMaximumConcurrentTasks())
+		String.format("Cannot launch task %s. The maximum concurrent task executions is at its limit [%d].",
+	request.getDefinition().getName(), this.getMaximumConcurrentTasks())
 			);
 		}
 
@@ -140,7 +140,8 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 		try {
 			if (properties.isCreateJob()) {
 				deleteJob(id);
-			} else {
+			}
+			else {
 				deletePod(id);
 			}
 		} catch (RuntimeException e) {
@@ -179,7 +180,7 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 		List<String> taskIds = getIdsForTasks(Optional.empty(), false);
 		AtomicInteger executionCount = new AtomicInteger();
 
-		taskIds.forEach(id-> {
+		taskIds.forEach(id -> {
 			if (buildPodStatus(id).getState() == LaunchState.running) {
 				executionCount.incrementAndGet();
 			}
@@ -190,7 +191,7 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 
 	@Override
 	public String getLog(String id) {
-		if(properties.isCreateJob()){
+		if (properties.isCreateJob()) {
 			Job job = getJob(id);
 			Map<String, String> selector = new HashMap<>();
 			selector.put(SPRING_APP_KEY, id);
@@ -200,11 +201,12 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 			for (Pod pod : podList.getItems()) {
 				for (Container container : pod.getSpec().getContainers()) {
 					logAppender.append(this.client.pods().withName(pod.getMetadata().getName())
-							.inContainer(container.getName()).tailingLines(500).getLog());
+				.inContainer(container.getName()).tailingLines(500).getLog());
 				}
 			}
 			return logAppender.toString();
-		} else {
+		}
+		else {
 			Map<String, String> selector = new HashMap<>();
 			selector.put(SPRING_APP_KEY, id);
 			PodList podList = client.pods().withLabels(selector).list();
@@ -212,7 +214,7 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 			for (Pod pod : podList.getItems()) {
 				for (Container container : pod.getSpec().getContainers()) {
 					logAppender.append(this.client.pods().withName(pod.getMetadata().getName())
-							.inContainer(container.getName()).tailingLines(500).getLog());
+				.inContainer(container.getName()).tailingLines(500).getLog());
 				}
 			}
 			return logAppender.toString();
@@ -250,47 +252,47 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 		if (this.properties.isCreateJob()) {
 			logger.debug(String.format("Launching Job for task: %s", appId));
 			ObjectMeta objectMeta = new ObjectMetaBuilder()
-					.withLabels(podLabelMap)
-					.addToLabels(idMap)
-					.addToLabels(deploymentLabels)
-					.withAnnotations(this.deploymentPropertiesResolver.getJobAnnotations(deploymentProperties))
-					.addToAnnotations(this.deploymentPropertiesResolver.getPodAnnotations(deploymentProperties))
-					.build();
+		.withLabels(podLabelMap)
+		.addToLabels(idMap)
+		.addToLabels(deploymentLabels)
+		.withAnnotations(this.deploymentPropertiesResolver.getJobAnnotations(deploymentProperties))
+		.addToAnnotations(this.deploymentPropertiesResolver.getPodAnnotations(deploymentProperties))
+		.build();
 			PodTemplateSpec podTemplateSpec = new PodTemplateSpec(objectMeta, podSpec);
 
 			JobSpec jobSpec = new JobSpecBuilder()
-					.withTemplate(podTemplateSpec)
-					.withBackoffLimit(getBackoffLimit(request))
-					.withTtlSecondsAfterFinished(getTtlSecondsAfterFinished(request))
-					.build();
+		.withTemplate(podTemplateSpec)
+		.withBackoffLimit(getBackoffLimit(request))
+		.withTtlSecondsAfterFinished(getTtlSecondsAfterFinished(request))
+		.build();
 
 			this.client.batch().v1().jobs().create(
-				new JobBuilder()
-						.withNewMetadata()
-						.withName(appId)
-						.withLabels(Collections.singletonMap("task-name", podLabelMap.get("task-name")))
-						.addToLabels(idMap)
-						.withAnnotations(this.deploymentPropertiesResolver.getJobAnnotations(deploymentProperties))
-						.endMetadata()
-						.withSpec(jobSpec)
-						.build()
+		new JobBuilder()
+	.withNewMetadata()
+	.withName(appId)
+	.withLabels(Collections.singletonMap("task-name", podLabelMap.get("task-name")))
+	.addToLabels(idMap)
+	.withAnnotations(this.deploymentPropertiesResolver.getJobAnnotations(deploymentProperties))
+	.endMetadata()
+	.withSpec(jobSpec)
+	.build()
 			);
 		}
 		else {
 			logger.debug(String.format("Launching Pod for task: %s", appId));
 
 			this.client.pods().create(
-					new PodBuilder()
-							.withNewMetadata()
-							.withName(appId)
-							.withLabels(podLabelMap)
-							.addToLabels(deploymentLabels)
-							.withAnnotations(this.deploymentPropertiesResolver.getJobAnnotations(deploymentProperties))
-							.addToAnnotations(this.deploymentPropertiesResolver.getPodAnnotations(deploymentProperties))
-							.addToLabels(idMap)
-							.endMetadata()
-							.withSpec(podSpec)
-							.build()
+		new PodBuilder()
+	.withNewMetadata()
+	.withName(appId)
+	.withLabels(podLabelMap)
+	.addToLabels(deploymentLabels)
+	.withAnnotations(this.deploymentPropertiesResolver.getJobAnnotations(deploymentProperties))
+	.addToAnnotations(this.deploymentPropertiesResolver.getPodAnnotations(deploymentProperties))
+	.addToLabels(idMap)
+	.endMetadata()
+	.withSpec(podSpec)
+	.build()
 			);
 		}
 	}
@@ -320,7 +322,8 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 			else {
 				resourceList = client.pods().withLabel("task-name", taskName.get()).list();
 			}
-		} else {
+		}
+		else {
 			if (isCreateJob) {
 				resourceList = client.batch().jobs().withLabel("task-name").list();
 			}
@@ -333,7 +336,7 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 
 	TaskStatus buildTaskStatus(String id) {
 
-		if(properties.isCreateJob()){
+		if (properties.isCreateJob()) {
 			Job job = getJob(id);
 
 			if (job == null) {
@@ -356,7 +359,8 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 			}
 			return new TaskStatus(id, LaunchState.launching, new HashMap<>());
 
-		} else {
+		}
+		else {
 			return buildPodStatus(id);
 		}
 	}
@@ -375,21 +379,21 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 		String phase = podStatus.getPhase();
 
 		switch (phase) {
-		case "Pending":
-			return new TaskStatus(id, LaunchState.launching, new HashMap<>());
-		case "Failed":
-			return new TaskStatus(id, LaunchState.failed, new HashMap<>());
-		case "Succeeded":
-			return new TaskStatus(id, LaunchState.complete, new HashMap<>());
-		default:
-			return new TaskStatus(id, LaunchState.running, new HashMap<>());
+			case "Pending":
+				return new TaskStatus(id, LaunchState.launching, new HashMap<>());
+			case "Failed":
+				return new TaskStatus(id, LaunchState.failed, new HashMap<>());
+			case "Succeeded":
+				return new TaskStatus(id, LaunchState.complete, new HashMap<>());
+			default:
+				return new TaskStatus(id, LaunchState.running, new HashMap<>());
 		}
 	}
 
 
 	private void deleteJob(String id) {
 		FilterWatchListDeletable<Job, JobList> jobsToDelete = client.batch().jobs()
-				.withLabel(SPRING_APP_KEY, id);
+	.withLabel(SPRING_APP_KEY, id);
 
 		if (jobsToDelete == null || ObjectUtils.isEmpty(jobsToDelete.list().getItems())) {
 			logger.warn(String.format("Cannot delete job for task \"%s\" (reason: job does not exist)", id));
@@ -402,7 +406,7 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 
 	private void deletePod(String id) {
 		FilterWatchListDeletable<Pod, PodList> podsToDelete = client.pods()
-				.withLabel(SPRING_APP_KEY, id);
+	.withLabel(SPRING_APP_KEY, id);
 
 		if (podsToDelete == null || ObjectUtils.isEmpty(podsToDelete.list().getItems())) {
 			logger.warn(String.format("Cannot delete pod for task \"%s\" (reason: pod does not exist)", id));
@@ -427,7 +431,7 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 
 	private Pod getPodByName(String name) {
 		PodResource podResource = client.pods().withName(name);
-		return podResource == null? null: client.pods().withName(name).get();
+		return podResource == null ? null : client.pods().withName(name).get();
 	}
 
 	/**
@@ -438,10 +442,10 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 	 */
 	protected RestartPolicy getRestartPolicy(AppDeploymentRequest request) {
 		String restartPolicyString =
-				PropertyParserUtils.getDeploymentPropertyValue(request.getDeploymentProperties(),
-						"spring.cloud.deployer.kubernetes.restartPolicy");
-		RestartPolicy restartPolicy =  (!StringUtils.hasText(restartPolicyString)) ? this.taskLauncherProperties.getRestartPolicy() :
-				RestartPolicy.valueOf(restartPolicyString);
+	PropertyParserUtils.getDeploymentPropertyValue(request.getDeploymentProperties(),
+"spring.cloud.deployer.kubernetes.restartPolicy");
+		RestartPolicy restartPolicy = (!StringUtils.hasText(restartPolicyString)) ? this.taskLauncherProperties.getRestartPolicy() :
+	RestartPolicy.valueOf(restartPolicyString);
 		if (this.properties.isCreateJob()) {
 			Assert.isTrue(!restartPolicy.equals(RestartPolicy.Always), "RestartPolicy should not be 'Always' when the JobSpec is used.");
 		}
@@ -456,7 +460,7 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 	 */
 	protected Integer getBackoffLimit(AppDeploymentRequest request) {
 		String backoffLimitString = PropertyParserUtils.getDeploymentPropertyValue(request.getDeploymentProperties(),
-				"spring.cloud.deployer.kubernetes.backoffLimit");
+	"spring.cloud.deployer.kubernetes.backoffLimit");
 		if (StringUtils.hasText(backoffLimitString)) {
 			return Integer.valueOf(backoffLimitString);
 		}
@@ -473,7 +477,7 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 	 */
 	protected Integer getTtlSecondsAfterFinished(AppDeploymentRequest request) {
 		String ttlSecondsAfterFinished = PropertyParserUtils.getDeploymentPropertyValue(request.getDeploymentProperties(),
-				"spring.cloud.deployer.kubernetes.ttlSecondsAfterFinished");
+	"spring.cloud.deployer.kubernetes.ttlSecondsAfterFinished");
 		if (StringUtils.hasText(ttlSecondsAfterFinished)) {
 			return Integer.valueOf(ttlSecondsAfterFinished);
 		}

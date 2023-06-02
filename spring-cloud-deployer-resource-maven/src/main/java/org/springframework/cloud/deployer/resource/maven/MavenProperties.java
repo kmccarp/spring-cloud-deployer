@@ -35,7 +35,7 @@ public class MavenProperties {
 	 * Default file path to a locally available maven repository.
 	 */
 	private static String DEFAULT_LOCAL_REPO = System.getProperty("user.home") +
-			File.separator + ".m2" + File.separator + "repository";
+File.separator + ".m2" + File.separator + "repository";
 
 	/**
 	 * File path to a locally available maven repository, where artifacts will be downloaded.

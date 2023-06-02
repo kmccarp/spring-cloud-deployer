@@ -37,11 +37,12 @@ public class StaticWagonProvider implements WagonProvider {
 	public StaticWagonProvider() {
 	}
 
-	public Wagon lookup( String roleHint ) throws Exception {
+	public Wagon lookup(String roleHint) throws Exception {
 		logger.debug("Looking up wagon for roleHint {}", roleHint);
 		if ("https".equals(roleHint)) {
 			return new HttpWagon();
-		} else if ("http".equals(roleHint)) {
+		}
+		else if ("http".equals(roleHint)) {
 			return new HttpWagon();
 		}
 		throw new IllegalArgumentException("No wagon available for " + roleHint);

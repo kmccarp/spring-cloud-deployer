@@ -33,15 +33,15 @@ public class RuntimeEnvironmentInfoBuilderTests {
 	@Test
 	public void testCreatingRuntimeEnvironmentInfo() {
 		RuntimeEnvironmentInfo rei = new RuntimeEnvironmentInfo.Builder()
-				.spiClass(AppDeployer.class)
-				.implementationName("TestDeployer")
-				.implementationVersion("1.0.0")
-				.platformClientVersion("1.2.0")
-				.platformHostVersion("1.1.0")
-				.platformType("Test")
-				.platformApiVersion("1")
-				.addPlatformSpecificInfo("foo", "bar")
-				.build();
+	.spiClass(AppDeployer.class)
+	.implementationName("TestDeployer")
+	.implementationVersion("1.0.0")
+	.platformClientVersion("1.2.0")
+	.platformHostVersion("1.1.0")
+	.platformType("Test")
+	.platformApiVersion("1")
+	.addPlatformSpecificInfo("foo", "bar")
+	.build();
 		assertThat(rei.getSpiVersion(), is(RuntimeVersionUtils.getVersion(AppDeployer.class)));
 		assertThat(rei.getImplementationName(), is("TestDeployer"));
 		assertThat(rei.getImplementationVersion(), is("1.0.0"));

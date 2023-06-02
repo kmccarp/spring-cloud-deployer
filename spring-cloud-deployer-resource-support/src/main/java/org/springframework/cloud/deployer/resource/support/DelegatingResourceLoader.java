@@ -60,8 +60,8 @@ public class DelegatingResourceLoader implements ResourceLoader, ResourceLoaderA
 	 */
 	public DelegatingResourceLoader(Map<String, ResourceLoader> loaders) {
 		this.loaders = CollectionUtils.isEmpty(loaders)
-				? Collections.<String, ResourceLoader>emptyMap()
-				: Collections.unmodifiableMap(loaders);
+	? Collections.<String, ResourceLoader>emptyMap()
+	: Collections.unmodifiableMap(loaders);
 	}
 
 	@Override

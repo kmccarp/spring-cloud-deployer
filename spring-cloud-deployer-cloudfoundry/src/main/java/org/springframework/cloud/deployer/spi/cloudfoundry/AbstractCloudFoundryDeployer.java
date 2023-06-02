@@ -82,14 +82,14 @@ class AbstractCloudFoundryDeployer {
 
 	int memory(AppDeploymentRequest request) {
 		String withUnit = request.getDeploymentProperties()
-			.getOrDefault(AppDeployer.MEMORY_PROPERTY_KEY, this.deploymentProperties.getMemory());
+	.getOrDefault(AppDeployer.MEMORY_PROPERTY_KEY, this.deploymentProperties.getMemory());
 		return (int) ByteSizeUtils.parseToMebibytes(withUnit);
 	}
 
 	int memory(AppScaleRequest request) {
 		if (request.getProperties().isPresent() && request.getProperties().get() != null) {
 			return (int) ByteSizeUtils.parseToMebibytes(request.getProperties().get().getOrDefault(AppDeployer.MEMORY_PROPERTY_KEY,
-					this.deploymentProperties.getMemory()));
+		this.deploymentProperties.getMemory()));
 		}
 		return (int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory());
 	}
@@ -97,22 +97,22 @@ class AbstractCloudFoundryDeployer {
 	int diskQuota(AppScaleRequest request) {
 		if (request.getProperties().isPresent() && request.getProperties().get() != null) {
 			return (int) ByteSizeUtils.parseToMebibytes(request.getProperties().get().getOrDefault(AppDeployer.DISK_PROPERTY_KEY,
-					this.deploymentProperties.getDisk()));
+		this.deploymentProperties.getDisk()));
 		}
 		return (int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk());
 	}
 
 	Set<String> servicesToBind(AppDeploymentRequest request) {
 
-		Set<String> services = this.deploymentProperties.getServices().stream().filter(s->!ServiceParser
-			.getServiceParameters(s).isPresent())
-			.collect(Collectors.toSet());
+		Set<String> services = this.deploymentProperties.getServices().stream().filter(s -> !ServiceParser
+	.getServiceParameters(s).isPresent())
+	.collect(Collectors.toSet());
 
 		Set<String> requestServices = ServiceParser.splitServiceProperties(request.getDeploymentProperties().get
-			(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY))
-			.stream()
-			.filter(s-> !ServiceParser.getServiceParameters(s).isPresent())
-			.collect(Collectors.toSet());
+	(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY))
+	.stream()
+	.filter(s -> !ServiceParser.getServiceParameters(s).isPresent())
+	.collect(Collectors.toSet());
 
 		services.addAll(requestServices);
 		return services;
@@ -120,30 +120,26 @@ class AbstractCloudFoundryDeployer {
 
 	boolean includesServiceParameters(AppDeploymentRequest request) {
 		return this.deploymentProperties.getServices().stream()
-				.anyMatch(s -> ServiceParser.getServiceParameters(s).isPresent())
-				|| ServiceParser
-						.splitServiceProperties(request.getDeploymentProperties()
-								.get(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY))
-						.stream().anyMatch(s -> ServiceParser.getServiceParameters(s).isPresent());
+	.anyMatch(s -> ServiceParser.getServiceParameters(s).isPresent())
+	|| ServiceParser
+	.splitServiceProperties(request.getDeploymentProperties()
+.get(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY))
+	.stream().anyMatch(s -> ServiceParser.getServiceParameters(s).isPresent());
 	}
 
 	Stream<BindServiceInstanceRequest> bindParameterizedServiceInstanceRequests(AppDeploymentRequest request,
-		String deploymentId) {
+String deploymentId) {
 		return ServiceParser.splitServiceProperties(request.getDeploymentProperties().get
-			(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY)).stream()
-			.filter(s-> ServiceParser.getServiceParameters(s).isPresent())
-			.map(s->
-				BindServiceInstanceRequest.builder()
-					.applicationName(deploymentId)
-					.serviceInstanceName(ServiceParser.getServiceInstanceName(s))
-					.parameters(ServiceParser.getServiceParameters(s).get())
-					.build()
-			);
+	(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY)).stream()
+	.filter(s -> ServiceParser.getServiceParameters(s).isPresent())
+	.map(s ->
+BindServiceInstanceRequest.builder().applicationName(deploymentId).serviceInstanceName(ServiceParser.getServiceInstanceName(s)).parameters(ServiceParser.getServiceParameters(s).get()).build()
+	);
 	}
 
 	int diskQuota(AppDeploymentRequest request) {
 		String withUnit = request.getDeploymentProperties()
-			.getOrDefault(AppDeployer.DISK_PROPERTY_KEY, this.deploymentProperties.getDisk());
+	.getOrDefault(AppDeployer.DISK_PROPERTY_KEY, this.deploymentProperties.getDisk());
 		return (int) ByteSizeUtils.parseToMebibytes(withUnit);
 	}
 
@@ -152,9 +148,9 @@ class AbstractCloudFoundryDeployer {
 		//       change this logic not ot fallback to it if 'buildpacks'
 		//       is used.
 		String buidpacksValue = request.getDeploymentProperties()
-				.get(CloudFoundryDeploymentProperties.BUILDPACKS_PROPERTY_KEY);
+	.get(CloudFoundryDeploymentProperties.BUILDPACKS_PROPERTY_KEY);
 		String buidpackValue = request.getDeploymentProperties()
-				.get(CloudFoundryDeploymentProperties.BUILDPACK_PROPERTY_KEY);
+	.get(CloudFoundryDeploymentProperties.BUILDPACK_PROPERTY_KEY);
 		if (buidpacksValue != null) {
 			return StringUtils.commaDelimitedListToSet(buidpacksValue);
 		}
@@ -171,9 +167,9 @@ class AbstractCloudFoundryDeployer {
 
 	String javaOpts(AppDeploymentRequest request) {
 		return Optional
-				.ofNullable(
-						request.getDeploymentProperties().get(CloudFoundryDeploymentProperties.JAVA_OPTS_PROPERTY_KEY))
-				.orElse(this.deploymentProperties.getJavaOpts());
+	.ofNullable(
+request.getDeploymentProperties().get(CloudFoundryDeploymentProperties.JAVA_OPTS_PROPERTY_KEY))
+	.orElse(this.deploymentProperties.getJavaOpts());
 	}
 
 	Predicate<Throwable> isNotFoundError() {
@@ -190,7 +186,8 @@ class AbstractCloudFoundryDeployer {
 			String uri = request.getResource().getURI().toString();
 			if (uri.startsWith("docker:")) {
 				return uri.substring("docker:".length());
-			} else {
+			}
+			else {
 				return null;
 			}
 		} catch (IOException e) {
@@ -206,12 +203,13 @@ class AbstractCloudFoundryDeployer {
 	Path getApplication(AppDeploymentRequest request) {
 		try {
 			logger.info(
-				"Preparing to push an application from {}" +
-					". This may take some time if the artifact must be downloaded from a remote host.",
-				request.getResource());
+		"Preparing to push an application from {}" +
+	". This may take some time if the artifact must be downloaded from a remote host.",
+		request.getResource());
 			if (!request.getResource().getURI().toString().startsWith("docker:")) {
 				return request.getResource().getFile().toPath();
-			} else {
+			}
+			else {
 				return null;
 			}
 		} catch (IOException e) {
@@ -226,8 +224,9 @@ class AbstractCloudFoundryDeployer {
 	protected Consumer<Throwable> logError(String msg) {
 		return e -> {
 			if (e instanceof UnknownCloudFoundryException) {
-				logger.error(msg + "\nUnknownCloudFoundryException encountered, whose payload follows:\n" + ((UnknownCloudFoundryException)e).getPayload(), e);
-			} else {
+				logger.error(msg + "\nUnknownCloudFoundryException encountered, whose payload follows:\n" + ((UnknownCloudFoundryException) e).getPayload(), e);
+			}
+			else {
 				logger.error(msg, e);
 			}
 		};
@@ -250,38 +249,38 @@ class AbstractCloudFoundryDeployer {
 		}
 		final long requestTimeoutToUse = requestTimeout;
 		return m -> m.timeout(Duration.ofMillis(requestTimeoutToUse))
-			.doOnError(e -> {
-				// show real exception if it wasn't timeout
-				if (e instanceof TimeoutException) {
-					logger.warn("Error getting status for {} within {}ms, Retrying operation.", id, requestTimeoutToUse);
-				}
-				else if (e instanceof UnknownCloudFoundryException) {
-					logger.warn("Received UnknownCloudFoundryException from cf with payload={}",
-							((UnknownCloudFoundryException) e).getPayload());
-				}
-				else {
-					logger.warn("Received error from cf", e);
-				}
-			})
-			// let all other than timeout exception to propagate back to caller
-			.retryWhen(reactor.util.retry.Retry.withThrowable(Retry.onlyIf(c -> {
-					logger.debug("RetryContext for id {} iteration {} backoff {}", id,  c.iteration(), c.backoff());
-					if (c.iteration() > 5) {
-						logger.info("Stopping retry for id {} after {} iterations", id, c.iteration());
-						return false;
-					}
-					if (c.exception().getClass().getName().contains("org.cloudfoundry.client")) {
-						// most likely real error which is not worth to retry
-						return false;
-					}
-					// might be some netty error for not connected client, etc, retry
-					return true;
-				})
-				.exponentialBackoff(Duration.ofMillis(initialRetryDelay), Duration.ofMillis(statusTimeout))
-				.doOnRetry(c -> logger.debug("Retrying cf call for {}", id))))
-			.doOnError(TimeoutException.class, e -> {
-				logger.error("Retry operation on getStatus failed for {}. Max retry time {}ms", id, statusTimeout);
-			});
+	.doOnError(e -> {
+		// show real exception if it wasn't timeout
+		if (e instanceof TimeoutException) {
+			logger.warn("Error getting status for {} within {}ms, Retrying operation.", id, requestTimeoutToUse);
+		}
+		else if (e instanceof UnknownCloudFoundryException) {
+			logger.warn("Received UnknownCloudFoundryException from cf with payload={}",
+		((UnknownCloudFoundryException) e).getPayload());
+		}
+		else {
+			logger.warn("Received error from cf", e);
+		}
+	})
+	// let all other than timeout exception to propagate back to caller
+	.retryWhen(reactor.util.retry.Retry.withThrowable(Retry.onlyIf(c -> {
+		logger.debug("RetryContext for id {} iteration {} backoff {}", id, c.iteration(), c.backoff());
+		if (c.iteration() > 5) {
+			logger.info("Stopping retry for id {} after {} iterations", id, c.iteration());
+			return false;
+		}
+		if (c.exception().getClass().getName().contains("org.cloudfoundry.client")) {
+			// most likely real error which is not worth to retry
+			return false;
+		}
+		// might be some netty error for not connected client, etc, retry
+		return true;
+	})
+.exponentialBackoff(Duration.ofMillis(initialRetryDelay), Duration.ofMillis(statusTimeout))
+.doOnRetry(c -> logger.debug("Retrying cf call for {}", id))))
+	.doOnError(TimeoutException.class, e -> {
+		logger.error("Retry operation on getStatus failed for {}. Max retry time {}ms", id, statusTimeout);
+	});
 	}
 
 	/**
@@ -297,18 +296,18 @@ class AbstractCloudFoundryDeployer {
 				File applicationFile = fileToDelete.get();
 
 				logger.info("Free Disk Space = {} bytes, Total Disk Space = {} bytes",
-						applicationFile.getFreeSpace(),
-						applicationFile.getTotalSpace());
+			applicationFile.getFreeSpace(),
+			applicationFile.getTotalSpace());
 
 
 				boolean deleted = deleteFileOrDirectory(applicationFile);
 				logger.info((deleted) ? "Successfully deleted the application resource: " + applicationFile.getCanonicalPath() :
-						"Could not delete the application resource: " + applicationFile.getCanonicalPath());
+			"Could not delete the application resource: " + applicationFile.getCanonicalPath());
 			}
 
-		} catch(IOException e){
+		} catch (IOException e) {
 			logger.warn("Exception deleting the application resource after successful CF push request."
-					+ " This could cause increase in disk space usage. Exception message: " + e.getMessage());
+		+ " This could cause increase in disk space usage. Exception message: " + e.getMessage());
 		}
 	}
 
@@ -330,7 +329,7 @@ class AbstractCloudFoundryDeployer {
 	private boolean deleteFileOrDirectory(File fileToDelete) {
 		boolean deleted;
 		if (fileToDelete.isDirectory())
-			deleted  = FileSystemUtils.deleteRecursively(fileToDelete);
+			deleted = FileSystemUtils.deleteRecursively(fileToDelete);
 		else {
 			deleted = fileToDelete.delete();
 		}
@@ -352,7 +351,7 @@ class AbstractCloudFoundryDeployer {
 
 		if (hasCfEnv(request.getResource())) {
 			Map<String, String> env =
-					CfEnvConfigurer.disableJavaBuildPackAutoReconfiguration(envVariables);
+		CfEnvConfigurer.disableJavaBuildPackAutoReconfiguration(envVariables);
 			//Only append to existing spring profiles active
 			env.putAll(CfEnvConfigurer.activateCloudProfile(env, null));
 			envVariables.putAll(env);
@@ -360,18 +359,18 @@ class AbstractCloudFoundryDeployer {
 		return envVariables;
 	}
 
-	private Map<? extends String,? extends String> getDeclaredEnvironmentVariables(AppDeploymentRequest request) {
+	private Map<? extends String, ? extends String> getDeclaredEnvironmentVariables(AppDeploymentRequest request) {
 		Map<String, String> env = new LinkedHashMap<>();
 		request.getDeploymentProperties().entrySet().stream()
-				.filter(e -> e.getKey().startsWith(CloudFoundryDeploymentProperties.ENV_KEY + "."))
-				.forEach(e -> env.put(e.getKey().substring(CloudFoundryDeploymentProperties.ENV_KEY.length() + 1),
-						e.getValue()));
+	.filter(e -> e.getKey().startsWith(CloudFoundryDeploymentProperties.ENV_KEY + "."))
+	.forEach(e -> env.put(e.getKey().substring(CloudFoundryDeploymentProperties.ENV_KEY.length() + 1),
+e.getValue()));
 		return env;
 	}
 
 	protected boolean hasCfEnv(Resource resource) {
 		if (resource instanceof CfEnvAwareResource) {
-			return ((CfEnvAwareResource)resource).hasCfEnv();
+			return ((CfEnvAwareResource) resource).hasCfEnv();
 		}
 		return CfEnvAwareResource.of(resource).hasCfEnv();
 	}
@@ -395,23 +394,22 @@ class AbstractCloudFoundryDeployer {
 
 		// Remove server.port as CF assigns a port for us, and we don't want to override that
 		Optional.ofNullable(applicationProperties.remove("server.port"))
-				.ifPresent(port -> logger.warn("Ignoring 'server.port={}' for app {}, as Cloud Foundry will assign a local dynamic port. Route to the app will use port 80.", port, deploymentId));
+	.ifPresent(port -> logger.warn("Ignoring 'server.port={}' for app {}, as Cloud Foundry will assign a local dynamic port. Route to the app will use port 80.", port, deploymentId));
 
 		// Update active Spring Profiles given in application properties. Create a new entry with the given key if necessary
 		if (hasCfEnv(request.getResource())) {
 			applicationProperties = CfEnvConfigurer
-					.activateCloudProfile(applicationProperties, CfEnvConfigurer.SPRING_PROFILES_ACTIVE_FQN);
+		.activateCloudProfile(applicationProperties, CfEnvConfigurer.SPRING_PROFILES_ACTIVE_FQN);
 		}
 		return applicationProperties;
 	}
 
 	private boolean useSpringApplicationJson(AppDeploymentRequest request) {
 		return Optional
-				.ofNullable(request.getDeploymentProperties()
-						.get(CloudFoundryDeploymentProperties.USE_SPRING_APPLICATION_JSON_KEY))
-				.map(Boolean::valueOf).orElse(this.deploymentProperties.isUseSpringApplicationJson());
+	.ofNullable(request.getDeploymentProperties()
+.get(CloudFoundryDeploymentProperties.USE_SPRING_APPLICATION_JSON_KEY))
+	.map(Boolean::valueOf).orElse(this.deploymentProperties.isUseSpringApplicationJson());
 	}
-
 
 
 	public RuntimeEnvironmentInfo environmentInfo() {

@@ -32,8 +32,8 @@ class CfEnvAwareAppDeploymentRequest extends AppDeploymentRequest {
 
 	private CfEnvAwareAppDeploymentRequest(AppDeploymentRequest appDeploymentRequest) {
 		super(appDeploymentRequest.getDefinition(),
-				CfEnvAwareResource.of(appDeploymentRequest.getResource()),
-				appDeploymentRequest.getDeploymentProperties(),
-				appDeploymentRequest.getCommandlineArguments());
+	CfEnvAwareResource.of(appDeploymentRequest.getResource()),
+	appDeploymentRequest.getDeploymentProperties(),
+	appDeploymentRequest.getCommandlineArguments());
 	}
 }

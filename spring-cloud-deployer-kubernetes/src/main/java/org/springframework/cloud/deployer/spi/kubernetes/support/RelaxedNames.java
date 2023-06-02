@@ -36,7 +36,7 @@ public final class RelaxedNames implements Iterable<String> {
 	private static final Pattern CAMEL_CASE_PATTERN = Pattern.compile("([^A-Z-])([A-Z])");
 
 	private static final Pattern SEPARATED_TO_CAMEL_CASE_PATTERN = Pattern
-			.compile("[_\\-.]");
+.compile("[_\\-.]");
 
 	private final String name;
 
@@ -164,7 +164,7 @@ public final class RelaxedNames implements Iterable<String> {
 				StringBuffer result = new StringBuffer();
 				while (matcher.find()) {
 					matcher.appendReplacement(result, matcher.group(1) + '_'
-							+ StringUtils.uncapitalize(matcher.group(2)));
+				+ StringUtils.uncapitalize(matcher.group(2)));
 				}
 				matcher.appendTail(result);
 				return result.toString();
@@ -187,7 +187,7 @@ public final class RelaxedNames implements Iterable<String> {
 				StringBuffer result = new StringBuffer();
 				while (matcher.find()) {
 					matcher.appendReplacement(result, matcher.group(1) + '-'
-							+ StringUtils.uncapitalize(matcher.group(2)));
+				+ StringUtils.uncapitalize(matcher.group(2)));
 				}
 				matcher.appendTail(result);
 				return result.toString();
@@ -213,12 +213,12 @@ public final class RelaxedNames implements Iterable<String> {
 
 		};
 
-		private static final char[] SUFFIXES = new char[] { '_', '-', '.' };
+		private static final char[] SUFFIXES = new char[]{'_', '-', '.'};
 
 		public abstract String apply(String value);
 
 		private static String separatedToCamelCase(String value,
-				boolean caseInsensitive) {
+	boolean caseInsensitive) {
 			if (value.isEmpty()) {
 				return value;
 			}
@@ -226,7 +226,7 @@ public final class RelaxedNames implements Iterable<String> {
 			for (String field : SEPARATED_TO_CAMEL_CASE_PATTERN.split(value)) {
 				field = (caseInsensitive ? field.toLowerCase(Locale.ENGLISH) : field);
 				builder.append(
-						builder.length() != 0 ? StringUtils.capitalize(field) : field);
+			builder.length() != 0 ? StringUtils.capitalize(field) : field);
 			}
 			char lastChar = value.charAt(value.length() - 1);
 			for (char suffix : SUFFIXES) {
@@ -249,8 +249,8 @@ public final class RelaxedNames implements Iterable<String> {
 		StringBuilder result = new StringBuilder();
 		for (char c : name.toCharArray()) {
 			result.append(Character.isUpperCase(c) && result.length() > 0
-					&& result.charAt(result.length() - 1) != '-'
-							? "-" + Character.toLowerCase(c) : c);
+		&& result.charAt(result.length() - 1) != '-'
+		? "-" + Character.toLowerCase(c) : c);
 		}
 		return new RelaxedNames(result.toString());
 	}

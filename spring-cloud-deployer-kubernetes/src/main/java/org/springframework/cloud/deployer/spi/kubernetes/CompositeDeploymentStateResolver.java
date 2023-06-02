@@ -32,7 +32,7 @@ class CompositeDeploymentStateResolver implements RunningPhaseDeploymentStateRes
 
 	@Override
 	public DeploymentState resolve(ContainerStatus containerStatus) {
-		for (RunningPhaseDeploymentStateResolver resolver: delegates) {
+		for (RunningPhaseDeploymentStateResolver resolver : delegates) {
 			DeploymentState deploymentState = resolver.resolve(containerStatus);
 			if (deploymentState != null) {
 				return deploymentState;

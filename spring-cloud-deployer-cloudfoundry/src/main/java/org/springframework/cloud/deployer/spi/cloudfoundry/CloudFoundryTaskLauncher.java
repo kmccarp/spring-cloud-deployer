@@ -72,9 +72,9 @@ public class CloudFoundryTaskLauncher extends AbstractCloudFoundryTaskLauncher {
 	private final CloudFoundryOperations operations;
 
 	public CloudFoundryTaskLauncher(CloudFoundryClient client,
-												CloudFoundryDeploymentProperties deploymentProperties,
-												CloudFoundryOperations operations,
-											    RuntimeEnvironmentInfo runtimeEnvironmentInfo) {
+CloudFoundryDeploymentProperties deploymentProperties,
+CloudFoundryOperations operations,
+RuntimeEnvironmentInfo runtimeEnvironmentInfo) {
 		super(client, deploymentProperties, runtimeEnvironmentInfo);
 		this.client = client;
 		this.deploymentProperties = deploymentProperties;
@@ -93,23 +93,23 @@ public class CloudFoundryTaskLauncher extends AbstractCloudFoundryTaskLauncher {
 		final AppDeploymentRequest request = CfEnvAwareAppDeploymentRequest.of(appDeploymentRequest);
 		if (this.maxConcurrentExecutionsReached()) {
 			throw new IllegalStateException(
-				String.format("Cannot launch task %s. The maximum concurrent task executions is at its limit [%d].",
-					request.getDefinition().getName(), this.getMaximumConcurrentTasks())
+		String.format("Cannot launch task %s. The maximum concurrent task executions is at its limit [%d].",
+	request.getDefinition().getName(), this.getMaximumConcurrentTasks())
 			);
 		}
 
 		return getOrDeployApplication(request)
-			.flatMap(application -> launchTask(application, request))
-			.doOnSuccess(r -> {
-				logger.info("Task {} launch successful", request.getDefinition().getName());
-			})
-			.doOnError(logError(String.format("Task %s launch failed", request.getDefinition().getName())))
-			.doOnTerminate(() -> {
-				if (pushTaskAppsEnabled()) {
-					deleteLocalApplicationResourceFile(request);
-				}
-			})
-			.block(Duration.ofSeconds(this.deploymentProperties.getApiTimeout()));
+	.flatMap(application -> launchTask(application, request))
+	.doOnSuccess(r -> {
+		logger.info("Task {} launch successful", request.getDefinition().getName());
+	})
+	.doOnError(logError(String.format("Task %s launch failed", request.getDefinition().getName())))
+	.doOnTerminate(() -> {
+		if (pushTaskAppsEnabled()) {
+			deleteLocalApplicationResourceFile(request);
+		}
+	})
+	.block(Duration.ofSeconds(this.deploymentProperties.getApiTimeout()));
 	}
 
 	@Override
@@ -120,17 +120,17 @@ public class CloudFoundryTaskLauncher extends AbstractCloudFoundryTaskLauncher {
 			return;
 		}
 		requestDeleteApplication(appName)
-			.timeout(Duration.ofSeconds(this.deploymentProperties.getApiTimeout()))
-			.doOnSuccess(v -> logger.info("Successfully destroyed app {}", appName))
-			.doOnError(logError(String.format("Failed to destroy app %s", appName)))
-			.block(Duration.ofSeconds(this.deploymentProperties.getApiTimeout()));
+	.timeout(Duration.ofSeconds(this.deploymentProperties.getApiTimeout()))
+	.doOnSuccess(v -> logger.info("Successfully destroyed app {}", appName))
+	.doOnError(logError(String.format("Failed to destroy app %s", appName)))
+	.block(Duration.ofSeconds(this.deploymentProperties.getApiTimeout()));
 	}
 
 	@Override
 	public String getLog(String taskAppName) {
 		List<LogMessage> logMessageList = getLogMessage(taskAppName).collectList().block(Duration.ofSeconds(this.deploymentProperties.getApiTimeout()));
 		StringBuilder stringBuilder = new StringBuilder();
-		for (LogMessage logMessage: logMessageList) {
+		for (LogMessage logMessage : logMessageList) {
 			stringBuilder.append(logMessage.getMessage() + System.lineSeparator());
 		}
 		return stringBuilder.toString();
@@ -150,9 +150,9 @@ public class CloudFoundryTaskLauncher extends AbstractCloudFoundryTaskLauncher {
 	 */
 	public SummaryApplicationResponse stage(AppDeploymentRequest request) {
 		return getOrDeployApplication(request).doOnSuccess(r ->
-					logger.info("Task {} staged successfully", request.getDefinition().getName()))
-				.doOnError(logError(String.format("Task %s stage failed", request.getDefinition().getName())))
-				.block(Duration.ofSeconds(this.deploymentProperties.getApiTimeout()));
+	logger.info("Task {} staged successfully", request.getDefinition().getName()))
+	.doOnError(logError(String.format("Task %s stage failed", request.getDefinition().getName())))
+	.block(Duration.ofSeconds(this.deploymentProperties.getApiTimeout()));
 	}
 
 	/**
@@ -164,22 +164,22 @@ public class CloudFoundryTaskLauncher extends AbstractCloudFoundryTaskLauncher {
 	public String getCommand(SummaryApplicationResponse application, AppDeploymentRequest request) {
 		final boolean appHasCfEnv = hasCfEnv(request.getResource());
 		return Stream.concat(Stream.of(application.getDetectedStartCommand()), request.getCommandlineArguments().stream())
-				.map( arg-> {
-					int indexOfEquals = arg.indexOf("=");
-					if(indexOfEquals > -1) {
-						String key = arg.substring(0, indexOfEquals);
-						String value = arg.substring(indexOfEquals);
-						key = escapeChar(key, "(");
-						key = escapeChar(key, ")");
-						arg = key + value;
-					}
-					return appHasCfEnv ? CfEnvConfigurer.appendCloudProfileToSpringProfilesActiveArg(arg) : arg;
-				})
-				.collect(Collectors.joining(" "));
+	.map(arg -> {
+		int indexOfEquals = arg.indexOf("=");
+		if (indexOfEquals > -1) {
+			String key = arg.substring(0, indexOfEquals);
+			String value = arg.substring(indexOfEquals);
+			key = escapeChar(key, "(");
+			key = escapeChar(key, ")");
+			arg = key + value;
+		}
+		return appHasCfEnv ? CfEnvConfigurer.appendCloudProfileToSpringProfilesActiveArg(arg) : arg;
+	})
+	.collect(Collectors.joining(" "));
 	}
 
 	private String escapeChar(String value, String character) {
-		if(value.contains(character)) {
+		if (value.contains(character)) {
 			value = value.replace(character, "\\\\\\" + character);
 		}
 		return value;
@@ -194,9 +194,9 @@ public class CloudFoundryTaskLauncher extends AbstractCloudFoundryTaskLauncher {
 		String name = request.getDefinition().getName();
 
 		return pushApplication(name, request)
-			.then(requestStopApplication(name))
-			.then(requestGetApplication(name))
-			.cast(AbstractApplicationSummary.class);
+	.then(requestStopApplication(name))
+	.then(requestGetApplication(name))
+	.cast(AbstractApplicationSummary.class);
 	}
 
 
@@ -204,35 +204,35 @@ public class CloudFoundryTaskLauncher extends AbstractCloudFoundryTaskLauncher {
 		String name = request.getDefinition().getName();
 
 		Flux<ApplicationSummary> applications = requestListApplications()
-				.filter(application -> name.equals(application.getName()));
+	.filter(application -> name.equals(application.getName()));
 
 		if (!pushTaskAppsEnabled()) {
 			return applications
-					.single()
-					.onErrorMap(t->
-						t instanceof NoSuchElementException ?
-								new IllegalStateException(String.format("Application %s does not exist", name)) : t)
-					.cast(AbstractApplicationSummary.class);
+		.single()
+		.onErrorMap(t ->
+	t instanceof NoSuchElementException ?
+new IllegalStateException(String.format("Application %s does not exist", name)) : t)
+		.cast(AbstractApplicationSummary.class);
 		}
 
 		return applications
-				.singleOrEmpty()
-				.cast(AbstractApplicationSummary.class);
+	.singleOrEmpty()
+	.cast(AbstractApplicationSummary.class);
 	}
 
 	private Mono<SummaryApplicationResponse> getOrDeployApplication(AppDeploymentRequest request) {
 		return getOptionalApplication(request)
-			.switchIfEmpty(deployApplication(request))
-			.flatMap(application -> requestGetApplicationSummary(application.getId()));
+	.switchIfEmpty(deployApplication(request))
+	.flatMap(application -> requestGetApplicationSummary(application.getId()));
 	}
 
 	private Mono<String> launchTask(SummaryApplicationResponse application, AppDeploymentRequest request) {
 		return requestCreateTask(application.getId(),
-				getCommand(application, request),
-				memory(request),
-				diskQuota(request),
-				request.getDefinition().getName())
-			.map(CreateTaskResponse::getId);
+	getCommand(application, request),
+	memory(request),
+	diskQuota(request),
+	request.getDefinition().getName())
+	.map(CreateTaskResponse::getId);
 	}
 
 	private Mono<Void> pushApplication(String name, AppDeploymentRequest request) {
@@ -241,72 +241,72 @@ public class CloudFoundryTaskLauncher extends AbstractCloudFoundryTaskLauncher {
 		}
 
 		return requestPushApplication(PushApplicationManifestRequest.builder()
-			.manifest(ApplicationManifest.builder()
-				.path(getApplication(request))
-				.docker(Docker.builder().image(getDockerImage(request)).build())
-				.buildpacks(buildpacks(request))
-				.command("echo '*** First run of container to allow droplet creation.***' && sleep 300")
-				.disk(diskQuota(request))
-				.environmentVariables(mergeEnvironmentVariables(name, request))
-				.healthCheckType(ApplicationHealthCheck.NONE)
-				.memory(memory(request))
-				.name(name)
-				.noRoute(true)
-				.services(servicesToBind(request))
-				.build())
-			.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-			.startupTimeout(this.deploymentProperties.getStartupTimeout())
-			.build());
+	.manifest(ApplicationManifest.builder()
+.path(getApplication(request))
+.docker(Docker.builder().image(getDockerImage(request)).build())
+.buildpacks(buildpacks(request))
+.command("echo '*** First run of container to allow droplet creation.***' && sleep 300")
+.disk(diskQuota(request))
+.environmentVariables(mergeEnvironmentVariables(name, request))
+.healthCheckType(ApplicationHealthCheck.NONE)
+.memory(memory(request))
+.name(name)
+.noRoute(true)
+.services(servicesToBind(request))
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build());
 	}
 
 	private Mono<CreateTaskResponse> requestCreateTask(String applicationId, String command, int memory, int disk, String name) {
 		return this.client.tasks()
-			.create(CreateTaskRequest.builder()
-				.applicationId(applicationId)
-				.command(command)
-				.memoryInMb(memory)
-				.diskInMb(disk)
-				.name(name)
-				.build());
+	.create(CreateTaskRequest.builder()
+.applicationId(applicationId)
+.command(command)
+.memoryInMb(memory)
+.diskInMb(disk)
+.name(name)
+.build());
 	}
 
 	private Mono<Void> requestDeleteApplication(String name) {
 		return this.operations.applications()
-			.delete(DeleteApplicationRequest.builder()
-				.deleteRoutes(deploymentProperties.isDeleteRoutes())
-				.name(name)
-				.build());
+	.delete(DeleteApplicationRequest.builder()
+.deleteRoutes(deploymentProperties.isDeleteRoutes())
+.name(name)
+.build());
 	}
 
 	private Mono<ApplicationDetail> requestGetApplication(String name) {
 		return this.operations.applications()
-			.get(GetApplicationRequest.builder()
-				.name(name)
-				.build());
+	.get(GetApplicationRequest.builder()
+.name(name)
+.build());
 	}
 
 	private Mono<SummaryApplicationResponse> requestGetApplicationSummary(String applicationId) {
 		return this.client.applicationsV2()
-			.summary(org.cloudfoundry.client.v2.applications.SummaryApplicationRequest.builder()
-				.applicationId(applicationId)
-				.build());
+	.summary(org.cloudfoundry.client.v2.applications.SummaryApplicationRequest.builder()
+.applicationId(applicationId)
+.build());
 	}
 
 	private Flux<ApplicationSummary> requestListApplications() {
 		return this.operations.applications()
-			.list();
+	.list();
 	}
 
 	private Mono<Void> requestPushApplication(PushApplicationManifestRequest request) {
 		return this.operations.applications()
-			.pushManifest(request);
+	.pushManifest(request);
 	}
 
 	private Mono<Void> requestStopApplication(String name) {
 		return this.operations.applications()
-			.stop(StopApplicationRequest.builder()
-				.name(name)
-				.build());
+	.stop(StopApplicationRequest.builder()
+.name(name)
+.build());
 	}
 
 }

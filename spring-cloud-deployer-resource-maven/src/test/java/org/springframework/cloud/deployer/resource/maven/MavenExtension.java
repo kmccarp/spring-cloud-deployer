@@ -122,11 +122,11 @@ public class MavenExtension implements AfterEachCallback, BeforeEachCallback {
 			// challenge happens with maven client.
 
 			http
-				.authorizeRequests()
-					.antMatchers("/public/**").permitAll()
-					.antMatchers("/private/**").hasRole("USER")
-					.and()
-				.httpBasic();
+		.authorizeRequests()
+		.antMatchers("/public/**").permitAll()
+		.antMatchers("/private/**").hasRole("USER")
+		.and()
+		.httpBasic();
 		}
 	}
 
@@ -144,14 +144,14 @@ public class MavenExtension implements AfterEachCallback, BeforeEachCallback {
 			// with every request.
 
 			http
-				.antMatcher("/preemptive/**")
-				.authorizeRequests(authorizeRequests ->
-                    authorizeRequests.anyRequest().hasRole("USER")
-				)
-				.httpBasic()
-					.and()
-				.exceptionHandling()
-					.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.FORBIDDEN));
+		.antMatcher("/preemptive/**")
+		.authorizeRequests(authorizeRequests ->
+	authorizeRequests.anyRequest().hasRole("USER")
+		)
+		.httpBasic()
+		.and()
+		.exceptionHandling()
+		.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.FORBIDDEN));
 		}
 	}
 }

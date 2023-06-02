@@ -67,37 +67,37 @@ public abstract class AbstractAppDeployerTestSupport {
 		given(this.operations.applications()).willReturn(this.applications);
 		given(this.operations.services()).willReturn(this.services);
 		this.deployer = new CloudFoundryAppDeployer(this.applicationNameGenerator, this.deploymentProperties,
-				this.operations, this.runtimeEnvironmentInfo);
+	this.operations, this.runtimeEnvironmentInfo);
 		postSetUp();
 	}
 
 	protected abstract void postSetUp();
 
 	protected void givenRequestScaleApplication(String id, Integer count, int memoryLimit, int diskLimit,
-			Mono<Void> response) {
+Mono<Void> response) {
 		given(this.operations.applications()
-				.scale(ScaleApplicationRequest.builder().name(id).instances(count).memoryLimit(memoryLimit)
-						.diskLimit(diskLimit)
-						.startupTimeout(this.deploymentProperties.getStartupTimeout())
-						.stagingTimeout(this.deploymentProperties.getStagingTimeout()).build())).willReturn(response);
+	.scale(ScaleApplicationRequest.builder().name(id).instances(count).memoryLimit(memoryLimit)
+.diskLimit(diskLimit)
+.startupTimeout(this.deploymentProperties.getStartupTimeout())
+.stagingTimeout(this.deploymentProperties.getStagingTimeout()).build())).willReturn(response);
 	}
 
 	protected void givenRequestDeleteApplication(String id, Mono<Void> response) {
 		given(this.operations.applications()
-				.delete(DeleteApplicationRequest.builder().deleteRoutes(true).name(id).build())).willReturn(response);
+	.delete(DeleteApplicationRequest.builder().deleteRoutes(true).name(id).build())).willReturn(response);
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void givenRequestGetApplication(String id, Mono<ApplicationDetail> response,
-			Mono<ApplicationDetail>... responses) {
+Mono<ApplicationDetail>... responses) {
 		given(this.operations.applications().get(GetApplicationRequest.builder().name(id).build())).willReturn(response,
-				responses);
+	responses);
 	}
 
 	protected void givenRequestPushApplication(PushApplicationManifestRequest request, Mono<Void> response) {
 		given(this.operations.applications()
-				.pushManifest(any(PushApplicationManifestRequest.class)))
-				.willReturn(response);
+	.pushManifest(any(PushApplicationManifestRequest.class)))
+	.willReturn(response);
 	}
 
 	protected Map<String, String> defaultEnvironmentVariables() {
@@ -110,6 +110,6 @@ public abstract class AbstractAppDeployerTestSupport {
 	protected void addGuidAndIndex(Map<String, String> environmentVariables) {
 		environmentVariables.put("SPRING_APPLICATION_INDEX", "${vcap.application.instance_index}");
 		environmentVariables.put("SPRING_CLOUD_APPLICATION_GUID",
-				"${vcap.application.name}:${vcap.application.instance_index}");
+	"${vcap.application.name}:${vcap.application.instance_index}");
 	}
 }

@@ -113,7 +113,7 @@ public interface TaskLauncher {
 	 */
 	default int getMaximumConcurrentTasks() {
 		throw new UnsupportedOperationException("'getMaximumConcurrentTasks' is not implemented.");
-	};
+	}
 
 	/**
 	 *

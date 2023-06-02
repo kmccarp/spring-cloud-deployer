@@ -25,56 +25,56 @@ import org.springframework.util.StringUtils;
  * @since 2.5
  */
 class StartupTcpProbeCreator extends TcpProbeCreator {
-    StartupTcpProbeCreator(KubernetesDeployerProperties kubernetesDeployerProperties, ContainerConfiguration containerConfiguration) {
-        super(kubernetesDeployerProperties, containerConfiguration);
-    }
+	StartupTcpProbeCreator(KubernetesDeployerProperties kubernetesDeployerProperties, ContainerConfiguration containerConfiguration) {
+		super(kubernetesDeployerProperties, containerConfiguration);
+	}
 
-    @Override
-    int getInitialDelay() {
-        return getProbeIntProperty(STARTUP_DEPLOYER_PROPERTY_PREFIX, "Tcp", "ProbeDelay",
-                getKubernetesDeployerProperties().getStartupTcpProbeDelay());
-    }
+	@Override
+	int getInitialDelay() {
+		return getProbeIntProperty(STARTUP_DEPLOYER_PROPERTY_PREFIX, "Tcp", "ProbeDelay",
+	getKubernetesDeployerProperties().getStartupTcpProbeDelay());
+	}
 
-    @Override
-    int getPeriod() {
-        return getProbeIntProperty(STARTUP_DEPLOYER_PROPERTY_PREFIX, "Tcp", "ProbePeriod",
-                getKubernetesDeployerProperties().getStartupTcpProbePeriod());
-    }
+	@Override
+	int getPeriod() {
+		return getProbeIntProperty(STARTUP_DEPLOYER_PROPERTY_PREFIX, "Tcp", "ProbePeriod",
+	getKubernetesDeployerProperties().getStartupTcpProbePeriod());
+	}
 
-    @Override
-    protected int getTimeout() {
-        return getProbeIntProperty(STARTUP_DEPLOYER_PROPERTY_PREFIX, "Tcp", "ProbeTimeout",
-                getKubernetesDeployerProperties().getStartupTcpProbeTimeout());
-    }
+	@Override
+	protected int getTimeout() {
+		return getProbeIntProperty(STARTUP_DEPLOYER_PROPERTY_PREFIX, "Tcp", "ProbeTimeout",
+	getKubernetesDeployerProperties().getStartupTcpProbeTimeout());
+	}
 
-    @Override
-    Integer getPort() {
-        String probePortValue = getProbeProperty(STARTUP_DEPLOYER_PROPERTY_PREFIX, "Tcp", "ProbePort");
+	@Override
+	Integer getPort() {
+		String probePortValue = getProbeProperty(STARTUP_DEPLOYER_PROPERTY_PREFIX, "Tcp", "ProbePort");
 
-        if (StringUtils.hasText(probePortValue)) {
-            if (!probePortValue.chars().allMatch(Character::isDigit)) {
-                throw new IllegalArgumentException("StartupTcpProbePort must contain all digits");
-            }
+		if (StringUtils.hasText(probePortValue)) {
+			if (!probePortValue.chars().allMatch(Character::isDigit)) {
+				throw new IllegalArgumentException("StartupTcpProbePort must contain all digits");
+			}
 
-            return Integer.parseInt(probePortValue);
-        }
+			return Integer.parseInt(probePortValue);
+		}
 
-        if (getKubernetesDeployerProperties().getStartupTcpProbePort() != null) {
-            return getKubernetesDeployerProperties().getStartupTcpProbePort();
-        }
+		if (getKubernetesDeployerProperties().getStartupTcpProbePort() != null) {
+			return getKubernetesDeployerProperties().getStartupTcpProbePort();
+		}
 
-        throw new IllegalArgumentException("A startupTcpProbePort property must be set.");
-    }
+		throw new IllegalArgumentException("A startupTcpProbePort property must be set.");
+	}
 
-    @Override
-    int getFailure() {
-        return getProbeIntProperty(STARTUP_DEPLOYER_PROPERTY_PREFIX, "Tcp", "ProbeFailure",
-                getKubernetesDeployerProperties().getStartupTcpProbeFailure());
-    }
+	@Override
+	int getFailure() {
+		return getProbeIntProperty(STARTUP_DEPLOYER_PROPERTY_PREFIX, "Tcp", "ProbeFailure",
+	getKubernetesDeployerProperties().getStartupTcpProbeFailure());
+	}
 
-    @Override
-    int getSuccess() {
-        return getProbeIntProperty(STARTUP_DEPLOYER_PROPERTY_PREFIX, "Tcp", "ProbeSuccess",
-                getKubernetesDeployerProperties().getStartupTcpProbeSuccess());
-    }
+	@Override
+	int getSuccess() {
+		return getProbeIntProperty(STARTUP_DEPLOYER_PROPERTY_PREFIX, "Tcp", "ProbeSuccess",
+	getKubernetesDeployerProperties().getStartupTcpProbeSuccess());
+	}
 }

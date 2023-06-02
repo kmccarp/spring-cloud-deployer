@@ -99,36 +99,36 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		given(this.applicationNameGenerator.generateAppName("test-application")).willReturn("test-application-id");
 
 		givenRequestGetApplication("test-application-id", Mono.error(new IllegalArgumentException()), Mono.just(
-				ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-application")
-						.requestedState("RUNNING")
-						.runningInstances(0)
-						.stack("test-stack")
-						.build()));
+	ApplicationDetail.builder()
+.diskQuota(0)
+.id("test-application-id")
+.instances(1)
+.memoryLimit(0)
+.name("test-application")
+.requestedState("RUNNING")
+.runningInstances(0)
+.stack("test-stack")
+.build()));
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack(deploymentProperties.getBuildpack())
-						.disk(1024)
-						.environmentVariables(defaultEnvironmentVariables())
-						.instances(1)
-						.memory(1024)
-						.name("test-application-id")
-						.service("test-service-2")
-						.service("test-service-1")
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack(deploymentProperties.getBuildpack())
+.disk(1024)
+.environmentVariables(defaultEnvironmentVariables())
+.instances(1)
+.memory(1024)
+.name("test-application-id")
+.service("test-service-2")
+.service("test-service-1")
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		String deploymentId = this.deployer.deploy(
-				new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
-						Collections.EMPTY_MAP));
+	new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
+Collections.EMPTY_MAP));
 
 		assertThat(deploymentId).isEqualTo("test-application-id");
 	}
@@ -162,8 +162,8 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		CloudFoundryDeploymentProperties deploymentProperties = new CloudFoundryDeploymentProperties();
 		deploymentProperties.setAutoDeleteMavenArtifacts(false);
 		CloudFoundryAppDeployer deployer = new CloudFoundryAppDeployer(this.applicationNameGenerator,
-				deploymentProperties,
-				this.operations, this.runtimeEnvironmentInfo);
+	deploymentProperties,
+	this.operations, this.runtimeEnvironmentInfo);
 
 		deployResource(deployer, resource);
 		assertThat(mavenArtifact.getParentFile().exists()).isTrue();
@@ -190,33 +190,33 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		given(this.applicationNameGenerator.generateAppName("test-application")).willReturn("test-application-id");
 
 		givenRequestGetApplication("test-application-id", Mono.error(new IllegalArgumentException()), Mono.just(
-				ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-application")
-						.requestedState("RUNNING")
-						.runningInstances(0)
-						.stack("test-stack")
-						.build()));
+	ApplicationDetail.builder()
+.diskQuota(0)
+.id("test-application-id")
+.instances(1)
+.memoryLimit(0)
+.name("test-application")
+.requestedState("RUNNING")
+.runningInstances(0)
+.stack("test-stack")
+.build()));
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack(deploymentProperties.getBuildpack())
-						.disk(1024)
-						.instances(1)
-						.memory(1024)
-						.name("test-application-id")
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack(deploymentProperties.getBuildpack())
+.disk(1024)
+.instances(1)
+.memory(1024)
+.name("test-application-id")
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		deployer.deploy(
-				new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
-						Collections.EMPTY_MAP));
+	new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
+Collections.EMPTY_MAP));
 
 	}
 
@@ -227,42 +227,41 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 
 		given(this.applicationNameGenerator.generateAppName("test-application")).willReturn("test-application-id");
 		given(this.services.bind(any(BindServiceInstanceRequest.class)))
-				.willReturn(Mono.empty());
+	.willReturn(Mono.empty());
 		given(this.applications.start(any(StartApplicationRequest.class)))
-				.willReturn(Mono.empty());
+	.willReturn(Mono.empty());
 
 		givenRequestGetApplication("test-application-id", Mono.error(new IllegalArgumentException()), Mono.just(
-				ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-application")
-						.requestedState("RUNNING")
-						.runningInstances(0)
-						.stack("test-stack")
-						.build()));
+	ApplicationDetail.builder()
+.diskQuota(0)
+.id("test-application-id")
+.instances(1)
+.memoryLimit(0)
+.name("test-application")
+.requestedState("RUNNING")
+.runningInstances(0)
+.stack("test-stack")
+.build()));
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack(deploymentProperties.getBuildpack())
-						.disk(1024)
-						.environmentVariables(defaultEnvironmentVariables())
-						.instances(1)
-						.memory(1024)
-						.name("test-application-id")
-						.service("test-service-2")
-						.service("test-service-1")
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack(deploymentProperties.getBuildpack())
+.disk(1024)
+.environmentVariables(defaultEnvironmentVariables())
+.instances(1)
+.memory(1024)
+.name("test-application-id")
+.service("test-service-2")
+.service("test-service-1")
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		String deploymentId = this.deployer.deploy(
-				new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
-						Collections.singletonMap(
-								CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY, "'test-service-3 foo:bar'")));
+	new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
+Collections.singletonMap(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY, "'test-service-3 foo:bar'")));
 
 		assertThat(deploymentId).isEqualTo("test-application-id");
 	}
@@ -277,52 +276,51 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		AtomicInteger count = new AtomicInteger();
 		CountDownLatch okLatch = new CountDownLatch(1);
 		ClientV2Exception e = new ClientV2Exception(500, 10001,
-				"The service broker could not perform this operation in parallel with other running operations",
-				"CF-ConcurrencyError");
+	"The service broker could not perform this operation in parallel with other running operations",
+	"CF-ConcurrencyError");
 		// fail 2 times
 		given(this.services.bind(any(BindServiceInstanceRequest.class)))
-			.will(x -> {
-				if (count.getAndIncrement() < 2) {
-					return Mono.error(e);
-				}
-				okLatch.countDown();
-				return Mono.empty();
-			});
+	.will(x -> {
+		if (count.getAndIncrement() < 2) {
+			return Mono.error(e);
+		}
+		okLatch.countDown();
+		return Mono.empty();
+	});
 		given(this.applications.start(any(StartApplicationRequest.class)))
-				.willReturn(Mono.empty());
+	.willReturn(Mono.empty());
 
 		givenRequestGetApplication("test-application-id", Mono.error(new IllegalArgumentException()), Mono.just(
-				ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-application")
-						.requestedState("RUNNING")
-						.runningInstances(0)
-						.stack("test-stack")
-						.build()));
+	ApplicationDetail.builder()
+.diskQuota(0)
+.id("test-application-id")
+.instances(1)
+.memoryLimit(0)
+.name("test-application")
+.requestedState("RUNNING")
+.runningInstances(0)
+.stack("test-stack")
+.build()));
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack(deploymentProperties.getBuildpack())
-						.disk(1024)
-						.environmentVariables(defaultEnvironmentVariables())
-						.instances(1)
-						.memory(1024)
-						.name("test-application-id")
-						.service("test-service-2")
-						.service("test-service-1")
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack(deploymentProperties.getBuildpack())
+.disk(1024)
+.environmentVariables(defaultEnvironmentVariables())
+.instances(1)
+.memory(1024)
+.name("test-application-id")
+.service("test-service-2")
+.service("test-service-1")
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		String deploymentId = this.deployer.deploy(
-				new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
-						Collections.singletonMap(
-								CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY, "'test-service-3 foo:bar'")));
+	new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
+Collections.singletonMap(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY, "'test-service-3 foo:bar'")));
 
 		assertThat(deploymentId).isEqualTo("test-application-id");
 		// deploy is actually subscribe and forget so need to wait and
@@ -339,42 +337,42 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		given(this.applicationNameGenerator.generateAppName("test-application")).willReturn("test-application-id");
 
 		givenRequestGetApplication("test-application-id", Mono.error(new IllegalArgumentException()), Mono.just(
-				ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-application")
-						.requestedState("RUNNING")
-						.runningInstances(0)
-						.stack("test-stack")
-						.build()));
+	ApplicationDetail.builder()
+.diskQuota(0)
+.id("test-application-id")
+.instances(1)
+.memoryLimit(0)
+.name("test-application")
+.requestedState("RUNNING")
+.runningInstances(0)
+.stack("test-stack")
+.build()));
 
 		Map<String, String> environmentVariables = new HashMap<>();
 		environmentVariables.put("test-key-1", "test-value-1");
 		addGuidAndIndex(environmentVariables);
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack(deploymentProperties.getBuildpack())
-						.disk(1024)
-						.environmentVariables(environmentVariables)
-						.instances(1)
-						.memory(1024)
-						.name("test-application-id")
-						.service("test-service-2")
-						.service("test-service-1")
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack(deploymentProperties.getBuildpack())
+.disk(1024)
+.environmentVariables(environmentVariables)
+.instances(1)
+.memory(1024)
+.name("test-application-id")
+.service("test-service-2")
+.service("test-service-1")
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		String deploymentId = this.deployer.deploy(new AppDeploymentRequest(
-				new AppDefinition("test-application", Collections.singletonMap("test-key-1", "test-value-1")), resource,
-				FluentMap.<String, String>builder().entry("test-key-2", "test-value-2")
-						.entry(CloudFoundryDeploymentProperties.USE_SPRING_APPLICATION_JSON_KEY, String.valueOf(false))
-						.build()));
+	new AppDefinition("test-application", Collections.singletonMap("test-key-1", "test-value-1")), resource,
+	FluentMap.<String, String>builder().entry("test-key-2", "test-value-2")
+.entry(CloudFoundryDeploymentProperties.USE_SPRING_APPLICATION_JSON_KEY, String.valueOf(false))
+.build()));
 
 		assertThat(deploymentId).isEqualTo("test-application-id");
 	}
@@ -387,40 +385,40 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		given(this.applicationNameGenerator.generateAppName("test-application")).willReturn("test-application-id");
 
 		givenRequestGetApplication("test-application-id", Mono.error(new IllegalArgumentException()), Mono.just(
-				ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-application")
-						.requestedState("RUNNING")
-						.runningInstances(0)
-						.stack("test-stack")
-						.build()));
+	ApplicationDetail.builder()
+.diskQuota(0)
+.id("test-application-id")
+.instances(1)
+.memoryLimit(0)
+.name("test-application")
+.requestedState("RUNNING")
+.runningInstances(0)
+.stack("test-stack")
+.build()));
 
 		Map<String, String> environmentVariables = new HashMap<>();
 		environmentVariables.put("SPRING_APPLICATION_JSON", "{\"test-key-1\":\"test-value-1\"}");
 		addGuidAndIndex(environmentVariables);
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack(deploymentProperties.getBuildpack())
-						.disk(1024)
-						.environmentVariables(environmentVariables)
-						.instances(1)
-						.memory(1024)
-						.name("test-application-id")
-						.service("test-service-2")
-						.service("test-service-1")
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack(deploymentProperties.getBuildpack())
+.disk(1024)
+.environmentVariables(environmentVariables)
+.instances(1)
+.memory(1024)
+.name("test-application-id")
+.service("test-service-2")
+.service("test-service-1")
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		String deploymentId = this.deployer.deploy(new AppDeploymentRequest(
-				new AppDefinition("test-application", Collections.singletonMap("test-key-1", "test-value-1")), resource,
-				Collections.singletonMap("test-key-2", "test-value-2")));
+	new AppDefinition("test-application", Collections.singletonMap("test-key-1", "test-value-1")), resource,
+	Collections.singletonMap("test-key-2", "test-value-2")));
 
 		assertThat(deploymentId).isEqualTo("test-application-id");
 	}
@@ -432,49 +430,49 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		given(this.applicationNameGenerator.generateAppName("test-application")).willReturn("test-application-id");
 
 		givenRequestGetApplication("test-application-id", Mono.error(new IllegalArgumentException()), Mono.just(
-				ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-application")
-						.requestedState("RUNNING")
-						.runningInstances(0)
-						.stack("test-stack")
-						.build()));
+	ApplicationDetail.builder()
+.diskQuota(0)
+.id("test-application-id")
+.instances(1)
+.memoryLimit(0)
+.name("test-application")
+.requestedState("RUNNING")
+.runningInstances(0)
+.stack("test-stack")
+.build()));
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack("test-buildpack")
-						.disk(0)
-						.environmentVariables(defaultEnvironmentVariables())
-						.healthCheckType(ApplicationHealthCheck.NONE)
-						.instances(0)
-						.memory(0)
-						.name("test-application-id")
-						.noRoute(false)
-						.host("test-host")
-						.domain("test-domain")
-						.service("test-service-2")
-						.service("test-service-1")
-						.build())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack("test-buildpack")
+.disk(0)
+.environmentVariables(defaultEnvironmentVariables())
+.healthCheckType(ApplicationHealthCheck.NONE)
+.instances(0)
+.memory(0)
+.name("test-application-id")
+.noRoute(false)
+.host("test-host")
+.domain("test-domain")
+.service("test-service-2")
+.service("test-service-1")
+.build())
+	.build(), Mono.empty());
 
 		AppDeploymentRequest appDeploymentRequest = new AppDeploymentRequest(new AppDefinition("test-application",
-				Collections.emptyMap()), resource,
-				FluentMap.<String, String>builder().entry(CloudFoundryDeploymentProperties.BUILDPACK_PROPERTY_KEY, "test-buildpack")
-						.entry(AppDeployer.DISK_PROPERTY_KEY, "0")
-						.entry(CloudFoundryDeploymentProperties.DOMAIN_PROPERTY, "test-domain")
-						.entry(CloudFoundryDeploymentProperties.HEALTHCHECK_PROPERTY_KEY, "none")
-						.entry(CloudFoundryDeploymentProperties.HOST_PROPERTY, "test-host")
-						.entry(AppDeployer.COUNT_PROPERTY_KEY, "0")
-						.entry(AppDeployer.MEMORY_PROPERTY_KEY, "0")
-						.entry(CloudFoundryDeploymentProperties.NO_ROUTE_PROPERTY, "false")
-						.entry(CloudFoundryDeploymentProperties.ROUTE_PATH_PROPERTY, "/test-route-path")
-						.entry(CloudFoundryDeploymentProperties.ENV_KEY + ".JBP_CONFIG_SPRING_AUTO_RECONFIGURATION", CfEnvConfigurer.ENABLED_FALSE)
-						.entry(CloudFoundryDeploymentProperties.ENV_KEY + ".SPRING_PROFILES_ACTIVE", "cloud,foo")
-						.build());
+Collections.emptyMap()), resource,
+	FluentMap.<String, String>builder().entry(CloudFoundryDeploymentProperties.BUILDPACK_PROPERTY_KEY, "test-buildpack")
+.entry(AppDeployer.DISK_PROPERTY_KEY, "0")
+.entry(CloudFoundryDeploymentProperties.DOMAIN_PROPERTY, "test-domain")
+.entry(CloudFoundryDeploymentProperties.HEALTHCHECK_PROPERTY_KEY, "none")
+.entry(CloudFoundryDeploymentProperties.HOST_PROPERTY, "test-host")
+.entry(AppDeployer.COUNT_PROPERTY_KEY, "0")
+.entry(AppDeployer.MEMORY_PROPERTY_KEY, "0")
+.entry(CloudFoundryDeploymentProperties.NO_ROUTE_PROPERTY, "false")
+.entry(CloudFoundryDeploymentProperties.ROUTE_PATH_PROPERTY, "/test-route-path")
+.entry(CloudFoundryDeploymentProperties.ENV_KEY + ".JBP_CONFIG_SPRING_AUTO_RECONFIGURATION", CfEnvConfigurer.ENABLED_FALSE)
+.entry(CloudFoundryDeploymentProperties.ENV_KEY + ".SPRING_PROFILES_ACTIVE", "cloud,foo")
+.build());
 
 		String deploymentId = deployer.deploy(appDeploymentRequest);
 
@@ -492,7 +490,7 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 	public void automaticallyConfigureForCfEnv() throws JsonProcessingException {
 		Resource resource = new FileSystemResource("src/test/resources/log-sink-rabbit-3.0.0.BUILD-SNAPSHOT.jar");
 		AppDeploymentRequest appDeploymentRequest = new AppDeploymentRequest(new AppDefinition("test-application",
-				Collections.emptyMap()), resource, Collections.emptyMap());
+	Collections.emptyMap()), resource, Collections.emptyMap());
 
 		Map<String, String> env = deployer.mergeEnvironmentVariables("test-application-id", appDeploymentRequest);
 		assertThat(env).containsEntry("SOME_GLOBAL_PROPERTY", "someGlobalValue");
@@ -504,7 +502,7 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 
 		resource = new FileSystemResource("src/test/resources/log-sink-rabbit-2.1.5.RELEASE.jar");
 		appDeploymentRequest = new AppDeploymentRequest(new AppDefinition("test-application",
-				Collections.emptyMap()), resource, Collections.emptyMap());
+	Collections.emptyMap()), resource, Collections.emptyMap());
 		env = deployer.mergeEnvironmentVariables("test-application-id", appDeploymentRequest);
 		assertThat(env).doesNotContainKey(CfEnvConfigurer.JBP_CONFIG_SPRING_AUTO_RECONFIGURATION);
 	}
@@ -517,50 +515,41 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		given(this.applicationNameGenerator.generateAppName("test-application")).willReturn("test-application-id");
 
 		givenRequestGetApplication("test-application-id", Mono.error(new IllegalArgumentException()), Mono.just(
-				ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-application")
-						.requestedState("RUNNING")
-						.runningInstances(0)
-						.stack("test-stack")
-						.build()));
+	ApplicationDetail.builder()
+.diskQuota(0)
+.id("test-application-id")
+.instances(1)
+.memoryLimit(0)
+.name("test-application")
+.requestedState("RUNNING")
+.runningInstances(0)
+.stack("test-stack")
+.build()));
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack("test-buildpack")
-						.disk(0)
-						.environmentVariables(defaultEnvironmentVariables())
-						.healthCheckType(ApplicationHealthCheck.NONE)
-						.instances(0)
-						.memory(0)
-						.name("test-application-id")
-						.noRoute(false)
-						.host("test-host")
-						.domain("test-domain")
-						.routePath("/test-route-path")
-						.service("test-service-2")
-						.service("test-service-1")
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack("test-buildpack")
+.disk(0)
+.environmentVariables(defaultEnvironmentVariables())
+.healthCheckType(ApplicationHealthCheck.NONE)
+.instances(0)
+.memory(0)
+.name("test-application-id")
+.noRoute(false)
+.host("test-host")
+.domain("test-domain")
+.routePath("/test-route-path")
+.service("test-service-2")
+.service("test-service-1")
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		String deploymentId = this.deployer.deploy(
-				new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
-						FluentMap.<String, String>builder().entry(CloudFoundryDeploymentProperties.BUILDPACK_PROPERTY_KEY, "test-buildpack")
-								.entry(AppDeployer.DISK_PROPERTY_KEY, "0")
-								.entry(CloudFoundryDeploymentProperties.DOMAIN_PROPERTY, "test-domain")
-								.entry(CloudFoundryDeploymentProperties.HEALTHCHECK_PROPERTY_KEY, "none")
-								.entry(CloudFoundryDeploymentProperties.HOST_PROPERTY, "test-host")
-								.entry(AppDeployer.COUNT_PROPERTY_KEY, "0")
-								.entry(AppDeployer.MEMORY_PROPERTY_KEY, "0")
-								.entry(CloudFoundryDeploymentProperties.NO_ROUTE_PROPERTY, "false")
-								.entry(CloudFoundryDeploymentProperties.ROUTE_PATH_PROPERTY, "/test-route-path")
-								.build()));
+	new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
+FluentMap.<String, String>builder().entry(CloudFoundryDeploymentProperties.BUILDPACK_PROPERTY_KEY, "test-buildpack").entry(AppDeployer.DISK_PROPERTY_KEY, "0").entry(CloudFoundryDeploymentProperties.DOMAIN_PROPERTY, "test-domain").entry(CloudFoundryDeploymentProperties.HEALTHCHECK_PROPERTY_KEY, "none").entry(CloudFoundryDeploymentProperties.HOST_PROPERTY, "test-host").entry(AppDeployer.COUNT_PROPERTY_KEY, "0").entry(AppDeployer.MEMORY_PROPERTY_KEY, "0").entry(CloudFoundryDeploymentProperties.NO_ROUTE_PROPERTY, "false").entry(CloudFoundryDeploymentProperties.ROUTE_PATH_PROPERTY, "/test-route-path").build()));
 
 		assertThat(deploymentId).isEqualTo("test-application-id");
 	}
@@ -573,54 +562,54 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		given(this.applicationNameGenerator.generateAppName("test-application")).willReturn("test-application-id");
 
 		givenRequestGetApplication("test-application-id",
-				Mono.error(new IllegalArgumentException()),
-				Mono.just(ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-application")
-						.requestedState("RUNNING")
-						.runningInstances(0)
-						.stack("test-stack")
-						.build()));
+	Mono.error(new IllegalArgumentException()),
+	Mono.just(ApplicationDetail.builder()
+.diskQuota(0)
+.id("test-application-id")
+.instances(1)
+.memoryLimit(0)
+.name("test-application")
+.requestedState("RUNNING")
+.runningInstances(0)
+.stack("test-stack")
+.build()));
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack("test-buildpack")
-						.disk(0)
-						.environmentVariables(defaultEnvironmentVariables())
-						.healthCheckType(ApplicationHealthCheck.NONE)
-						.instances(0)
-						.memory(0)
-						.name("test-application-id")
-						.noRoute(false)
-						.host("test-host")
-						.domain("test-domain")
-						.routePath("/test-route-path")
-						.service("test-service-2")
-						.service("test-service-1")
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack("test-buildpack")
+.disk(0)
+.environmentVariables(defaultEnvironmentVariables())
+.healthCheckType(ApplicationHealthCheck.NONE)
+.instances(0)
+.memory(0)
+.name("test-application-id")
+.noRoute(false)
+.host("test-host")
+.domain("test-domain")
+.routePath("/test-route-path")
+.service("test-service-2")
+.service("test-service-1")
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 		try {
 			assertThatThrownBy(() -> {
 				this.deployer.deploy(new AppDeploymentRequest(
-					new AppDefinition("test-application", Collections.emptyMap()),
-					resource,
-					FluentMap.<String, String>builder()
-							.entry(CloudFoundryDeploymentProperties.BUILDPACK_PROPERTY_KEY, "test-buildpack")
-							.entry(AppDeployer.DISK_PROPERTY_KEY, "0")
-							.entry(CloudFoundryDeploymentProperties.DOMAIN_PROPERTY, "test-domain")
-							.entry(CloudFoundryDeploymentProperties.HEALTHCHECK_PROPERTY_KEY, "none")
-							.entry(CloudFoundryDeploymentProperties.HOST_PROPERTY, "test-host")
-							.entry(AppDeployer.COUNT_PROPERTY_KEY, "0")
-							.entry(AppDeployer.MEMORY_PROPERTY_KEY, "0")
-							.entry(CloudFoundryDeploymentProperties.NO_ROUTE_PROPERTY, "false")
-							.entry(CloudFoundryDeploymentProperties.ROUTE_PATH_PROPERTY, "test-route-path")
-							.build()));
+			new AppDefinition("test-application", Collections.emptyMap()),
+			resource,
+			FluentMap.<String, String>builder()
+		.entry(CloudFoundryDeploymentProperties.BUILDPACK_PROPERTY_KEY, "test-buildpack")
+		.entry(AppDeployer.DISK_PROPERTY_KEY, "0")
+		.entry(CloudFoundryDeploymentProperties.DOMAIN_PROPERTY, "test-domain")
+		.entry(CloudFoundryDeploymentProperties.HEALTHCHECK_PROPERTY_KEY, "none")
+		.entry(CloudFoundryDeploymentProperties.HOST_PROPERTY, "test-host")
+		.entry(AppDeployer.COUNT_PROPERTY_KEY, "0")
+		.entry(AppDeployer.MEMORY_PROPERTY_KEY, "0")
+		.entry(CloudFoundryDeploymentProperties.NO_ROUTE_PROPERTY, "false")
+		.entry(CloudFoundryDeploymentProperties.ROUTE_PATH_PROPERTY, "test-route-path")
+		.build()));
 
 			}).isInstanceOf(IllegalArgumentException.class).as("Illegal Argument exception is expected.");
 		}
@@ -637,16 +626,16 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		given(this.applicationNameGenerator.generateAppName("test-application")).willReturn("test-application-id");
 
 		givenRequestGetApplication("test-application-id", Mono.error(new IllegalArgumentException()), Mono.just(
-				ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-application")
-						.requestedState("RUNNING")
-						.runningInstances(0)
-						.stack("test-stack")
-						.build()));
+	ApplicationDetail.builder()
+.diskQuota(0)
+.id("test-application-id")
+.instances(1)
+.memoryLimit(0)
+.name("test-application")
+.requestedState("RUNNING")
+.runningInstances(0)
+.stack("test-stack")
+.build()));
 
 		this.deploymentProperties.setBuildpack("test-buildpack");
 		this.deploymentProperties.setDisk("0");
@@ -657,27 +646,27 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		this.deploymentProperties.setMemory("0");
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack("test-buildpack")
-						.disk(0)
-						.domain("test-domain")
-						.environmentVariables(defaultEnvironmentVariables())
-						.healthCheckType(ApplicationHealthCheck.NONE)
-						.host("test-host")
-						.instances(0)
-						.memory(0)
-						.name("test-application-id")
-						.service("test-service-2")
-						.service("test-service-1")
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack("test-buildpack")
+.disk(0)
+.domain("test-domain")
+.environmentVariables(defaultEnvironmentVariables())
+.healthCheckType(ApplicationHealthCheck.NONE)
+.host("test-host")
+.instances(0)
+.memory(0)
+.name("test-application-id")
+.service("test-service-2")
+.service("test-service-1")
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		String deploymentId = this.deployer.deploy(
-				new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
-						Collections.emptyMap()));
+	new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
+Collections.emptyMap()));
 
 		assertThat(deploymentId).isEqualTo("test-application-id");
 	}
@@ -690,17 +679,17 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		given(this.applicationNameGenerator.generateAppName("test-application")).willReturn("test-application-id");
 
 		givenRequestGetApplication("test-application-id",
-				Mono.error(new IllegalArgumentException()),
-				Mono.just(ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-application")
-						.requestedState("RUNNING")
-						.runningInstances(0)
-						.stack("test-stack")
-						.build()));
+	Mono.error(new IllegalArgumentException()),
+	Mono.just(ApplicationDetail.builder()
+.diskQuota(0)
+.id("test-application-id")
+.instances(1)
+.memoryLimit(0)
+.name("test-application")
+.requestedState("RUNNING")
+.runningInstances(0)
+.stack("test-stack")
+.build()));
 
 		this.deploymentProperties.setBuildpack("test-buildpack");
 		this.deploymentProperties.setDisk("0");
@@ -710,29 +699,27 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		this.deploymentProperties.setMemory("0");
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack("test-buildpack")
-						.disk(0)
-						.routes(Sets.newHashSet(
-								Route.builder().route("route1.test-domain").build(),
-								Route.builder().route("route2.test-domain").build()))
-						.environmentVariables(defaultEnvironmentVariables())
-						.healthCheckType(ApplicationHealthCheck.NONE)
-						.instances(0)
-						.memory(0)
-						.name("test-application-id")
-						.service("test-service-2")
-						.service("test-service-1")
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack("test-buildpack")
+.disk(0)
+.routes(Sets.newHashSet(Route.builder().route("route1.test-domain").build(),Route.builder().route("route2.test-domain").build()))
+.environmentVariables(defaultEnvironmentVariables())
+.healthCheckType(ApplicationHealthCheck.NONE)
+.instances(0)
+.memory(0)
+.name("test-application-id")
+.service("test-service-2")
+.service("test-service-1")
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		String deploymentId = this.deployer.deploy(new AppDeploymentRequest(
-				new AppDefinition("test-application", Collections.emptyMap()),
-				resource,
-				Collections.emptyMap()));
+	new AppDefinition("test-application", Collections.emptyMap()),
+	resource,
+	Collections.emptyMap()));
 
 		assertThat(deploymentId).isEqualTo("test-application-id");
 	}
@@ -746,13 +733,13 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 
 		assertThatThrownBy(() -> {
 			givenRequestGetApplication("test-application-id",
-			Mono.error(new IllegalArgumentException()),
-			Mono.just(ApplicationDetail.builder()
-					.id("test-application-id")
-					.name("test-application")
-					.build()));
+		Mono.error(new IllegalArgumentException()),
+		Mono.just(ApplicationDetail.builder()
+	.id("test-application-id")
+	.name("test-application")
+	.build()));
 		}).isInstanceOf(IllegalStateException.class)
-				.as("routes and hosts cannot be set, expect cf java client to throw an exception");
+	.as("routes and hosts cannot be set, expect cf java client to throw an exception");
 
 		this.deploymentProperties.setHost("route0");
 		this.deploymentProperties.setDomain("test-domain");
@@ -760,9 +747,9 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 
 		assertThatThrownBy(() -> {
 			this.deployer.deploy(new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()),
-					resource, Collections.emptyMap()));
+		resource, Collections.emptyMap()));
 		}).isInstanceOf(IllegalStateException.class)
-				.as("routes and hosts cannot be set, expect cf java client to throw an exception");
+	.as("routes and hosts cannot be set, expect cf java client to throw an exception");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -771,43 +758,42 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		Resource resource = new FileSystemResource("src/test/resources/demo-0.0.1-SNAPSHOT.jar");
 
 		given(this.applicationNameGenerator.generateAppName("test-group-test-application")).willReturn(
-				"test-group-test-application-id");
+	"test-group-test-application-id");
 
 		givenRequestGetApplication("test-group-test-application-id", Mono.error(new IllegalArgumentException()),
-				Mono.just(ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-group-test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-group-test-application")
-						.requestedState("RUNNING")
-						.runningInstances(0)
-						.stack("test-stack")
-						.build()));
+	Mono.just(ApplicationDetail.builder()
+.diskQuota(0)
+.id("test-group-test-application-id")
+.instances(1)
+.memoryLimit(0)
+.name("test-group-test-application")
+.requestedState("RUNNING")
+.runningInstances(0)
+.stack("test-stack")
+.build()));
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack(deploymentProperties.getBuildpack())
-						.disk(1024)
-						.environmentVariable("SPRING_CLOUD_APPLICATION_GROUP", "test-group")
-						.environmentVariable("SPRING_APPLICATION_JSON", "{}")
-						.environmentVariable("SPRING_APPLICATION_INDEX", "${vcap.application.instance_index}")
-						.environmentVariable("SPRING_CLOUD_APPLICATION_GUID",
-								"${vcap.application.name}:${vcap.application.instance_index}")
-						.instances(1)
-						.memory(1024)
-						.name("test-group-test-application-id")
-						.service("test-service-2")
-						.service("test-service-1")
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack(deploymentProperties.getBuildpack())
+.disk(1024)
+.environmentVariable("SPRING_CLOUD_APPLICATION_GROUP", "test-group")
+.environmentVariable("SPRING_APPLICATION_JSON", "{}")
+.environmentVariable("SPRING_APPLICATION_INDEX", "${vcap.application.instance_index}")
+.environmentVariable("SPRING_CLOUD_APPLICATION_GUID","${vcap.application.name}:${vcap.application.instance_index}")
+.instances(1)
+.memory(1024)
+.name("test-group-test-application-id")
+.service("test-service-2")
+.service("test-service-1")
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		String deploymentId = this.deployer.deploy(
-				new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
-						Collections.singletonMap(AppDeployer.GROUP_PROPERTY_KEY, "test-group")));
+	new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
+Collections.singletonMap(AppDeployer.GROUP_PROPERTY_KEY, "test-group")));
 
 		assertThat(deploymentId).isEqualTo("test-group-test-application-id");
 	}
@@ -820,35 +806,35 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		given(this.applicationNameGenerator.generateAppName("test-application")).willReturn("test-application-id");
 
 		givenRequestGetApplication("test-application-id", Mono.error(new IllegalArgumentException()), Mono.just(
-				ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-application")
-						.requestedState("RUNNING")
-						.runningInstances(0)
-						.stack("test-stack")
-						.build()));
+	ApplicationDetail.builder()
+.diskQuota(0)
+.id("test-application-id")
+.instances(1)
+.memoryLimit(0)
+.name("test-application")
+.requestedState("RUNNING")
+.runningInstances(0)
+.stack("test-stack")
+.build()));
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.docker(Docker.builder().image("somecorp/someimage:latest").build())
-						.disk(1024)
-						.environmentVariables(defaultEnvironmentVariables())
-						.instances(1)
-						.memory(1024)
-						.name("test-application-id")
-						.service("test-service-2")
-						.service("test-service-1")
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.docker(Docker.builder().image("somecorp/someimage:latest").build())
+.disk(1024)
+.environmentVariables(defaultEnvironmentVariables())
+.instances(1)
+.memory(1024)
+.name("test-application-id")
+.service("test-service-2")
+.service("test-service-1")
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		String deploymentId = this.deployer.deploy(
-				new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
-						Collections.emptyMap()));
+	new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
+Collections.emptyMap()));
 
 		assertThat(deploymentId).isEqualTo("test-application-id");
 	}
@@ -857,16 +843,16 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 	@Test
 	public void statusOfCrashedApplicationIsFailed() {
 		givenRequestGetApplication("test-application-id", Mono.just(ApplicationDetail.builder()
-				.diskQuota(0)
-				.id("test-application-id")
-				.instances(1)
-				.memoryLimit(0)
-				.name("test-application")
-				.requestedState("RUNNING")
-				.runningInstances(1)
-				.stack("test-stack")
-				.instanceDetail(InstanceDetail.builder().state("CRASHED").index("1").build())
-				.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.stack("test-stack")
+	.instanceDetail(InstanceDetail.builder().state("CRASHED").index("1").build())
+	.build()));
 
 		AppStatus status = this.deployer.status("test-application-id");
 
@@ -877,16 +863,16 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 	@Test
 	public void statusOfDownApplicationIsDeploying() {
 		givenRequestGetApplication("test-application-id", Mono.just(ApplicationDetail.builder()
-				.diskQuota(0)
-				.id("test-application-id")
-				.instances(1)
-				.memoryLimit(0)
-				.name("test-application")
-				.requestedState("RUNNING")
-				.runningInstances(1)
-				.stack("test-stack")
-				.instanceDetail(InstanceDetail.builder().state("DOWN").index("1").build())
-				.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.stack("test-stack")
+	.instanceDetail(InstanceDetail.builder().state("DOWN").index("1").build())
+	.build()));
 
 		AppStatus status = this.deployer.status("test-application-id");
 
@@ -897,16 +883,16 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 	@Test
 	public void statusOfFlappingApplicationIsDeployed() {
 		givenRequestGetApplication("test-application-id", Mono.just(ApplicationDetail.builder()
-				.diskQuota(0)
-				.id("test-application-id")
-				.instances(1)
-				.memoryLimit(0)
-				.name("test-application")
-				.requestedState("RUNNING")
-				.runningInstances(1)
-				.stack("test-stack")
-				.instanceDetail(InstanceDetail.builder().state("FLAPPING").index("1").build())
-				.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.stack("test-stack")
+	.instanceDetail(InstanceDetail.builder().state("FLAPPING").index("1").build())
+	.build()));
 
 		AppStatus status = deployer.status("test-application-id");
 
@@ -917,43 +903,43 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 	@Test
 	public void statusOfRunningApplicationIsDeployed() {
 		givenRequestGetApplication("test-application-id", Mono.just(ApplicationDetail.builder()
-				.diskQuota(0)
-				.id("test-application-id")
-				.instances(1)
-				.memoryLimit(0)
-				.name("test-application")
-				.requestedState("RUNNING")
-				.runningInstances(1)
-				.stack("test-stack")
-				.instanceDetail(InstanceDetail.builder().state("RUNNING").index("1").build())
-				.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.stack("test-stack")
+	.instanceDetail(InstanceDetail.builder().state("RUNNING").index("1").build())
+	.build()));
 
 		AppStatus status = this.deployer.status("test-application-id");
 
 		assertThat(status.getState()).isEqualTo(DeploymentState.deployed);
 		assertThat(status.getInstances().get("test-application-0").toString())
-				.isEqualTo("CloudFoundryAppInstanceStatus[test-application-0 : deployed]");
+	.isEqualTo("CloudFoundryAppInstanceStatus[test-application-0 : deployed]");
 		assertThat(status.getInstances().get("test-application-0").getAttributes())
-				.containsOnly(
-						MapEntry.entry(CloudFoundryAppInstanceStatus.GUID, "test-application:0"),
-						MapEntry.entry(CloudFoundryAppInstanceStatus.INDEX, "0"),
-						MapEntry.entry(CloudFoundryAppInstanceStatus.CF_GUID, "test-application-id"));
+	.containsOnly(
+MapEntry.entry(CloudFoundryAppInstanceStatus.GUID, "test-application:0"),
+MapEntry.entry(CloudFoundryAppInstanceStatus.INDEX, "0"),
+MapEntry.entry(CloudFoundryAppInstanceStatus.CF_GUID, "test-application-id"));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void statusOfStartingApplicationIsDeploying() {
 		givenRequestGetApplication("test-application-id", Mono.just(ApplicationDetail.builder()
-				.diskQuota(0)
-				.id("test-application-id")
-				.instances(1)
-				.memoryLimit(0)
-				.name("test-application")
-				.requestedState("RUNNING")
-				.runningInstances(1)
-				.stack("test-stack")
-				.instanceDetail(InstanceDetail.builder().state("STARTING").index("1").build())
-				.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.stack("test-stack")
+	.instanceDetail(InstanceDetail.builder().state("STARTING").index("1").build())
+	.build()));
 
 		AppStatus status = this.deployer.status("test-application-id");
 
@@ -964,16 +950,16 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 	@Test
 	public void statusOfUnknownApplicationIsUnknown() {
 		givenRequestGetApplication("test-application-id", Mono.just(ApplicationDetail.builder()
-				.diskQuota(0)
-				.id("test-application-id")
-				.instances(1)
-				.memoryLimit(0)
-				.name("test-application")
-				.requestedState("RUNNING")
-				.runningInstances(1)
-				.stack("test-stack")
-				.instanceDetail(InstanceDetail.builder().state("UNKNOWN").index("1").build())
-				.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.stack("test-stack")
+	.instanceDetail(InstanceDetail.builder().state("UNKNOWN").index("1").build())
+	.build()));
 
 		AppStatus status = this.deployer.status("test-application-id");
 
@@ -984,16 +970,16 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 	@Test
 	public void statusWithAbnormalInstanceStateThrowsException() {
 		givenRequestGetApplication("test-application-id", Mono.just(ApplicationDetail.builder()
-				.diskQuota(0)
-				.id("test-application-id")
-				.instances(1)
-				.memoryLimit(0)
-				.name("test-application")
-				.requestedState("RUNNING")
-				.runningInstances(1)
-				.stack("test-stack")
-				.instanceDetail(InstanceDetail.builder().state("ABNORMAL").index("1").build())
-				.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.stack("test-stack")
+	.instanceDetail(InstanceDetail.builder().state("ABNORMAL").index("1").build())
+	.build()));
 
 		assertThatThrownBy(() -> {
 			this.deployer.status("test-application-id").getState();
@@ -1007,16 +993,16 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		Mono<ApplicationDetail> m = Mono.create(s -> {
 			if (i.incrementAndGet() == 2) {
 				s.success(ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-application")
-						.requestedState("RUNNING")
-						.runningInstances(1)
-						.stack("test-stack")
-						.instanceDetail(InstanceDetail.builder().state("UNKNOWN").index("1").build())
-						.build());
+			.diskQuota(0)
+			.id("test-application-id")
+			.instances(1)
+			.memoryLimit(0)
+			.name("test-application")
+			.requestedState("RUNNING")
+			.runningInstances(1)
+			.stack("test-stack")
+			.instanceDetail(InstanceDetail.builder().state("UNKNOWN").index("1").build())
+			.build());
 			}
 			else {
 				s.error(new RuntimeException("Simulated Server Side error"));
@@ -1035,16 +1021,16 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		Mono<ApplicationDetail> m = Mono.create(s -> {
 			if (i.incrementAndGet() == 12) { // 12 is more than the number of retries
 				s.success(ApplicationDetail.builder()
-						.diskQuota(0)
-						.id("test-application-id")
-						.instances(1)
-						.memoryLimit(0)
-						.name("test-application")
-						.requestedState("RUNNING")
-						.runningInstances(1)
-						.stack("test-stack")
-						.instanceDetail(InstanceDetail.builder().state("UNKNOWN").index("1").build())
-						.build());
+			.diskQuota(0)
+			.id("test-application-id")
+			.instances(1)
+			.memoryLimit(0)
+			.name("test-application")
+			.requestedState("RUNNING")
+			.runningInstances(1)
+			.stack("test-stack")
+			.instanceDetail(InstanceDetail.builder().state("UNKNOWN").index("1").build())
+			.build());
 			}
 			else {
 				s.error(new RuntimeException("Simulated Server Side error"));
@@ -1064,16 +1050,16 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 		Mono<ApplicationDetail> m = Mono.delay(Duration.ofSeconds(30)).then(Mono.create(s -> {
 			i.incrementAndGet();
 			s.success(ApplicationDetail.builder()
-					.diskQuota(0)
-					.id("test-application-id")
-					.instances(1)
-					.memoryLimit(0)
-					.name("test-application")
-					.requestedState("RUNNING")
-					.runningInstances(1)
-					.stack("test-stack")
-					.instanceDetail(InstanceDetail.builder().state("UNKNOWN").index("1").build())
-					.build());
+		.diskQuota(0)
+		.id("test-application-id")
+		.instances(1)
+		.memoryLimit(0)
+		.name("test-application")
+		.requestedState("RUNNING")
+		.runningInstances(1)
+		.stack("test-stack")
+		.instanceDetail(InstanceDetail.builder().state("UNKNOWN").index("1").build())
+		.build());
 		}));
 		givenRequestGetApplication("test-application-id", m);
 		this.deployer.deploymentProperties.setStatusTimeout(1);// Is less than the delay() above
@@ -1087,16 +1073,16 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 	@Test
 	public void undeploy() {
 		givenRequestGetApplication("test-application-id", Mono.just(ApplicationDetail.builder()
-				.diskQuota(0)
-				.id("test-application-id")
-				.instances(1)
-				.memoryLimit(0)
-				.name("test-application")
-				.requestedState("RUNNING")
-				.runningInstances(1)
-				.stack("test-stack")
-				.instanceDetail(InstanceDetail.builder().state("RUNNING").index("1").build())
-				.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.stack("test-stack")
+	.instanceDetail(InstanceDetail.builder().state("RUNNING").index("1").build())
+	.build()));
 		givenRequestDeleteApplication("test-application-id", Mono.empty());
 
 		this.deployer.undeploy("test-application-id");
@@ -1107,16 +1093,16 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 	@Test
 	public void scale() {
 		givenRequestGetApplication("test-application-id", Mono.just(ApplicationDetail.builder()
-				.diskQuota(0)
-				.id("test-application-id")
-				.instances(2)
-				.memoryLimit(0)
-				.name("test-application")
-				.requestedState("RUNNING")
-				.runningInstances(2)
-				.stack("test-stack")
-				.instanceDetail(InstanceDetail.builder().state("RUNNING").index("1").build())
-				.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(2)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(2)
+	.stack("test-stack")
+	.instanceDetail(InstanceDetail.builder().state("RUNNING").index("1").build())
+	.build()));
 		givenRequestScaleApplication("test-application-id", 2, 1024, 1024, Mono.empty());
 		this.deployer.scale(new AppScaleRequest("test-application-id", 2));
 	}

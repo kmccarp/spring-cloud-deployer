@@ -109,11 +109,11 @@ public class CloudFoundryTaskLauncherCachingTests {
 				throw new RuntimeException();
 			}
 			ListOrganizationsResponse response = ListOrganizationsResponse.builder()
-				.addAllResources(Collections.<OrganizationResource>singletonList(
-					OrganizationResource.builder()
-							.metadata(Metadata.builder().id("123").build()).build())
-				)
-				.build();
+		.addAllResources(Collections.<OrganizationResource>singletonList(
+	OrganizationResource.builder()
+.metadata(Metadata.builder().id("123").build()).build())
+		)
+		.build();
 			return Mono.just(response);
 		});
 	}
@@ -125,11 +125,11 @@ public class CloudFoundryTaskLauncherCachingTests {
 				throw new RuntimeException();
 			}
 			ListSpacesResponse response = ListSpacesResponse.builder()
-				.addAllResources(Collections.<SpaceResource>singletonList(
-					SpaceResource.builder()
-							.metadata(Metadata.builder().id("123").build()).build())
-			)
-			.build();
+		.addAllResources(Collections.<SpaceResource>singletonList(
+	SpaceResource.builder()
+.metadata(Metadata.builder().id("123").build()).build())
+		)
+		.build();
 			return Mono.just(response);
 		});
 	}
@@ -138,19 +138,19 @@ public class CloudFoundryTaskLauncherCachingTests {
 		List<TaskResource> taskResources = new ArrayList<>();
 		for (int i = 0; i < 1; i++) {
 			taskResources.add(TaskResource.builder()
-				.name("task-" + i)
-				.dropletId(UUID.randomUUID().toString())
-				.id(UUID.randomUUID().toString())
-				.diskInMb(2048)
-				.sequenceId(i)
-				.state(TaskState.RUNNING)
-				.memoryInMb(2048)
-				.createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-				.build());
+		.name("task-" + i)
+		.dropletId(UUID.randomUUID().toString())
+		.id(UUID.randomUUID().toString())
+		.diskInMb(2048)
+		.sequenceId(i)
+		.state(TaskState.RUNNING)
+		.memoryInMb(2048)
+		.createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+		.build());
 		}
 		ListTasksResponse listTasksResponse = ListTasksResponse.builder().resources(taskResources)
-			.pagination(Pagination.builder().totalResults(taskResources.size()).build())
-			.build();
+	.pagination(Pagination.builder().totalResults(taskResources.size()).build())
+	.build();
 		return Mono.just(listTasksResponse);
 	}
 }

@@ -62,7 +62,8 @@ public class CloudFoundryAppNameGenerator implements AppNameGenerator, Initializ
 			if (!StringUtils.isEmpty(properties.getAppNamePrefix())) {
 				prefixToUse = String.format("%s-%s", properties.getAppNamePrefix(), prefixToUse);
 			}
-		} else {
+		}
+		else {
 			if (!StringUtils.isEmpty(properties.getAppNamePrefix())) {
 				prefixToUse = properties.getAppNamePrefix();
 			}
@@ -75,7 +76,8 @@ public class CloudFoundryAppNameGenerator implements AppNameGenerator, Initializ
 	public String generateAppName(String appName) {
 		if (StringUtils.isEmpty(prefixToUse)) {
 			return appName.substring(0, Math.min(MAX_APPNAME_LENGTH, appName.length()));
-		} else {
+		}
+		else {
 			String string = String.format("%s-%s", prefixToUse, appName);
 			return string.substring(0, Math.min(MAX_APPNAME_LENGTH, string.length()));
 		}
@@ -85,7 +87,7 @@ public class CloudFoundryAppNameGenerator implements AppNameGenerator, Initializ
 		String alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		char[] result = new char[7];
 		Random random = new Random();
-		for (int i = 0 ; i < result.length ; i++) {
+		for (int i = 0; i < result.length; i++) {
 			result[i] = alphabet.charAt(random.nextInt(alphabet.length()));
 		}
 		return new String(result);

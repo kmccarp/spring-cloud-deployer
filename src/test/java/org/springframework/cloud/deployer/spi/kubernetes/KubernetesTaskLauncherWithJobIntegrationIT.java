@@ -70,11 +70,11 @@ public class KubernetesTaskLauncherWithJobIntegrationIT extends AbstractKubernet
 	void taskLaunchedWithJobAnnotations(TestInfo testInfo) {
 		logTestInfo(testInfo);
 		launchTaskJobAndValidateCreatedJobAndPodWithCleanup(
-				Collections.singletonMap("spring.cloud.deployer.kubernetes.jobAnnotations", "key1:val1,key2:val2,key3:val31:val32"),
-				(job) -> assertThat(job.getMetadata().getAnnotations()).isNotEmpty()
-						.contains(entry("key1", "val1"), entry("key2", "val2"), entry("key3", "val31:val32")),
-				(pod) -> assertThat(pod.getMetadata().getAnnotations()).isNotEmpty()
-						.contains(entry("key1", "val1"), entry("key2", "val2"), entry("key3", "val31:val32")));
+	Collections.singletonMap("spring.cloud.deployer.kubernetes.jobAnnotations", "key1:val1,key2:val2,key3:val31:val32"),
+	(job) -> assertThat(job.getMetadata().getAnnotations()).isNotEmpty()
+.contains(entry("key1", "val1"), entry("key2", "val2"), entry("key3", "val31:val32")),
+	(pod) -> assertThat(pod.getMetadata().getAnnotations()).isNotEmpty()
+.contains(entry("key1", "val1"), entry("key2", "val2"), entry("key3", "val31:val32")));
 	}
 
 	@Test
@@ -84,13 +84,14 @@ public class KubernetesTaskLauncherWithJobIntegrationIT extends AbstractKubernet
 		deploymentProps.put("spring.cloud.deployer.kubernetes.restartPolicy", "OnFailure");
 		deploymentProps.put("spring.cloud.deployer.kubernetes.backoffLimit", "5");
 		launchTaskJobAndValidateCreatedJobAndPodWithCleanup(
-				deploymentProps,
-				(job) -> assertThat(job.getSpec().getBackoffLimit()).isEqualTo(5),
-				(pod) -> {});
+	deploymentProps,
+	(job) -> assertThat(job.getSpec().getBackoffLimit()).isEqualTo(5),
+	(pod) -> {
+	});
 	}
 
 	private void launchTaskJobAndValidateCreatedJobAndPodWithCleanup(Map<String, String> deploymentProps,
-			Consumer<Job> assertingJobConsumer, Consumer<Pod> assertingPodConsumer) {
+Consumer<Job> assertingJobConsumer, Consumer<Pod> assertingPodConsumer) {
 		String taskName = randomName();
 		AppDefinition definition = new AppDefinition(taskName, null);
 		Resource resource = testApplication();
@@ -99,7 +100,7 @@ public class KubernetesTaskLauncherWithJobIntegrationIT extends AbstractKubernet
 		logger.info("Launching {}...", taskName);
 		String launchId = taskLauncher().launch(request);
 		awaitWithPollAndTimeout(deploymentTimeout())
-				.untilAsserted(() -> assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.launching));
+	.untilAsserted(() -> assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.launching));
 
 		logger.info("Checking task Job for {}...", taskName);
 		List<Job> jobs = getJobsForTask(taskName);
@@ -114,7 +115,7 @@ public class KubernetesTaskLauncherWithJobIntegrationIT extends AbstractKubernet
 		logger.info("Destroying {}...", taskName);
 		taskLauncher().destroy(taskName);
 		awaitWithPollAndTimeout(undeploymentTimeout())
-				.untilAsserted(() -> assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.unknown));
+	.untilAsserted(() -> assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.unknown));
 	}
 
 	@Test
@@ -129,8 +130,8 @@ public class KubernetesTaskLauncherWithJobIntegrationIT extends AbstractKubernet
 
 		logger.info("Launching {}...", request.getDefinition().getName());
 		assertThatThrownBy(() -> taskLauncher.launch(request))
-				.isInstanceOf(Exception.class)
-				.hasMessage("RestartPolicy should not be 'Always' when the JobSpec is used.");
+	.isInstanceOf(Exception.class)
+	.hasMessage("RestartPolicy should not be 'Always' when the JobSpec is used.");
 	}
 
 	@Test
@@ -144,7 +145,7 @@ public class KubernetesTaskLauncherWithJobIntegrationIT extends AbstractKubernet
 		logger.info("Launching {}...", taskName);
 		String launchId = taskLauncher().launch(request);
 		awaitWithPollAndTimeout(deploymentTimeout())
-				.untilAsserted(() -> assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.launching));
+	.untilAsserted(() -> assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.launching));
 
 		List<Job> jobs = getJobsForTask(taskName);
 		assertThat(jobs).hasSize(1);
@@ -152,7 +153,7 @@ public class KubernetesTaskLauncherWithJobIntegrationIT extends AbstractKubernet
 		logger.info("Cleaning up {}...", taskName);
 		taskLauncher().cleanup(launchId);
 		awaitWithPollAndTimeout(undeploymentTimeout())
-				.untilAsserted(() -> assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.unknown));
+	.untilAsserted(() -> assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.unknown));
 
 		jobs = getJobsForTask(taskName);
 		assertThat(jobs).isEmpty();
@@ -185,7 +186,7 @@ public class KubernetesTaskLauncherWithJobIntegrationIT extends AbstractKubernet
 		logger.info("Launching {}...", taskName);
 		String launchId = taskLauncher().launch(request);
 		awaitWithPollAndTimeout(deploymentTimeout())
-				.untilAsserted(() -> assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.launching));
+	.untilAsserted(() -> assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.launching));
 
 		List<Job> jobs = getJobsForTask(taskName);
 		assertThat(jobs).hasSize(1);
@@ -193,7 +194,7 @@ public class KubernetesTaskLauncherWithJobIntegrationIT extends AbstractKubernet
 		logger.info("Waiting for deleting the job {}...", taskName);
 
 		awaitWithPollAndTimeout(undeploymentTimeout())
-				.untilAsserted(() -> assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.unknown));
+	.untilAsserted(() -> assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.unknown));
 
 		jobs = getJobsForTask(taskName);
 		assertThat(jobs).isEmpty();

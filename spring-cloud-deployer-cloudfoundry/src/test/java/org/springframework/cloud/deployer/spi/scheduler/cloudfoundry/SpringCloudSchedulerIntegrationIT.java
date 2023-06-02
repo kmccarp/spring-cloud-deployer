@@ -84,7 +84,7 @@ public class SpringCloudSchedulerIntegrationIT extends AbstractSchedulerIntegrat
 
 	@Override
 	protected Map<String, String> getSchedulerProperties() {
-		return Collections.singletonMap(SchedulerPropertyKeys.CRON_EXPRESSION,"41 17 ? * *");
+		return Collections.singletonMap(SchedulerPropertyKeys.CRON_EXPRESSION, "41 17 ? * *");
 	}
 
 	@Override
@@ -108,15 +108,15 @@ public class SpringCloudSchedulerIntegrationIT extends AbstractSchedulerIntegrat
 		try {
 			operations.applications().list().flatMap(applicationSummary -> {
 				if (applicationSummary.getName().startsWith("testList") ||
-						applicationSummary.getName().startsWith("testDuplicateSchedule") ||
-						applicationSummary.getName().startsWith("testUnschedule") ||
-						applicationSummary.getName().startsWith("testMultiple") ||
-						applicationSummary.getName().startsWith("testSimpleSchedule")) {
+			applicationSummary.getName().startsWith("testDuplicateSchedule") ||
+			applicationSummary.getName().startsWith("testUnschedule") ||
+			applicationSummary.getName().startsWith("testMultiple") ||
+			applicationSummary.getName().startsWith("testSimpleSchedule")) {
 
 					return operations.applications().delete(DeleteApplicationRequest
-							.builder()
-							.name(applicationSummary.getName())
-							.build());
+				.builder()
+				.name(applicationSummary.getName())
+				.build());
 				}
 				return Mono.justOrEmpty(applicationSummary);
 			}).blockLast();
@@ -132,25 +132,25 @@ public class SpringCloudSchedulerIntegrationIT extends AbstractSchedulerIntegrat
 		@Bean
 		@ConditionalOnMissingBean
 		public ReactorSchedulerClient reactorSchedulerClient(ConnectionContext context,
-				TokenProvider passwordGrantTokenProvider,
-				CloudFoundryDeploymentProperties taskDeploymentProperties) {
+	TokenProvider passwordGrantTokenProvider,
+	CloudFoundryDeploymentProperties taskDeploymentProperties) {
 			return ReactorSchedulerClient.builder()
-					.connectionContext(context)
-					.tokenProvider(passwordGrantTokenProvider)
-					.root(Mono.just(taskDeploymentProperties.getSchedulerUrl()))
-					.build();
+		.connectionContext(context)
+		.tokenProvider(passwordGrantTokenProvider)
+		.root(Mono.just(taskDeploymentProperties.getSchedulerUrl()))
+		.build();
 		}
 
 		@Bean
 		@ConditionalOnMissingBean
 		public Scheduler scheduler(ReactorSchedulerClient client,
-				CloudFoundryOperations operations,
-				CloudFoundryConnectionProperties properties,
-				TaskLauncher taskLauncher,
-				CloudFoundryDeploymentProperties taskDeploymentProperties) {
+	CloudFoundryOperations operations,
+	CloudFoundryConnectionProperties properties,
+	TaskLauncher taskLauncher,
+	CloudFoundryDeploymentProperties taskDeploymentProperties) {
 			return new CloudFoundryAppScheduler(client, operations, properties,
-					(CloudFoundryTaskLauncher) taskLauncher,
-					taskDeploymentProperties);
+		(CloudFoundryTaskLauncher) taskLauncher,
+		taskDeploymentProperties);
 		}
 
 	}

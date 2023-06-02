@@ -43,7 +43,7 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Michael Minella
  * @author Ben Hale
  */
-@ContextConfiguration(classes=CloudFoundryTaskLauncherIntegrationIT.Config.class)
+@ContextConfiguration(classes = CloudFoundryTaskLauncherIntegrationIT.Config.class)
 public class CloudFoundryTaskLauncherIntegrationIT extends AbstractTaskLauncherIntegrationJUnit5Tests {
 
 	@Autowired
@@ -63,7 +63,7 @@ public class CloudFoundryTaskLauncherIntegrationIT extends AbstractTaskLauncherI
 	@BeforeEach
 	public void init() {
 		Assumptions.assumeTrue(cloudControllerAPIVersion.greaterThanOrEqualTo(Version.forIntegers(2, 65, 0)),
-				"Skipping TaskLauncher ITs on PCF<1.9 (2.65.0). Actual API version is " + cloudControllerAPIVersion);
+	"Skipping TaskLauncher ITs on PCF<1.9 (2.65.0). Actual API version is " + cloudControllerAPIVersion);
 
 		String multiplier = System.getenv("CF_DEPLOYER_TIMEOUT_MULTIPLIER");
 		if (multiplier != null) {
@@ -101,7 +101,6 @@ public class CloudFoundryTaskLauncherIntegrationIT extends AbstractTaskLauncherI
 	protected Timeout undeploymentTimeout() {
 		return new Timeout(maxRetries, (int) (5000 * timeoutMultiplier));
 	}
-
 
 
 	/**

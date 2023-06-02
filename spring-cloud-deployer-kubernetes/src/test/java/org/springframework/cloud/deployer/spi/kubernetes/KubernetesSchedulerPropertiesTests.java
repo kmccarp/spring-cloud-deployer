@@ -37,7 +37,7 @@ public class KubernetesSchedulerPropertiesTests {
 		KubernetesSchedulerProperties kubernetesSchedulerProperties = new KubernetesSchedulerProperties();
 		assertNotNull("Image pull policy should not be null", kubernetesSchedulerProperties.getImagePullPolicy());
 		assertEquals("Invalid default image pull policy", ImagePullPolicy.IfNotPresent,
-				kubernetesSchedulerProperties.getImagePullPolicy());
+	kubernetesSchedulerProperties.getImagePullPolicy());
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class KubernetesSchedulerPropertiesTests {
 		kubernetesSchedulerProperties.setImagePullPolicy(ImagePullPolicy.Never);
 		assertNotNull("Image pull policy should not be null", kubernetesSchedulerProperties.getImagePullPolicy());
 		assertEquals("Unexpected image pull policy", ImagePullPolicy.Never,
-				kubernetesSchedulerProperties.getImagePullPolicy());
+	kubernetesSchedulerProperties.getImagePullPolicy());
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class KubernetesSchedulerPropertiesTests {
 		KubernetesSchedulerProperties kubernetesSchedulerProperties = new KubernetesSchedulerProperties();
 		assertNotNull("Restart policy should not be null", kubernetesSchedulerProperties.getRestartPolicy());
 		assertEquals("Invalid default restart policy", RestartPolicy.Never,
-				kubernetesSchedulerProperties.getRestartPolicy());
+	kubernetesSchedulerProperties.getRestartPolicy());
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class KubernetesSchedulerPropertiesTests {
 		kubernetesSchedulerProperties.setRestartPolicy(RestartPolicy.OnFailure);
 		assertNotNull("Restart policy should not be null", kubernetesSchedulerProperties.getRestartPolicy());
 		assertEquals("Unexpected restart policy", RestartPolicy.OnFailure,
-				kubernetesSchedulerProperties.getRestartPolicy());
+	kubernetesSchedulerProperties.getRestartPolicy());
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class KubernetesSchedulerPropertiesTests {
 		KubernetesSchedulerProperties kubernetesSchedulerProperties = new KubernetesSchedulerProperties();
 		assertNotNull("Entry point style should not be null", kubernetesSchedulerProperties.getEntryPointStyle());
 		assertEquals("Invalid default entry point style", EntryPointStyle.exec,
-				kubernetesSchedulerProperties.getEntryPointStyle());
+	kubernetesSchedulerProperties.getEntryPointStyle());
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class KubernetesSchedulerPropertiesTests {
 		kubernetesSchedulerProperties.setEntryPointStyle(EntryPointStyle.shell);
 		assertNotNull("Entry point style should not be null", kubernetesSchedulerProperties.getEntryPointStyle());
 		assertEquals("Unexpected entry point stype", EntryPointStyle.shell,
-				kubernetesSchedulerProperties.getEntryPointStyle());
+	kubernetesSchedulerProperties.getEntryPointStyle());
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class KubernetesSchedulerPropertiesTests {
 			kubernetesSchedulerProperties.setNamespace("default");
 
 			assertTrue("Namespace should not be empty or null",
-					StringUtils.hasText(kubernetesSchedulerProperties.getNamespace()));
+		StringUtils.hasText(kubernetesSchedulerProperties.getNamespace()));
 			assertEquals("Invalid default namespace", "default", kubernetesSchedulerProperties.getNamespace());
 		}
 	}
@@ -100,7 +100,7 @@ public class KubernetesSchedulerPropertiesTests {
 		KubernetesSchedulerProperties kubernetesSchedulerProperties = new KubernetesSchedulerProperties();
 		kubernetesSchedulerProperties.setNamespace("myns");
 		assertTrue("Namespace should not be empty or null",
-				StringUtils.hasText(kubernetesSchedulerProperties.getNamespace()));
+	StringUtils.hasText(kubernetesSchedulerProperties.getNamespace()));
 		assertEquals("Unexpected namespace", "myns", kubernetesSchedulerProperties.getNamespace());
 	}
 
@@ -123,28 +123,28 @@ public class KubernetesSchedulerPropertiesTests {
 	public void testEnvironmentVariablesDefault() {
 		KubernetesSchedulerProperties kubernetesSchedulerProperties = new KubernetesSchedulerProperties();
 		assertEquals("No default environment variables should be set", 0,
-				kubernetesSchedulerProperties.getEnvironmentVariables().length);
+	kubernetesSchedulerProperties.getEnvironmentVariables().length);
 	}
 
 	@Test
 	public void testEnvironmentVariablesCanBeCustomized() {
-		String[] envVars = new String[] { "var1=val1", "var2=val2" };
+		String[] envVars = new String[]{"var1=val1", "var2=val2"};
 		KubernetesSchedulerProperties kubernetesSchedulerProperties = new KubernetesSchedulerProperties();
 		kubernetesSchedulerProperties.setEnvironmentVariables(envVars);
 		assertNotNull("Environment variables should not be null",
-				kubernetesSchedulerProperties.getEnvironmentVariables());
+	kubernetesSchedulerProperties.getEnvironmentVariables());
 		assertEquals("Unexpected number of environment variables", 2,
-				kubernetesSchedulerProperties.getEnvironmentVariables().length);
+	kubernetesSchedulerProperties.getEnvironmentVariables().length);
 	}
 
 	@Test
 	public void testTaskServiceAccountNameDefault() {
 		KubernetesSchedulerProperties kubernetesSchedulerProperties = new KubernetesSchedulerProperties();
 		assertNotNull("Task service account name should not be null",
-				kubernetesSchedulerProperties.getTaskServiceAccountName());
+	kubernetesSchedulerProperties.getTaskServiceAccountName());
 		assertEquals("Unexpected default task service account name",
-				KubernetesSchedulerProperties.DEFAULT_TASK_SERVICE_ACCOUNT_NAME,
-				kubernetesSchedulerProperties.getTaskServiceAccountName());
+	KubernetesSchedulerProperties.DEFAULT_TASK_SERVICE_ACCOUNT_NAME,
+	kubernetesSchedulerProperties.getTaskServiceAccountName());
 	}
 
 	@Test
@@ -153,9 +153,9 @@ public class KubernetesSchedulerPropertiesTests {
 		KubernetesSchedulerProperties kubernetesSchedulerProperties = new KubernetesSchedulerProperties();
 		kubernetesSchedulerProperties.setTaskServiceAccountName(taskServiceAccountName);
 		assertNotNull("Task service account name should not be null",
-				kubernetesSchedulerProperties.getTaskServiceAccountName());
+	kubernetesSchedulerProperties.getTaskServiceAccountName());
 		assertEquals("Unexpected task service account name", taskServiceAccountName,
-				kubernetesSchedulerProperties.getTaskServiceAccountName());
+	kubernetesSchedulerProperties.getTaskServiceAccountName());
 	}
 
 	// Re-implement when we have a proper env binding via boot

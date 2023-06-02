@@ -84,7 +84,7 @@ public class CloudFoundryDeployerTests {
 	private static class TestCloudFoundryDeployer extends AbstractCloudFoundryDeployer {
 
 		TestCloudFoundryDeployer(CloudFoundryDeploymentProperties deploymentProperties,
-				RuntimeEnvironmentInfo runtimeEnvironmentInfo) {
+	RuntimeEnvironmentInfo runtimeEnvironmentInfo) {
 			super(deploymentProperties, runtimeEnvironmentInfo);
 		}
 	}

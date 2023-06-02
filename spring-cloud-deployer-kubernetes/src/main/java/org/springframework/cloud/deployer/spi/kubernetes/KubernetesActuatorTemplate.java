@@ -29,13 +29,13 @@ import org.springframework.web.client.RestTemplate;
 public class KubernetesActuatorTemplate extends AbstractActuatorTemplate {
 
 	public KubernetesActuatorTemplate(RestTemplate restTemplate, AppDeployer appDeployer,
-			AppAdmin appAdmin) {
+AppAdmin appAdmin) {
 		super(restTemplate, appDeployer, appAdmin);
 	}
 
 	protected String actuatorUrlForInstance(AppInstanceStatus appInstanceStatus) {
 		return String.format("http://%s:%d/%s", appInstanceStatus.getAttributes().get("pod.ip"),
-					Integer.valueOf(appInstanceStatus.getAttributes().get("actuator.port")),
-							appInstanceStatus.getAttributes().get("actuator.path"));
+	Integer.valueOf(appInstanceStatus.getAttributes().get("actuator.port")),
+	appInstanceStatus.getAttributes().get("actuator.path"));
 	}
 }

@@ -51,7 +51,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= WebEnvironment.NONE)
+@SpringBootTest(webEnvironment = WebEnvironment.NONE)
 @ContextConfiguration(classes = AbstractIntegrationTests.Config.class)
 public abstract class AbstractIntegrationTests {
 
@@ -105,12 +105,12 @@ public abstract class AbstractIntegrationTests {
 			throw new RuntimeException("Failed to determine which version of spring-cloud-deployer-spi-test-app to use", e);
 		}
 		return new MavenResource.Builder(mavenProperties)
-				.groupId("org.springframework.cloud")
-				.artifactId("spring-cloud-deployer-spi-test-app")
-				.classifier("exec")
-				.version(properties.getProperty("version"))
-				.extension("jar")
-				.build();
+	.groupId("org.springframework.cloud")
+	.artifactId("spring-cloud-deployer-spi-test-app")
+	.classifier("exec")
+	.version(properties.getProperty("version"))
+	.extension("jar")
+	.build();
 	}
 
 	@Configuration

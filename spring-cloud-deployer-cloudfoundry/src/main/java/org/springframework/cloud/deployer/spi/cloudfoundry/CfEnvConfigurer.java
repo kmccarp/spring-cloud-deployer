@@ -99,8 +99,8 @@ class CfEnvConfigurer {
 	 */
 	static String appendCloudProfileToSpringProfilesActiveArg(String arg) {
 		if ((arg.contains(SPRING_PROFILES_ACTIVE_FQN) ||
-				arg.contains(SPRING_PROFILES_ACTIVE_HYPHENATED) ||
-				arg.contains(SPRING_PROFILES_ACTIVE)) && arg.contains("=")) {
+	arg.contains(SPRING_PROFILES_ACTIVE_HYPHENATED) ||
+	arg.contains(SPRING_PROFILES_ACTIVE)) && arg.contains("=")) {
 			String[] tokens = arg.split("=");
 			arg = String.join("=", tokens[0], appendToValueIfPresent(tokens[1], CLOUD_PROFILE_NAME));
 		}

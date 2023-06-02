@@ -56,8 +56,8 @@ public class AppDefinition {
 		Assert.notNull(name, "name must not be null");
 		this.name = name;
 		this.properties = properties == null
-				? Collections.<String, String>emptyMap()
-				: Collections.unmodifiableMap(new HashMap<String, String>(properties));
+	? Collections.<String, String>emptyMap()
+	: Collections.unmodifiableMap(new HashMap<String, String>(properties));
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class AppDefinition {
 	@Override
 	public String toString() {
 		return new ToStringCreator(this)
-				.append("name", this.name)
-				.append("properties", this.properties).toString();
+	.append("name", this.name)
+	.append("properties", this.properties).toString();
 	}
 }

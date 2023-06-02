@@ -48,6 +48,7 @@ class CfEnvAwareResource implements Resource {
 	static CfEnvAwareResource of(Resource resource) {
 		return new CfEnvAwareResource(resource);
 	}
+
 	private CfEnvAwareResource(Resource resource) {
 		this.resource = resource;
 		this.hasCfEnv = CfEnvResolver.hasCfEnv(this);
@@ -117,8 +118,7 @@ class CfEnvAwareResource implements Resource {
 
 		private static final String CF_ENV = "io.pivotal.cfenv.core.CfEnv";
 
-		static boolean hasCfEnv(CfEnvAwareResource app
-		) {
+		static boolean hasCfEnv(CfEnvAwareResource app) {
 			try {
 				String scheme = app.getURI().getScheme().toLowerCase();
 				if (scheme.equals("docker")) {

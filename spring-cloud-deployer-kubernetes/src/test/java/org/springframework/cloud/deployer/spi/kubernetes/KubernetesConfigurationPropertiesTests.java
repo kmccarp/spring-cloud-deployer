@@ -37,7 +37,7 @@ public class KubernetesConfigurationPropertiesTests {
 		kubernetesDeployerProperties.getFabric8().setNamespace("testing");
 
 		KubernetesClient kubernetesClient = KubernetesClientFactory
-				.getKubernetesClient(kubernetesDeployerProperties);
+	.getKubernetesClient(kubernetesDeployerProperties);
 
 		assertThat(kubernetesClient.getMasterUrl().toString()).isEqualTo("http://localhost:8090");
 		assertThat(kubernetesClient.getNamespace()).isEqualTo("testing");
@@ -53,7 +53,7 @@ public class KubernetesConfigurationPropertiesTests {
 		kubernetesDeployerProperties.setNamespace("toplevel");
 
 		KubernetesClient kubernetesClient = KubernetesClientFactory
-				.getKubernetesClient(kubernetesDeployerProperties);
+	.getKubernetesClient(kubernetesDeployerProperties);
 
 		assertThat(kubernetesClient.getMasterUrl().toString()).isEqualTo("http://localhost:8090");
 		assertThat(kubernetesClient.getNamespace()).isEqualTo("toplevel");
@@ -70,7 +70,7 @@ public class KubernetesConfigurationPropertiesTests {
 		kubernetesDeployerProperties.setNamespace("toplevel");
 
 		KubernetesClient kubernetesClient = KubernetesClientFactory
-				.getKubernetesClient(kubernetesDeployerProperties);
+	.getKubernetesClient(kubernetesDeployerProperties);
 
 		assertThat(kubernetesClient.getMasterUrl().toString()).isEqualTo("http://localhost:8090");
 		assertThat(kubernetesClient.getNamespace()).isEqualTo("toplevel");

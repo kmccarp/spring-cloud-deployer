@@ -54,7 +54,7 @@ public class EventuallyMatcher<U> extends DiagnosingMatcher<U> {
 	@Override
 	protected boolean matches(Object item, Description mismatchDescription) {
 		mismatchDescription.appendText(
-				String.format("failed after %d*%d=%dms:%n", maxAttempts, pause, maxAttempts * pause));
+	String.format("failed after %d*%d=%dms:%n", maxAttempts, pause, maxAttempts * pause));
 		for (int i = 0; i < maxAttempts; i++) {
 			boolean result = delegate.matches(item);
 			if (result) {

@@ -45,7 +45,7 @@ public class DockerResourceTests {
 		assertEquals(image, r.getURI().getSchemeSpecificPart());
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidUri() throws IOException, URISyntaxException {
 		DockerResource r = new DockerResource(URI.create("http:" + image));
 	}

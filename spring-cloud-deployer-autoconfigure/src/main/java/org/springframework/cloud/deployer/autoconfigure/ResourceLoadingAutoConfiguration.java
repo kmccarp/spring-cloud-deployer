@@ -55,7 +55,7 @@ public class ResourceLoadingAutoConfiguration {
 		private final ObjectProvider<DelegatingResourceLoaderBuilderCustomizer> loaderBuilderCustomizers;
 
 		public DelegatingResourceLoaderConfig(
-				ObjectProvider<DelegatingResourceLoaderBuilderCustomizer> loaderBuilderCustomizers) {
+	ObjectProvider<DelegatingResourceLoaderBuilderCustomizer> loaderBuilderCustomizers) {
 			this.loaderBuilderCustomizers = loaderBuilderCustomizers;
 		}
 

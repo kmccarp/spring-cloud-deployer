@@ -42,7 +42,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableConfigurationProperties({KubernetesDeployerProperties.class, KubernetesTaskLauncherProperties.class})
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
 public class KubernetesAutoConfiguration {
-	
+
 	@Autowired
 	private KubernetesDeployerProperties deployerProperties;
 
@@ -52,14 +52,14 @@ public class KubernetesAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean(AppDeployer.class)
 	public AppDeployer appDeployer(KubernetesClient kubernetesClient,
-	                               ContainerFactory containerFactory) {
+ContainerFactory containerFactory) {
 		return new KubernetesAppDeployer(deployerProperties, kubernetesClient, containerFactory);
 	}
 
 	@Bean
 	@ConditionalOnMissingBean(TaskLauncher.class)
 	public TaskLauncher taskDeployer(KubernetesClient kubernetesClient,
-	                                 ContainerFactory containerFactory) {
+ContainerFactory containerFactory) {
 		return new KubernetesTaskLauncher(deployerProperties, taskLauncherProperties, kubernetesClient, containerFactory);
 	}
 
@@ -77,7 +77,7 @@ public class KubernetesAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean(ActuatorOperations.class)
 	ActuatorOperations actuatorOperations(RestTemplate actuatorRestTemplate, AppDeployer appDeployer,
-			KubernetesDeployerProperties properties) {
+KubernetesDeployerProperties properties) {
 		return new KubernetesActuatorTemplate(actuatorRestTemplate, appDeployer, properties.getAppAdmin());
 	}
 

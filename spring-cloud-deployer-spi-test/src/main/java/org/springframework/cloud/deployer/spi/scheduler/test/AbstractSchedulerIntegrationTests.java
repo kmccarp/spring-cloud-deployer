@@ -62,6 +62,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+
 /**
  * Contains base set of tests that are required for each implementation of
  * Spring Cloud Scheduler to pass.
@@ -188,7 +189,7 @@ public abstract class AbstractSchedulerIntegrationTests {
 
 		this.expectedException.expect(SchedulerException.class);
 		this.expectedException.expectMessage(String.format("Failed to unschedule schedule %s does not exist.",
-				scheduleName));
+	scheduleName));
 		unscheduleTestSchedule(scheduleName);
 	}
 
@@ -226,16 +227,16 @@ public abstract class AbstractSchedulerIntegrationTests {
 		String definitionName = randomName();
 		String scheduleName = scheduleName() + definitionName;
 		for (int i = 0; i < 4; i++) {
-			ScheduleRequest request = createScheduleRequest(scheduleName + i, definitionName + i%2);
+			ScheduleRequest request = createScheduleRequest(scheduleName + i, definitionName + i % 2);
 			taskScheduler().schedule(request);
 		}
 		ScheduleInfo scheduleInfo = new ScheduleInfo();
-		scheduleInfo.setScheduleName(scheduleName+0);
-		scheduleInfo.setTaskDefinitionName(definitionName+0);
+		scheduleInfo.setScheduleName(scheduleName + 0);
+		scheduleInfo.setTaskDefinitionName(definitionName + 0);
 		assertThat(scheduleInfo, EventuallyMatcher.eventually(
-				hasSpecifiedSchedulesByTaskDefinitionName(taskScheduler().list(definitionName+0),
-						scheduleInfo.getTaskDefinitionName(), 2),
-				this.scheduleTimeout.maxAttempts, this.scheduleTimeout.pause));
+	hasSpecifiedSchedulesByTaskDefinitionName(taskScheduler().list(definitionName + 0),
+scheduleInfo.getTaskDefinitionName(), 2),
+	this.scheduleTimeout.maxAttempts, this.scheduleTimeout.pause));
 	}
 
 	public Timeout getScheduleTimeout() {
@@ -276,8 +277,8 @@ public abstract class AbstractSchedulerIntegrationTests {
 
 	private void verifySchedule(ScheduleInfo scheduleInfo) {
 		assertThat(scheduleInfo, EventuallyMatcher.eventually(hasSpecifiedSchedule(taskScheduler().list(),
-				scheduleInfo.getScheduleName()), this.scheduleTimeout.maxAttempts,
-				this.scheduleTimeout.pause));
+	scheduleInfo.getScheduleName()), this.scheduleTimeout.maxAttempts,
+	this.scheduleTimeout.pause));
 	}
 
 	private void unscheduleTestSchedule(String scheduleName) {
@@ -288,8 +289,8 @@ public abstract class AbstractSchedulerIntegrationTests {
 		ScheduleInfo scheduleInfo = new ScheduleInfo();
 		scheduleInfo.setScheduleName(scheduleName);
 		assertThat(scheduleInfo, EventuallyMatcher.eventually(specifiedScheduleNotPresent(
-				taskScheduler().list(), scheduleName),
-				this.unScheduleTimeout.maxAttempts, this.unScheduleTimeout.pause));
+	taskScheduler().list(), scheduleName),
+	this.unScheduleTimeout.maxAttempts, this.unScheduleTimeout.pause));
 
 	}
 
@@ -345,7 +346,7 @@ public abstract class AbstractSchedulerIntegrationTests {
 			@Override
 			public boolean matches(Object item) {
 				boolean result = false;
-				if(schedules.size() == expectedScheduleCount) {
+				if (schedules.size() == expectedScheduleCount) {
 					for (ScheduleInfo scheduleInfo : schedules) {
 						if (scheduleInfo.getTaskDefinitionName().equals(taskDefinitionName)) {
 							result = true;
@@ -416,12 +417,12 @@ public abstract class AbstractSchedulerIntegrationTests {
 			throw new RuntimeException("Failed to determine which version of spring-cloud-deployer-spi-scheduler-test-app to use", e);
 		}
 		return new MavenResource.Builder(mavenProperties)
-				.groupId("org.springframework.cloud")
-				.artifactId("spring-cloud-deployer-spi-scheduler-test-app")
-				.classifier("exec")
-				.version(properties.getProperty("version"))
-				.extension("jar")
-				.build();
+	.groupId("org.springframework.cloud")
+	.artifactId("spring-cloud-deployer-spi-scheduler-test-app")
+	.classifier("exec")
+	.version(properties.getProperty("version"))
+	.extension("jar")
+	.build();
 	}
 
 	/**
@@ -432,7 +433,7 @@ public abstract class AbstractSchedulerIntegrationTests {
 	protected static class SchedulerWrapper implements Scheduler {
 		private final Scheduler wrapped;
 
-		private final Map<String,ScheduleRequest> scheduledTasks = new HashMap<>();
+		private final Map<String, ScheduleRequest> scheduledTasks = new HashMap<>();
 
 
 		public SchedulerWrapper(Scheduler wrapped) {

@@ -148,25 +148,25 @@ public class CloudFoundryTaskLauncherTests {
 		this.deploymentProperties.setApiTimeout(1);
 		this.deploymentProperties.setStatusTimeout(1_250L);
 		this.launcher = new CloudFoundryTaskLauncher(this.client,
-				this.deploymentProperties,
-				this.operations,
-				runtimeEnvironmentInfo);
+	this.deploymentProperties,
+	this.operations,
+	runtimeEnvironmentInfo);
 
 	}
 
 	@Test
 	public void cancel() {
 		givenRequestCancelTask("test-task-id", Mono.just(CancelTaskResponse.builder()
-			.id("test-task-id")
-			.memoryInMb(1024)
-			.diskInMb(1024)
-			.dropletId("1")
-			.createdAt(new Date().toString())
-			.updatedAt(new Date().toString())
-			.sequenceId(1)
-			.name("test-task-id")
-			.state(TaskState.CANCELING)
-			.build()));
+	.id("test-task-id")
+	.memoryInMb(1024)
+	.diskInMb(1024)
+	.dropletId("1")
+	.createdAt(new Date().toString())
+	.updatedAt(new Date().toString())
+	.sequenceId(1)
+	.name("test-task-id")
+	.state(TaskState.CANCELING)
+	.build()));
 
 		this.launcher.cancel("test-task-id");
 	}
@@ -230,9 +230,9 @@ public class CloudFoundryTaskLauncherTests {
 	public void automaticallyConfigureForCfEnv() throws JsonProcessingException {
 		Resource resource = new FileSystemResource("src/test/resources/log-sink-rabbit-3.0.0.BUILD-SNAPSHOT.jar");
 		AppDeploymentRequest appDeploymentRequest = new AppDeploymentRequest(new AppDefinition("test-application",
-					Collections.emptyMap()), resource, Collections.emptyMap());
+	Collections.emptyMap()), resource, Collections.emptyMap());
 
-		Map<String, String> env =  launcher.mergeEnvironmentVariables("test-application-id", appDeploymentRequest);
+		Map<String, String> env = launcher.mergeEnvironmentVariables("test-application-id", appDeploymentRequest);
 		// MatcherAssert.assertThat(env, hasEntry(CfEnvConfigurer.JBP_CONFIG_SPRING_AUTO_RECONFIGURATION, CfEnvConfigurer.ENABLED_FALSE));
 		// MatcherAssert.assertThat(env, hasKey(CoreMatchers.equalTo("SPRING_APPLICATION_JSON")));
 		// ObjectMapper objectMapper = new ObjectMapper();
@@ -323,47 +323,47 @@ public class CloudFoundryTaskLauncherTests {
 		givenRequestListApplications(Flux.empty());
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-			.manifest(ApplicationManifest.builder()
-				.path(this.resource.getFile().toPath())
-				.buildpack(deploymentProperties.getBuildpack())
-				.command("echo '*** First run of container to allow droplet creation.***' && sleep 300")
-				.disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk()))
-				.environmentVariable("SPRING_APPLICATION_JSON", "{}")
-				.healthCheckType(ApplicationHealthCheck.NONE)
-				.memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory()))
-				.name("test-application")
-				.noRoute(true)
-				.services(Collections.emptySet())
-				.build())
-			.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-			.startupTimeout(this.deploymentProperties.getStartupTimeout())
-			.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(this.resource.getFile().toPath())
+.buildpack(deploymentProperties.getBuildpack())
+.command("echo '*** First run of container to allow droplet creation.***' && sleep 300")
+.disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk()))
+.environmentVariable("SPRING_APPLICATION_JSON", "{}")
+.healthCheckType(ApplicationHealthCheck.NONE)
+.memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory()))
+.name("test-application")
+.noRoute(true)
+.services(Collections.emptySet())
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		givenRequestGetApplication("test-application", Mono.just(ApplicationDetail.builder()
-			.diskQuota(0)
-			.id("test-application-id")
-			.instances(1)
-			.memoryLimit(0)
-			.name("test-application")
-			.requestedState("RUNNING")
-			.runningInstances(1)
-			.stack("test-stack")
-			.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.stack("test-stack")
+	.build()));
 
 		givenRequestStopApplication("test-application", Mono.empty());
 
 		givenRequestGetApplicationSummary("test-application-id",
-				Mono.just(SummaryApplicationResponse.builder()
-			.id("test-application-id")
-			.detectedStartCommand("test-command")
-			.build()));
+	Mono.just(SummaryApplicationResponse.builder()
+.id("test-application-id")
+.detectedStartCommand("test-command")
+.build()));
 
 		givenRequestCreateTask("test-application-id",
-				"test-command",
-				this.deploymentProperties.getMemory(),
-				this.deploymentProperties.getDisk(),
-				"test-application",
-				Mono.error(new UnsupportedOperationException()));
+	"test-command",
+	this.deploymentProperties.getMemory(),
+	this.deploymentProperties.getDisk(),
+	"test-application",
+	Mono.error(new UnsupportedOperationException()));
 
 		assertThatThrownBy(() -> {
 			this.launcher.launch(defaultRequest());
@@ -374,7 +374,7 @@ public class CloudFoundryTaskLauncherTests {
 	public void launchTaskWithNonExistentApplicationBindingOneService() throws IOException {
 		setupTaskWithNonExistentApplicationBindingOneService(this.resource);
 		AppDeploymentRequest request = deploymentRequest(this.resource,
-			Collections.singletonMap(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY, "test-service-instance-2"));
+	Collections.singletonMap(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY, "test-service-instance-2"));
 
 		String taskId = this.launcher.launch(request);
 		assertThat(taskId).isEqualTo("test-task-id");
@@ -384,7 +384,7 @@ public class CloudFoundryTaskLauncherTests {
 	public void stageTaskWithNonExistentApplicationBindingOneService() throws IOException {
 		setupTaskWithNonExistentApplicationBindingOneService(this.resource);
 		AppDeploymentRequest request = deploymentRequest(this.resource,
-				Collections.singletonMap(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY, "test-service-instance-2"));
+	Collections.singletonMap(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY, "test-service-instance-2"));
 
 		SummaryApplicationResponse response = this.launcher.stage(request);
 		assertThat(response.getId()).isEqualTo("test-application-id");
@@ -395,19 +395,20 @@ public class CloudFoundryTaskLauncherTests {
 	public void launchTaskWithNonExistentApplicationBindingThreeServices() throws IOException {
 		setupTaskWithNonExistentApplicationBindingThreeServices(this.resource);
 		AppDeploymentRequest request = deploymentRequest(this.resource,
-			Collections.singletonMap(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY,
-					"test-service-instance-1,test-service-instance-2,test-service-instance-3"));
+	Collections.singletonMap(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY,
+"test-service-instance-1,test-service-instance-2,test-service-instance-3"));
 
 		String taskId = this.launcher.launch(request);
 
 		assertThat(taskId).isEqualTo("test-task-id");
 	}
+
 	@Test
 	public void stageTaskWithNonExistentApplicationBindingThreeServices() throws IOException {
 		setupTaskWithNonExistentApplicationBindingThreeServices(this.resource);
 		AppDeploymentRequest request = deploymentRequest(this.resource,
-				Collections.singletonMap(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY,
-						"test-service-instance-1,test-service-instance-2,test-service-instance-3"));
+	Collections.singletonMap(CloudFoundryDeploymentProperties.SERVICES_PROPERTY_KEY,
+"test-service-instance-1,test-service-instance-2,test-service-instance-3"));
 
 		SummaryApplicationResponse response = this.launcher.stage(request);
 		assertThat(response.getId()).isEqualTo("test-application-id");
@@ -435,16 +436,16 @@ public class CloudFoundryTaskLauncherTests {
 	@Test
 	public void status() {
 		givenRequestGetTask("test-task-id", Mono.just(GetTaskResponse.builder()
-			.id("test-task-id")
-				.memoryInMb(1024)
-				.diskInMb(1024)
-				.dropletId("1")
-				.createdAt(new Date().toString())
-				.updatedAt(new Date().toString())
-				.sequenceId(1)
-				.name("test-task-id")
-			.state(TaskState.SUCCEEDED)
-			.build()));
+	.id("test-task-id")
+	.memoryInMb(1024)
+	.diskInMb(1024)
+	.dropletId("1")
+	.createdAt(new Date().toString())
+	.updatedAt(new Date().toString())
+	.sequenceId(1)
+	.name("test-task-id")
+	.state(TaskState.SUCCEEDED)
+	.build()));
 
 		TaskStatus status = this.launcher.status("test-task-id");
 
@@ -457,18 +458,18 @@ public class CloudFoundryTaskLauncherTests {
 		long delay = (long) (this.deploymentProperties.getStatusTimeout() * .4f * 2);
 
 		givenRequestGetTask("test-task-id", Mono
-			.delay(Duration.ofMillis(delay))
-			.then(Mono.just(GetTaskResponse.builder()
-				.id("test-task-id")
-					.memoryInMb(1024)
-					.diskInMb(1024)
-					.dropletId("1")
-					.createdAt(new Date().toString())
-					.updatedAt(new Date().toString())
-					.sequenceId(1)
-					.name("test-task-id")
-				.state(TaskState.SUCCEEDED)
-				.build())));
+	.delay(Duration.ofMillis(delay))
+	.then(Mono.just(GetTaskResponse.builder()
+.id("test-task-id")
+.memoryInMb(1024)
+.diskInMb(1024)
+.dropletId("1")
+.createdAt(new Date().toString())
+.updatedAt(new Date().toString())
+.sequenceId(1)
+.name("test-task-id")
+.state(TaskState.SUCCEEDED)
+.build())));
 
 		assertThat(this.launcher.status("test-task-id").getState()).isEqualTo(LaunchState.error);
 	}
@@ -483,15 +484,15 @@ public class CloudFoundryTaskLauncherTests {
 	@Test
 	public void testCommand() {
 		AppDeploymentRequest request = new AppDeploymentRequest(new AppDefinition(
-				"test-app-1", null),
-				this.resource,
-				Collections.singletonMap("test-key-1", "test-val-1"),
-				Collections.singletonList("test-command-arg-1"));
+"test-app-1", null),
+	this.resource,
+	Collections.singletonMap("test-key-1", "test-val-1"),
+	Collections.singletonList("test-command-arg-1"));
 		String command = this.launcher.getCommand(SummaryApplicationResponse
-				.builder()
-				.detectedStartCommand("command-val")
-				.build(),
-				request);
+.builder()
+.detectedStartCommand("command-val")
+.build(),
+	request);
 		assertThat(command).isEqualTo("command-val test-command-arg-1");
 
 		List<String> args = new ArrayList<>();
@@ -502,241 +503,208 @@ public class CloudFoundryTaskLauncherTests {
 		args.add("run.id(long=1");
 		args.add("run.id)=1");
 		request = new AppDeploymentRequest(new AppDefinition(
-				"test-app-1", null),
-				this.resource,
-				Collections.singletonMap("test-key-1", "test-val-1"),
-				args);
+"test-app-1", null),
+	this.resource,
+	Collections.singletonMap("test-key-1", "test-val-1"),
+	args);
 		command = this.launcher.getCommand(SummaryApplicationResponse
-						.builder()
-						.detectedStartCommand("command-val")
-						.build(),
-				request);
+.builder()
+.detectedStartCommand("command-val")
+.build(),
+	request);
 		assertThat(command).isEqualTo("command-val test-command-arg-1 a=b run.id=1 run.id\\\\\\(long\\\\\\)=1 run.id\\\\\\(long=1 run.id\\\\\\)=1");
 	}
 
 	private void givenRequestCancelTask(String taskId, Mono<CancelTaskResponse> response) {
 		given(this.client.tasks()
-			.cancel(CancelTaskRequest.builder()
-				.taskId(taskId)
-				.build()))
-			.willReturn(response);
+	.cancel(CancelTaskRequest.builder()
+.taskId(taskId)
+.build()))
+	.willReturn(response);
 	}
 
 	private void givenRequestCreateTask(String applicationId,
-										String command,
-										String memory,
-										String disk,
-										String name,
-										Mono<CreateTaskResponse> response) {
+String command,
+String memory,
+String disk,
+String name,
+Mono<CreateTaskResponse> response) {
 
 		given(this.client.tasks()
-			.create(CreateTaskRequest.builder()
-				.applicationId(applicationId)
-				.command(command)
-				.memoryInMb((int) ByteSizeUtils.parseToMebibytes(memory))
-				.diskInMb((int) ByteSizeUtils.parseToMebibytes(disk))
-				.name(name)
-				.build()))
-			.willReturn(response);
+	.create(CreateTaskRequest.builder()
+.applicationId(applicationId)
+.command(command)
+.memoryInMb((int) ByteSizeUtils.parseToMebibytes(memory))
+.diskInMb((int) ByteSizeUtils.parseToMebibytes(disk))
+.name(name)
+.build()))
+	.willReturn(response);
 	}
 
 	private void givenRequestDeleteApplication(String appName) {
 		given(this.operations.applications()
-			.delete(DeleteApplicationRequest.builder()
-				.name(appName)
-				.deleteRoutes(true)
-				.build()))
-			.willReturn(Mono.empty());
+	.delete(DeleteApplicationRequest.builder()
+.name(appName)
+.deleteRoutes(true)
+.build()))
+	.willReturn(Mono.empty());
 	}
 
 	private void givenRequestGetApplication(String name, Mono<ApplicationDetail> response) {
 		given(this.operations.applications()
-			.get(GetApplicationRequest.builder()
-				.name(name)
-				.build()))
-			.willReturn(response);
+	.get(GetApplicationRequest.builder()
+.name(name)
+.build()))
+	.willReturn(response);
 	}
 
 	private void givenRequestGetApplicationSummary(String applicationId, Mono<SummaryApplicationResponse> response) {
 		given(this.client.applicationsV2()
-			.summary(org.cloudfoundry.client.v2.applications.SummaryApplicationRequest.builder()
-				.applicationId(applicationId)
-				.build()))
-			.willReturn(response);
+	.summary(org.cloudfoundry.client.v2.applications.SummaryApplicationRequest.builder()
+.applicationId(applicationId)
+.build()))
+	.willReturn(response);
 	}
 
 	private void givenRequestGetTask(String taskId, Mono<GetTaskResponse> response) {
 		given(this.client.tasks()
-			.get(GetTaskRequest.builder()
-				.taskId(taskId)
-				.build()))
-			.willReturn(response);
+	.get(GetTaskRequest.builder()
+.taskId(taskId)
+.build()))
+	.willReturn(response);
 	}
 
 	private void givenRequestListApplications(Flux<ApplicationSummary> response) {
 		given(this.operations.applications()
-			.list())
-			.willReturn(response);
+	.list())
+	.willReturn(response);
 	}
 
 	private void givenRequestPushApplication(PushApplicationManifestRequest request, Mono<Void> response) {
 		given(this.operations.applications()
-			.pushManifest(any(PushApplicationManifestRequest.class)))
-			.willReturn(response);
+	.pushManifest(any(PushApplicationManifestRequest.class)))
+	.willReturn(response);
 	}
 
 	private void givenRequestStopApplication(String name, Mono<Void> response) {
 		given(this.operations.applications()
-			.stop(StopApplicationRequest.builder()
-				.name(name)
-				.build()))
-			.willReturn(response);
+	.stop(StopApplicationRequest.builder()
+.name(name)
+.build()))
+	.willReturn(response);
 	}
 
 	private void setupExistingAppSuccessful() {
-			givenRequestListApplications(Flux.just(ApplicationSummary.builder()
-					.diskQuota(0)
-					.id("test-application-id")
-					.instances(1)
-					.memoryLimit(0)
-					.name("test-application")
-					.requestedState("RUNNING")
-					.runningInstances(1)
-					.build()));
+		givenRequestListApplications(Flux.just(ApplicationSummary.builder()
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.build()));
 
-			givenRequestGetApplicationSummary("test-application-id", Mono.just(SummaryApplicationResponse.builder()
-					.id("test-application-id")
-					.detectedStartCommand("test-command")
-					.build()));
+		givenRequestGetApplicationSummary("test-application-id", Mono.just(SummaryApplicationResponse.builder()
+	.id("test-application-id")
+	.detectedStartCommand("test-command")
+	.build()));
 
-			givenRequestCreateTask("test-application-id",
-						"test-command",
-						this.deploymentProperties.getMemory(),
-					this.deploymentProperties.getDisk(),
-					"test-application",
-						Mono.just(CreateTaskResponse.builder()
-					.id("test-task-id")
-					.memoryInMb(1024)
-					.diskInMb(1024)
-					.dropletId("1")
-					.createdAt(new Date().toString())
-					.updatedAt(new Date().toString())
-					.sequenceId(1)
-					.name("test-task-id")
-					.state(TaskState.FAILED)
-					.build()));
+		givenRequestCreateTask("test-application-id",
+	"test-command",
+	this.deploymentProperties.getMemory(),
+	this.deploymentProperties.getDisk(),
+	"test-application",
+	Mono.just(CreateTaskResponse.builder()
+.id("test-task-id")
+.memoryInMb(1024)
+.diskInMb(1024)
+.dropletId("1")
+.createdAt(new Date().toString())
+.updatedAt(new Date().toString())
+.sequenceId(1)
+.name("test-task-id")
+.state(TaskState.FAILED)
+.build()));
 	}
 
-	private void setupTaskWithNonExistentApplication(Resource resource) throws IOException{
+	private void setupTaskWithNonExistentApplication(Resource resource) throws IOException {
 		givenRequestListApplications(Flux.empty());
 
 		givenRequestPushApplication(
-				PushApplicationManifestRequest.builder()
-						.manifest(ApplicationManifest.builder()
-								.path(resource.getFile().toPath())
-								.buildpack(deploymentProperties.getBuildpack())
-								.command("echo '*** First run of container to allow droplet creation.***' && sleep 300")
-								.disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk()))
-								.environmentVariable("SPRING_APPLICATION_JSON", "{}")
-								.healthCheckType(ApplicationHealthCheck.NONE)
-								.memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory()))
-								.name("test-application")
-								.noRoute(true)
-								.services(Collections.emptySet())
-								.build())
-						.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-						.startupTimeout(this.deploymentProperties.getStartupTimeout())
-						.build(), Mono.empty());
+	PushApplicationManifestRequest.builder()
+.manifest(ApplicationManifest.builder().path(resource.getFile().toPath()).buildpack(deploymentProperties.getBuildpack()).command("echo '*** First run of container to allow droplet creation.***' && sleep 300").disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk())).environmentVariable("SPRING_APPLICATION_JSON", "{}").healthCheckType(ApplicationHealthCheck.NONE).memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory())).name("test-application").noRoute(true).services(Collections.emptySet()).build())
+.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+.startupTimeout(this.deploymentProperties.getStartupTimeout())
+.build(), Mono.empty());
 
 		givenRequestGetApplication("test-application", Mono.just(ApplicationDetail.builder()
-				.diskQuota(0)
-				.id("test-application-id")
-				.instances(1)
-				.memoryLimit(0)
-				.name("test-application")
-				.requestedState("RUNNING")
-				.runningInstances(1)
-				.stack("test-stack")
-				.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.stack("test-stack")
+	.build()));
 
 		givenRequestStopApplication("test-application", Mono.empty());
 
 		givenRequestGetApplicationSummary("test-application-id", Mono.just(SummaryApplicationResponse.builder()
-				.id("test-application-id")
-				.detectedStartCommand("test-command")
-				.build()));
+	.id("test-application-id")
+	.detectedStartCommand("test-command")
+	.build()));
 
 		givenRequestCreateTask("test-application-id",
-					"test-command",
-					this.deploymentProperties.getMemory(),
-				this.deploymentProperties.getDisk(),
-				"test-application",
-					Mono.just(CreateTaskResponse.builder()
-				.id("test-task-id")
-				.memoryInMb(1024)
-				.diskInMb(1024)
-				.dropletId("1")
-				.createdAt(new Date().toString())
-				.updatedAt(new Date().toString())
-				.sequenceId(1)
-				.name("test-task-id")
-				.state(TaskState.SUCCEEDED)
-				.build()));
+	"test-command",
+	this.deploymentProperties.getMemory(),
+	this.deploymentProperties.getDisk(),
+	"test-application",
+	Mono.just(CreateTaskResponse.builder()
+.id("test-task-id")
+.memoryInMb(1024)
+.diskInMb(1024)
+.dropletId("1")
+.createdAt(new Date().toString())
+.updatedAt(new Date().toString())
+.sequenceId(1)
+.name("test-task-id")
+.state(TaskState.SUCCEEDED)
+.build()));
 	}
 
-	private void setupFailedPush(Resource resource) throws IOException{
+	private void setupFailedPush(Resource resource) throws IOException {
 		givenRequestListApplications(Flux.empty());
 
 		givenRequestPushApplication(
-				PushApplicationManifestRequest.builder()
-						.manifest(ApplicationManifest.builder()
-								.path(resource.getFile().toPath())
-								.buildpack(deploymentProperties.getBuildpack())
-								.command("echo '*** First run of container to allow droplet creation.***' && sleep 300")
-								.disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk()))
-								.environmentVariable("SPRING_APPLICATION_JSON", "{}")
-								.healthCheckType(ApplicationHealthCheck.NONE)
-								.memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory()))
-								.name("test-application")
-								.noRoute(true)
-								.services(Collections.emptySet())
-								.build())
-						.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-						.startupTimeout(this.deploymentProperties.getStartupTimeout())
-						.build(), Mono.error(new UnsupportedOperationException()));
+	PushApplicationManifestRequest.builder()
+.manifest(ApplicationManifest.builder().path(resource.getFile().toPath()).buildpack(deploymentProperties.getBuildpack()).command("echo '*** First run of container to allow droplet creation.***' && sleep 300").disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk())).environmentVariable("SPRING_APPLICATION_JSON", "{}").healthCheckType(ApplicationHealthCheck.NONE).memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory())).name("test-application").noRoute(true).services(Collections.emptySet()).build())
+.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+.startupTimeout(this.deploymentProperties.getStartupTimeout())
+.build(), Mono.error(new UnsupportedOperationException()));
 	}
 
 	private void setupTaskWithNonExistentApplicationAndRetrievingApplicationSummaryFails(Resource resource) throws IOException {
 		givenRequestListApplications(Flux.empty());
 
 		givenRequestPushApplication(
-				PushApplicationManifestRequest.builder()
-						.manifest(ApplicationManifest.builder()
-								.path(resource.getFile().toPath())
-								.buildpack(deploymentProperties.getBuildpack())
-								.command("echo '*** First run of container to allow droplet creation.***' && sleep 300")
-								.disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk()))
-								.environmentVariable("SPRING_APPLICATION_JSON", "{}")
-								.healthCheckType(ApplicationHealthCheck.NONE)
-								.memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory()))
-								.name("test-application")
-								.noRoute(true)
-								.services(Collections.emptySet())
-								.build())
-						.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-						.startupTimeout(this.deploymentProperties.getStartupTimeout())
-						.build(), Mono.empty());
+	PushApplicationManifestRequest.builder()
+.manifest(ApplicationManifest.builder().path(resource.getFile().toPath()).buildpack(deploymentProperties.getBuildpack()).command("echo '*** First run of container to allow droplet creation.***' && sleep 300").disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk())).environmentVariable("SPRING_APPLICATION_JSON", "{}").healthCheckType(ApplicationHealthCheck.NONE).memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory())).name("test-application").noRoute(true).services(Collections.emptySet()).build())
+.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+.startupTimeout(this.deploymentProperties.getStartupTimeout())
+.build(), Mono.empty());
 
 		givenRequestGetApplication("test-application", Mono.just(ApplicationDetail.builder()
-				.diskQuota(0)
-				.id("test-application-id")
-				.instances(1)
-				.memoryLimit(0)
-				.name("test-application")
-				.requestedState("RUNNING")
-				.runningInstances(1)
-				.stack("test-stack")
-				.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.stack("test-stack")
+	.build()));
 
 		givenRequestStopApplication("test-application", Mono.empty());
 
@@ -748,33 +716,22 @@ public class CloudFoundryTaskLauncherTests {
 		givenRequestListApplications(Flux.empty());
 
 		givenRequestPushApplication(
-				PushApplicationManifestRequest.builder()
-						.manifest(ApplicationManifest.builder()
-								.path(resource.getFile().toPath())
-								.buildpack(deploymentProperties.getBuildpack())
-								.command("echo '*** First run of container to allow droplet creation.***' && sleep 300")
-								.disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk()))
-								.environmentVariable("SPRING_APPLICATION_JSON", "{}")
-								.healthCheckType(ApplicationHealthCheck.NONE)
-								.memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory()))
-								.name("test-application")
-								.noRoute(true)
-								.services(Collections.emptySet())
-								.build())
-						.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-						.startupTimeout(this.deploymentProperties.getStartupTimeout())
-						.build(), Mono.empty());
+	PushApplicationManifestRequest.builder()
+.manifest(ApplicationManifest.builder().path(resource.getFile().toPath()).buildpack(deploymentProperties.getBuildpack()).command("echo '*** First run of container to allow droplet creation.***' && sleep 300").disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk())).environmentVariable("SPRING_APPLICATION_JSON", "{}").healthCheckType(ApplicationHealthCheck.NONE).memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory())).name("test-application").noRoute(true).services(Collections.emptySet()).build())
+.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+.startupTimeout(this.deploymentProperties.getStartupTimeout())
+.build(), Mono.empty());
 
 		givenRequestGetApplication("test-application", Mono.just(ApplicationDetail.builder()
-				.diskQuota(0)
-				.id("test-application-id")
-				.instances(1)
-				.memoryLimit(0)
-				.name("test-application")
-				.requestedState("RUNNING")
-				.runningInstances(1)
-				.stack("test-stack")
-				.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.stack("test-stack")
+	.build()));
 
 		givenRequestStopApplication("test-application", Mono.error(new UnsupportedOperationException()));
 	}
@@ -784,136 +741,136 @@ public class CloudFoundryTaskLauncherTests {
 		givenRequestListApplications(Flux.empty());
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack(deploymentProperties.getBuildpack())
-						.command("echo '*** First run of container to allow droplet creation.***' && sleep 300")
-						.disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk()))
-						.environmentVariable("SPRING_APPLICATION_JSON", "{}")
-						.healthCheckType(ApplicationHealthCheck.NONE)
-						.memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory()))
-						.name("test-application")
-						.noRoute(true)
-						.service("test-service-instance-2")
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack(deploymentProperties.getBuildpack())
+.command("echo '*** First run of container to allow droplet creation.***' && sleep 300")
+.disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk()))
+.environmentVariable("SPRING_APPLICATION_JSON", "{}")
+.healthCheckType(ApplicationHealthCheck.NONE)
+.memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory()))
+.name("test-application")
+.noRoute(true)
+.service("test-service-instance-2")
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		givenRequestGetApplication("test-application", Mono.just(ApplicationDetail.builder()
-				.diskQuota(0)
-				.id("test-application-id")
-				.instances(1)
-				.memoryLimit(0)
-				.name("test-application")
-				.requestedState("RUNNING")
-				.runningInstances(1)
-				.stack("test-stack")
-				.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.stack("test-stack")
+	.build()));
 
 		givenRequestStopApplication("test-application", Mono.empty());
 
 		givenRequestGetApplicationSummary("test-application-id", Mono.just(SummaryApplicationResponse.builder()
-				.id("test-application-id")
+	.id("test-application-id")
 
-				.detectedStartCommand("test-command")
-				.build()));
+	.detectedStartCommand("test-command")
+	.build()));
 
 		givenRequestCreateTask("test-application-id",
-					"test-command",
-					this.deploymentProperties.getMemory(),
-				this.deploymentProperties.getDisk(),
-				"test-application",
-					Mono.just(CreateTaskResponse.builder()
-				.id("test-task-id")
-				.memoryInMb(1024)
-				.diskInMb(1024)
-				.dropletId("1")
-				.createdAt(new Date().toString())
-				.updatedAt(new Date().toString())
-				.sequenceId(1)
-				.name("test-task-id")
-				.state(TaskState.SUCCEEDED)
-				.build()));
+	"test-command",
+	this.deploymentProperties.getMemory(),
+	this.deploymentProperties.getDisk(),
+	"test-application",
+	Mono.just(CreateTaskResponse.builder()
+.id("test-task-id")
+.memoryInMb(1024)
+.diskInMb(1024)
+.dropletId("1")
+.createdAt(new Date().toString())
+.updatedAt(new Date().toString())
+.sequenceId(1)
+.name("test-task-id")
+.state(TaskState.SUCCEEDED)
+.build()));
 	}
 
 	private void setupTaskWithNonExistentApplicationBindingThreeServices(Resource resource) throws IOException {
 		givenRequestListApplications(Flux.empty());
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack(deploymentProperties.getBuildpack())
-						.command("echo '*** First run of container to allow droplet creation.***' && sleep 300")
-						.disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk()))
-						.environmentVariable("SPRING_APPLICATION_JSON", "{}")
-						.healthCheckType(ApplicationHealthCheck.NONE)
-						.memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory()))
-						.name("test-application")
-						.noRoute(true)
-						.service("test-service-instance-1")
-						.service("test-service-instance-2")
-						.service("test-service-instance-3")
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack(deploymentProperties.getBuildpack())
+.command("echo '*** First run of container to allow droplet creation.***' && sleep 300")
+.disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk()))
+.environmentVariable("SPRING_APPLICATION_JSON", "{}")
+.healthCheckType(ApplicationHealthCheck.NONE)
+.memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory()))
+.name("test-application")
+.noRoute(true)
+.service("test-service-instance-1")
+.service("test-service-instance-2")
+.service("test-service-instance-3")
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		givenRequestGetApplication("test-application", Mono.just(ApplicationDetail.builder()
-				.diskQuota(0)
-				.id("test-application-id")
-				.instances(1)
-				.memoryLimit(0)
-				.name("test-application")
-				.requestedState("RUNNING")
-				.runningInstances(1)
-				.stack("test-stack")
-				.build()));
+	.diskQuota(0)
+	.id("test-application-id")
+	.instances(1)
+	.memoryLimit(0)
+	.name("test-application")
+	.requestedState("RUNNING")
+	.runningInstances(1)
+	.stack("test-stack")
+	.build()));
 
 		givenRequestStopApplication("test-application", Mono.empty());
 
 		givenRequestGetApplicationSummary("test-application-id", Mono.just(SummaryApplicationResponse.builder()
-				.id("test-application-id")
-				.detectedStartCommand("test-command")
-				.build()));
+	.id("test-application-id")
+	.detectedStartCommand("test-command")
+	.build()));
 
 		givenRequestCreateTask("test-application-id",
-					"test-command",
-					this.deploymentProperties.getMemory(),
-				this.deploymentProperties.getDisk(),
-				"test-application",
-					Mono.just(CreateTaskResponse.builder()
-				.id("test-task-id")
-				.memoryInMb(1024)
-				.diskInMb(1024)
-				.dropletId("1")
-				.createdAt(new Date().toString())
-				.updatedAt(new Date().toString())
-				.sequenceId(1)
-				.name("test-task-id")
-				.state(TaskState.SUCCEEDED)
-				.build()));
+	"test-command",
+	this.deploymentProperties.getMemory(),
+	this.deploymentProperties.getDisk(),
+	"test-application",
+	Mono.just(CreateTaskResponse.builder()
+.id("test-task-id")
+.memoryInMb(1024)
+.diskInMb(1024)
+.dropletId("1")
+.createdAt(new Date().toString())
+.updatedAt(new Date().toString())
+.sequenceId(1)
+.name("test-task-id")
+.state(TaskState.SUCCEEDED)
+.build()));
 	}
 
 	public void setupTaskWithNonExistentApplicationRetrievalFails(Resource resource) throws IOException {
 		givenRequestListApplications(Flux.empty());
 
 		givenRequestPushApplication(PushApplicationManifestRequest.builder()
-				.manifest(ApplicationManifest.builder()
-						.path(resource.getFile().toPath())
-						.buildpack(deploymentProperties.getBuildpack())
-						.command("echo '*** First run of container to allow droplet creation.***' && sleep 300")
-						.disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk()))
-						.environmentVariable("SPRING_APPLICATION_JSON", "{}")
-						.healthCheckType(ApplicationHealthCheck.NONE)
-						.memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory()))
-						.name("test-application")
-						.noRoute(true)
-						.services(Collections.emptySet())
-						.build())
-				.stagingTimeout(this.deploymentProperties.getStagingTimeout())
-				.startupTimeout(this.deploymentProperties.getStartupTimeout())
-				.build(), Mono.empty());
+	.manifest(ApplicationManifest.builder()
+.path(resource.getFile().toPath())
+.buildpack(deploymentProperties.getBuildpack())
+.command("echo '*** First run of container to allow droplet creation.***' && sleep 300")
+.disk((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getDisk()))
+.environmentVariable("SPRING_APPLICATION_JSON", "{}")
+.healthCheckType(ApplicationHealthCheck.NONE)
+.memory((int) ByteSizeUtils.parseToMebibytes(this.deploymentProperties.getMemory()))
+.name("test-application")
+.noRoute(true)
+.services(Collections.emptySet())
+.build())
+	.stagingTimeout(this.deploymentProperties.getStagingTimeout())
+	.startupTimeout(this.deploymentProperties.getStartupTimeout())
+	.build(), Mono.empty());
 
 		givenRequestStopApplication("test-application", Mono.empty());
 
@@ -923,46 +880,45 @@ public class CloudFoundryTaskLauncherTests {
 	private AppDeploymentRequest defaultRequest() {
 		return deploymentRequest(this.resource, Collections.emptyMap());
 	}
-	private AppDeploymentRequest deploymentRequest(Resource resource, Map<String,String> deploymentProperties) {
+
+	private AppDeploymentRequest deploymentRequest(Resource resource, Map<String, String> deploymentProperties) {
 		AppDefinition definition = new AppDefinition("test-application", null);
 		return new AppDeploymentRequest(definition, resource, deploymentProperties);
 	}
 
 	private Mono<ListTasksResponse> runningTasksResponse() {
 		List<TaskResource> taskResources = new ArrayList<>();
-		for (int i=0; i< TASK_EXECUTION_COUNT; i++) {
+		for (int i = 0; i < TASK_EXECUTION_COUNT; i++) {
 			taskResources.add(TaskResource.builder()
-				.name("task-" + i)
-				.dropletId(UUID.randomUUID().toString())
-				.id(UUID.randomUUID().toString())
-				.diskInMb(2048)
-				.sequenceId(i)
-				.state(TaskState.RUNNING)
-				.memoryInMb(2048)
-				.createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-				.build());
+		.name("task-" + i)
+		.dropletId(UUID.randomUUID().toString())
+		.id(UUID.randomUUID().toString())
+		.diskInMb(2048)
+		.sequenceId(i)
+		.state(TaskState.RUNNING)
+		.memoryInMb(2048)
+		.createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+		.build());
 		}
 		ListTasksResponse listTasksResponse = ListTasksResponse.builder().resources(taskResources)
-			.pagination(Pagination.builder().totalResults(taskResources.size()).build())
-			.build();
+	.pagination(Pagination.builder().totalResults(taskResources.size()).build())
+	.build();
 		return Mono.just(listTasksResponse);
 	}
 
 	private Mono<ListOrganizationsResponse> listOrganizationsResponse() {
 		ListOrganizationsResponse response = ListOrganizationsResponse.builder()
-		.addAllResources(Collections.<OrganizationResource>singletonList(
-				OrganizationResource.builder()
-						.metadata(Metadata.builder().id("123").build()).build())
-		).build();
+	.addAllResources(Collections.<OrganizationResource>singletonList(
+OrganizationResource.builder().metadata(Metadata.builder().id("123").build()).build())
+	).build();
 		return Mono.just(response);
 	}
 
 	private Mono<ListSpacesResponse> listSpacesResponse() {
 		ListSpacesResponse response = ListSpacesResponse.builder()
-				.addAllResources(Collections.<SpaceResource>singletonList(
-						SpaceResource.builder()
-								.metadata(Metadata.builder().id("123").build()).build())
-				).build();
+	.addAllResources(Collections.<SpaceResource>singletonList(
+SpaceResource.builder().metadata(Metadata.builder().id("123").build()).build())
+	).build();
 		return Mono.just(response);
 	}
 }

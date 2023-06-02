@@ -70,49 +70,49 @@ public class CloudFoundryDeployerAutoConfiguration {
 	@ConditionalOnMissingBean
 	public CloudFoundryOperations cloudFoundryOperations(CloudFoundryClient cloudFoundryClient, CloudFoundryConnectionProperties properties) {
 		return DefaultCloudFoundryOperations.builder()
-			.cloudFoundryClient(cloudFoundryClient)
-			.organization(properties.getOrg())
-			.space(properties.getSpace())
-			.build();
+	.cloudFoundryClient(cloudFoundryClient)
+	.organization(properties.getOrg())
+	.space(properties.getSpace())
+	.build();
 	}
 
 	private RuntimeEnvironmentInfo runtimeEnvironmentInfo(Class spiClass, Class implementationClass) {
 		CloudFoundryClient client = connectionConfiguration.cloudFoundryClient(
-			connectionConfiguration.connectionContext(connectionConfiguration.cloudFoundryConnectionProperties()),
-			connectionConfiguration.tokenProvider(connectionConfiguration.cloudFoundryConnectionProperties()));
+	connectionConfiguration.connectionContext(connectionConfiguration.cloudFoundryConnectionProperties()),
+	connectionConfiguration.tokenProvider(connectionConfiguration.cloudFoundryConnectionProperties()));
 		Version version = connectionConfiguration.version(client);
 
 		return new CloudFoundryPlatformSpecificInfo(new RuntimeEnvironmentInfo.Builder())
-			.apiEndpoint(connectionConfiguration.cloudFoundryConnectionProperties().getUrl().toString())
-			.org(connectionConfiguration.cloudFoundryConnectionProperties().getOrg())
-			.space(connectionConfiguration.cloudFoundryConnectionProperties().getSpace())
-			.builder()
-				.implementationName(implementationClass.getSimpleName())
-				.spiClass(spiClass)
-				.implementationVersion(RuntimeVersionUtils.getVersion(CloudFoundryAppDeployer.class))
-				.platformType("Cloud Foundry")
-				.platformClientVersion(RuntimeVersionUtils.getVersion(client.getClass()))
-				.platformApiVersion(version.toString())
-				.platformHostVersion("unknown")
-				.build();
+	.apiEndpoint(connectionConfiguration.cloudFoundryConnectionProperties().getUrl().toString())
+	.org(connectionConfiguration.cloudFoundryConnectionProperties().getOrg())
+	.space(connectionConfiguration.cloudFoundryConnectionProperties().getSpace())
+	.builder()
+	.implementationName(implementationClass.getSimpleName())
+	.spiClass(spiClass)
+	.implementationVersion(RuntimeVersionUtils.getVersion(CloudFoundryAppDeployer.class))
+	.platformType("Cloud Foundry")
+	.platformClientVersion(RuntimeVersionUtils.getVersion(client.getClass()))
+	.platformApiVersion(version.toString())
+	.platformHostVersion("unknown")
+	.build();
 	}
 
 	@Bean
 	@ConditionalOnMissingBean(AppDeployer.class)
 	public AppDeployer appDeployer(CloudFoundryOperations operations,
-		AppNameGenerator applicationNameGenerator) {
+AppNameGenerator applicationNameGenerator) {
 		return new CloudFoundryAppDeployer(
-			applicationNameGenerator,
-			connectionConfiguration.appDeploymentProperties(),
-			operations,
-			runtimeEnvironmentInfo(AppDeployer.class, CloudFoundryAppDeployer.class)
+	applicationNameGenerator,
+	connectionConfiguration.appDeploymentProperties(),
+	operations,
+	runtimeEnvironmentInfo(AppDeployer.class, CloudFoundryAppDeployer.class)
 		);
 	}
 
 	@Bean
 	CloudFoundryActuatorTemplate actuatorOperations(RestTemplate actuatorRestTemplate, AppDeployer appDeployer) {
 		return new CloudFoundryActuatorTemplate(actuatorRestTemplate, appDeployer,
-				connectionConfiguration.appDeploymentProperties().getAppAdmin());
+	connectionConfiguration.appDeploymentProperties().getAppAdmin());
 	}
 
 	@Bean
@@ -129,17 +129,18 @@ public class CloudFoundryDeployerAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean(TaskLauncher.class)
 	public TaskLauncher taskLauncher(CloudFoundryClient client,
-		CloudFoundryOperations operations,
-		Version version) {
+CloudFoundryOperations operations,
+Version version) {
 
 		if (version.greaterThanOrEqualTo(UnsupportedVersionTaskLauncher.MINIMUM_SUPPORTED_VERSION)) {
 			RuntimeEnvironmentInfo runtimeEnvironmentInfo = runtimeEnvironmentInfo(TaskLauncher.class, CloudFoundryTaskLauncher.class);
 			return new CloudFoundryTaskLauncher(
-				client,
-				connectionConfiguration.taskDeploymentProperties(),
-				operations,
-				runtimeEnvironmentInfo);
-		} else {
+		client,
+		connectionConfiguration.taskDeploymentProperties(),
+		operations,
+		runtimeEnvironmentInfo);
+		}
+		else {
 			RuntimeEnvironmentInfo runtimeEnvironmentInfo = runtimeEnvironmentInfo(TaskLauncher.class, UnsupportedVersionTaskLauncher.class);
 			return new UnsupportedVersionTaskLauncher(version, runtimeEnvironmentInfo);
 		}
@@ -185,32 +186,32 @@ public class CloudFoundryDeployerAutoConfiguration {
 		@ConditionalOnMissingBean
 		public Version version(CloudFoundryClient client) {
 			return client.info()
-				.get(GetInfoRequest.builder()
-					.build())
-				.map(response -> Version.valueOf(response.getApiVersion()))
-				.doOnError(e -> {
-					throw new RuntimeException("Bad credentials connecting to Cloud Foundry.", e);
-				})
-				.doOnNext(version -> logger.info("Connecting to Cloud Foundry with API Version {}", version))
-				.block(Duration.ofSeconds(appDeploymentProperties().getApiTimeout()));
+		.get(GetInfoRequest.builder()
+	.build())
+		.map(response -> Version.valueOf(response.getApiVersion()))
+		.doOnError(e -> {
+			throw new RuntimeException("Bad credentials connecting to Cloud Foundry.", e);
+		})
+		.doOnNext(version -> logger.info("Connecting to Cloud Foundry with API Version {}", version))
+		.block(Duration.ofSeconds(appDeploymentProperties().getApiTimeout()));
 		}
 
 		@Bean
 		@ConditionalOnMissingBean
 		public CloudFoundryClient cloudFoundryClient(ConnectionContext connectionContext, TokenProvider tokenProvider) {
 			return ReactorCloudFoundryClient.builder()
-				.connectionContext(connectionContext)
-				.tokenProvider(tokenProvider)
-				.build();
+		.connectionContext(connectionContext)
+		.tokenProvider(tokenProvider)
+		.build();
 		}
 
 		@Bean
 		@ConditionalOnMissingBean
 		public TokenProvider tokenProvider(CloudFoundryConnectionProperties properties) {
 			Builder tokenProviderBuilder = PasswordGrantTokenProvider.builder()
-					.username(properties.getUsername())
-					.password(properties.getPassword())
-					.loginHint(properties.getLoginHint());
+		.username(properties.getUsername())
+		.password(properties.getPassword())
+		.loginHint(properties.getLoginHint());
 			if (StringUtils.hasText(properties.getClientId())) {
 				tokenProviderBuilder.clientId(properties.getClientId());
 			}
@@ -231,9 +232,9 @@ public class CloudFoundryDeployerAutoConfiguration {
 		@ConditionalOnMissingBean
 		public ConnectionContext connectionContext(CloudFoundryConnectionProperties properties) {
 			return DefaultConnectionContext.builder()
-				.apiHost(properties.getUrl().getHost())
-				.skipSslValidation(properties.isSkipSslValidation())
-				.build();
+		.apiHost(properties.getUrl().getHost())
+		.skipSslValidation(properties.isSkipSslValidation())
+		.build();
 		}
 	}
 }

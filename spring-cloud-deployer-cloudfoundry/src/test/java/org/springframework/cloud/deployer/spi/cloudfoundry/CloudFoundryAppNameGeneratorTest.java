@@ -32,7 +32,7 @@ public class CloudFoundryAppNameGeneratorTest {
 		properties.setEnableRandomAppNamePrefix(false);
 		properties.setAppNamePrefix("dataflow");
 		CloudFoundryAppNameGenerator deploymentCustomizer =
-				new CloudFoundryAppNameGenerator(properties);
+	new CloudFoundryAppNameGenerator(properties);
 		deploymentCustomizer.afterPropertiesSet();
 
 		assertThat(deploymentCustomizer.generateAppName("foo")).isEqualTo("dataflow-foo");
@@ -44,7 +44,7 @@ public class CloudFoundryAppNameGeneratorTest {
 		properties.setEnableRandomAppNamePrefix(true);
 		properties.setAppNamePrefix("dataflow-longername");
 		CloudFoundryAppNameGenerator deploymentCustomizer =
-				new CloudFoundryAppNameGenerator(properties);
+	new CloudFoundryAppNameGenerator(properties);
 		deploymentCustomizer.afterPropertiesSet();
 
 		String deploymentIdWithUniquePrefix = deploymentCustomizer.generateAppName("foo");
@@ -61,7 +61,7 @@ public class CloudFoundryAppNameGeneratorTest {
 		properties.setEnableRandomAppNamePrefix(true);
 		properties.setAppNamePrefix("");
 		CloudFoundryAppNameGenerator deploymentCustomizer =
-				new CloudFoundryAppNameGenerator(properties);
+	new CloudFoundryAppNameGenerator(properties);
 		deploymentCustomizer.afterPropertiesSet();
 
 		String deploymentIdWithUniquePrefix = deploymentCustomizer.generateAppName("foo");
@@ -74,7 +74,7 @@ public class CloudFoundryAppNameGeneratorTest {
 		properties.setEnableRandomAppNamePrefix(false);
 		properties.setAppNamePrefix("");
 		CloudFoundryAppNameGenerator deploymentCustomizer =
-				new CloudFoundryAppNameGenerator(properties);
+	new CloudFoundryAppNameGenerator(properties);
 		deploymentCustomizer.afterPropertiesSet();
 
 		assertThat(deploymentCustomizer.generateAppName("foo")).isEqualTo("foo");

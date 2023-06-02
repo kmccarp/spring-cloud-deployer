@@ -58,26 +58,26 @@ public class PropertyParserUtilsTests {
 	@Test
 	public void testAnnotationParseMultipleWithCommas() {
 		assertThat(PropertyParserUtils.getStringPairsToMap("annotation1:\"value1,a,b,c,d\",annotation2:value2"))
-				.isNotEmpty()
-				.hasSize(2)
-				.containsEntry("annotation1", "\"value1,a,b,c,d\"")
-				.containsEntry("annotation2", "value2");
+	.isNotEmpty()
+	.hasSize(2)
+	.containsEntry("annotation1", "\"value1,a,b,c,d\"")
+	.containsEntry("annotation2", "value2");
 		assertThat(PropertyParserUtils.getStringPairsToMap("annotation1:value1,annotation2:\"value2,a,b,c,d\""))
-				.isNotEmpty()
-				.hasSize(2)
-				.containsEntry("annotation1", "value1")
-				.containsEntry("annotation2", "\"value2,a,b,c,d\"");
+	.isNotEmpty()
+	.hasSize(2)
+	.containsEntry("annotation1", "value1")
+	.containsEntry("annotation2", "\"value2,a,b,c,d\"");
 		assertThat(PropertyParserUtils.getStringPairsToMap("annotation1:\"value1,a,b,c,d\",annotation2:\"value2,a,b,c,d\""))
-				.isNotEmpty()
-				.hasSize(2)
-				.containsEntry("annotation1", "\"value1,a,b,c,d\"")
-				.containsEntry("annotation2", "\"value2,a,b,c,d\"");
+	.isNotEmpty()
+	.hasSize(2)
+	.containsEntry("annotation1", "\"value1,a,b,c,d\"")
+	.containsEntry("annotation2", "\"value2,a,b,c,d\"");
 // Test even number of quotes not to be used as token for ignoring commas boundary.
 		assertThat(PropertyParserUtils.getStringPairsToMap("annotation1:\"value1,a,b,\"\"c,d\",annotation2:\"value2,a,b,c,d\""))
-				.isNotEmpty()
-				.hasSize(2)
-				.containsEntry("annotation1", "\"value1,a,b,\"\"c,d\"")
-				.containsEntry("annotation2", "\"value2,a,b,c,d\"");
+	.isNotEmpty()
+	.hasSize(2)
+	.containsEntry("annotation1", "\"value1,a,b,\"\"c,d\"")
+	.containsEntry("annotation2", "\"value2,a,b,c,d\"");
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class PropertyParserUtilsTests {
 	@Test
 	public void testAnnotationMultipleColon() {
 		String annotation = "iam.amazonaws.com/role:arn:aws:iam::12345678:role/role-name,key1:val1:val2:val3," +
-				"key2:val4::val5:val6::val7:val8";
+	"key2:val4::val5:val6::val7:val8";
 		Map<String, String> annotations = PropertyParserUtils.getStringPairsToMap(annotation);
 		assertThat(annotations.isEmpty()).isFalse();
 		assertThat(annotations.size() == 3).isTrue();

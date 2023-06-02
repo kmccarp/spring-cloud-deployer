@@ -114,7 +114,7 @@ public abstract class AbstractTaskLauncherIntegrationTests extends AbstractInteg
 	@Test
 	public void testNonExistentAppsStatus() {
 		assertThat(randomName(), hasStatusThat(
-				Matchers.<TaskStatus>hasProperty("state", is(LaunchState.unknown))));
+	Matchers.<TaskStatus>hasProperty("state", is(LaunchState.unknown))));
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public abstract class AbstractTaskLauncherIntegrationTests extends AbstractInteg
 
 		Timeout timeout = deploymentTimeout();
 		assertThat(launchId, EventuallyMatcher.eventually(hasStatusThat(
-				Matchers.<TaskStatus>hasProperty("state", Matchers.is(LaunchState.complete))), timeout.maxAttempts, timeout.pause));
+	Matchers.<TaskStatus>hasProperty("state", Matchers.is(LaunchState.complete))), timeout.maxAttempts, timeout.pause));
 
 		taskLauncher().destroy(definition.getName());
 	}
@@ -150,7 +150,7 @@ public abstract class AbstractTaskLauncherIntegrationTests extends AbstractInteg
 
 		Timeout timeout = deploymentTimeout();
 		assertThat(launchId, EventuallyMatcher.eventually(hasStatusThat(
-				Matchers.<TaskStatus>hasProperty("state", Matchers.is(LaunchState.complete))), timeout.maxAttempts, timeout.pause));
+	Matchers.<TaskStatus>hasProperty("state", Matchers.is(LaunchState.complete))), timeout.maxAttempts, timeout.pause));
 
 		logger.info("Re-Launching {}...", request.getDefinition().getName());
 		String newLaunchId = taskLauncher().launch(request);
@@ -159,7 +159,7 @@ public abstract class AbstractTaskLauncherIntegrationTests extends AbstractInteg
 
 		timeout = deploymentTimeout();
 		assertThat(newLaunchId, EventuallyMatcher.eventually(hasStatusThat(
-				Matchers.<TaskStatus>hasProperty("state", Matchers.is(LaunchState.complete))), timeout.maxAttempts, timeout.pause));
+	Matchers.<TaskStatus>hasProperty("state", Matchers.is(LaunchState.complete))), timeout.maxAttempts, timeout.pause));
 
 		taskLauncher().destroy(definition.getName());
 	}
@@ -178,7 +178,7 @@ public abstract class AbstractTaskLauncherIntegrationTests extends AbstractInteg
 
 		Timeout timeout = deploymentTimeout();
 		assertThat(launchId, EventuallyMatcher.eventually(hasStatusThat(
-				Matchers.<TaskStatus>hasProperty("state", Matchers.is(LaunchState.failed))), timeout.maxAttempts, timeout.pause));
+	Matchers.<TaskStatus>hasProperty("state", Matchers.is(LaunchState.failed))), timeout.maxAttempts, timeout.pause));
 
 		taskLauncher().destroy(definition.getName());
 	}
@@ -197,14 +197,14 @@ public abstract class AbstractTaskLauncherIntegrationTests extends AbstractInteg
 
 		Timeout timeout = deploymentTimeout();
 		assertThat(launchId, EventuallyMatcher.eventually(hasStatusThat(
-				Matchers.<TaskStatus>hasProperty("state", Matchers.is(LaunchState.running))), timeout.maxAttempts, timeout.pause));
+	Matchers.<TaskStatus>hasProperty("state", Matchers.is(LaunchState.running))), timeout.maxAttempts, timeout.pause));
 
 		logger.info("Cancelling {}...", request.getDefinition().getName());
 		taskLauncher().cancel(launchId);
 
 		timeout = undeploymentTimeout();
 		assertThat(launchId, EventuallyMatcher.eventually(hasStatusThat(
-				Matchers.<TaskStatus>hasProperty("state", Matchers.is(LaunchState.cancelled))), timeout.maxAttempts, timeout.pause));
+	Matchers.<TaskStatus>hasProperty("state", Matchers.is(LaunchState.cancelled))), timeout.maxAttempts, timeout.pause));
 
 		taskLauncher().destroy(definition.getName());
 	}
@@ -219,13 +219,13 @@ public abstract class AbstractTaskLauncherIntegrationTests extends AbstractInteg
 		AppDefinition definition = new AppDefinition(randomName(), properties);
 		Resource resource = testApplication();
 		AppDeploymentRequest request = new AppDeploymentRequest(definition, resource, Collections.<String, String>emptyMap(),
-				Collections.singletonList("--exitCode=0"));
+	Collections.singletonList("--exitCode=0"));
 		logger.info("Launching {}...", request.getDefinition().getName());
 		String deploymentId = taskLauncher().launch(request);
 
 		Timeout timeout = deploymentTimeout();
 		assertThat(deploymentId, EventuallyMatcher.eventually(hasStatusThat(
-				Matchers.<TaskStatus>hasProperty("state", Matchers.is(LaunchState.complete))), timeout.maxAttempts, timeout.pause));
+	Matchers.<TaskStatus>hasProperty("state", Matchers.is(LaunchState.complete))), timeout.maxAttempts, timeout.pause));
 		taskLauncher().destroy(definition.getName());
 	}
 
@@ -319,10 +319,12 @@ public abstract class AbstractTaskLauncherIntegrationTests extends AbstractInteg
 		public RuntimeEnvironmentInfo environmentInfo() {
 			return wrapped.environmentInfo();
 		}
+
 		@Override
 		public int getMaximumConcurrentTasks() {
 			return wrapped.getMaximumConcurrentTasks();
 		}
+
 		@Override
 		public int getRunningTaskExecutionCount() {
 			return wrapped.getRunningTaskExecutionCount();

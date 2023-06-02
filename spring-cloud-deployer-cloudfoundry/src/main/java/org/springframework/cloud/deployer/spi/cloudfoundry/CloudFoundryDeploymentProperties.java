@@ -54,7 +54,7 @@ public class CloudFoundryDeploymentProperties {
 	public static final String HEALTHCHECK_PROPERTY_KEY = CloudFoundryConnectionProperties.CLOUDFOUNDRY_PROPERTIES + ".health-check";
 
 	public static final String HEALTHCHECK_HTTP_ENDPOINT_PROPERTY_KEY = CloudFoundryConnectionProperties.CLOUDFOUNDRY_PROPERTIES
-			+ ".health-check-http-endpoint";
++ ".health-check-http-endpoint";
 
 	public static final String HEALTHCHECK_TIMEOUT_PROPERTY_KEY = CloudFoundryConnectionProperties.CLOUDFOUNDRY_PROPERTIES + ".health-check-timeout";
 
@@ -77,7 +77,7 @@ public class CloudFoundryDeploymentProperties {
 	public static final String JAVA_OPTS_PROPERTY_KEY = CloudFoundryConnectionProperties.CLOUDFOUNDRY_PROPERTIES + ".javaOpts";
 
 	public static final String USE_SPRING_APPLICATION_JSON_KEY = CloudFoundryConnectionProperties.CLOUDFOUNDRY_PROPERTIES
-			+ ".use-spring-application-json";
++ ".use-spring-application-json";
 
 	public static final String ENV_KEY = CloudFoundryConnectionProperties.CLOUDFOUNDRY_PROPERTIES + ".env";
 
@@ -211,7 +211,7 @@ public class CloudFoundryDeploymentProperties {
 	private String javaOpts;
 
 	private Optional<Map<String, String>> env = Optional.empty();
-	
+
 	/**
 	 * Location of the PCF scheduler REST API enpoint ot use.
 	 */
@@ -440,9 +440,9 @@ public class CloudFoundryDeploymentProperties {
 
 	public void setEnv(@NotNull Map<String, String> env) {
 		this.env.map(e -> {
-					log.error("Environment is immutable. New entries have not been applied");
-					return this.env;
-				}
+		log.error("Environment is immutable. New entries have not been applied");
+		return this.env;
+	}
 		).orElse(this.env = Optional.of(Collections.unmodifiableMap(env)));
 	}
 

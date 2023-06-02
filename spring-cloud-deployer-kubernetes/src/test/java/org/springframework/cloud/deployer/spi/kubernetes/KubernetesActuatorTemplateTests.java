@@ -56,7 +56,7 @@ public class KubernetesActuatorTemplateTests {
 	private final AppDeployer appDeployer = mock(AppDeployer.class);
 
 	private final ActuatorOperations actuatorOperations = new KubernetesActuatorTemplate(new RestTemplate(),
-			appDeployer, new AppAdmin());
+appDeployer, new AppAdmin());
 
 	private AppInstanceStatus appInstanceStatus;
 
@@ -68,35 +68,35 @@ public class KubernetesActuatorTemplateTests {
 			@Override
 			public MockResponse dispatch(RecordedRequest recordedRequest) throws InterruptedException {
 				switch (recordedRequest.getPath()) {
-				case "/actuator/info":
-					return new MockResponse().setBody(resourceAsString("actuator-info.json"))
+					case "/actuator/info":
+						return new MockResponse().setBody(resourceAsString("actuator-info.json"))
+					.addHeader("Content-Type", "application/json").setResponseCode(200);
+					case "/actuator/health":
+						return new MockResponse().setBody("\"status\":\"UP\"}")
+					.addHeader("Content-Type", "application/json").setResponseCode(200);
+					case "/actuator/bindings":
+						return new MockResponse().setBody(resourceAsString("actuator-bindings.json"))
+					.addHeader("Content-Type", "application/json").setResponseCode(200);
+					case "/actuator/bindings/input":
+						if (recordedRequest.getMethod().equals("GET")) {
+							return new MockResponse().setBody(resourceAsString("actuator-binding-input.json"))
+						.addHeader("Content-Type", "application/json")
+						.setResponseCode(200);
+						}
+						else if (recordedRequest.getMethod().equals("POST")) {
+							if (!StringUtils.hasText(recordedRequest.getBody().toString())) {
+								return new MockResponse().setResponseCode(HttpStatus.BAD_REQUEST.value());
+							}
+							else {
+								return new MockResponse().setBody(recordedRequest.getBody())
 							.addHeader("Content-Type", "application/json").setResponseCode(200);
-				case "/actuator/health":
-					return new MockResponse().setBody("\"status\":\"UP\"}")
-							.addHeader("Content-Type", "application/json").setResponseCode(200);
-				case "/actuator/bindings":
-					return new MockResponse().setBody(resourceAsString("actuator-bindings.json"))
-							.addHeader("Content-Type", "application/json").setResponseCode(200);
-				case "/actuator/bindings/input":
-					if (recordedRequest.getMethod().equals("GET")) {
-						return new MockResponse().setBody(resourceAsString("actuator-binding-input.json"))
-								.addHeader("Content-Type", "application/json")
-								.setResponseCode(200);
-					}
-					else if (recordedRequest.getMethod().equals("POST")) {
-						if (!StringUtils.hasText(recordedRequest.getBody().toString())) {
-							return new MockResponse().setResponseCode(HttpStatus.BAD_REQUEST.value());
+							}
 						}
 						else {
-							return new MockResponse().setBody(recordedRequest.getBody())
-									.addHeader("Content-Type", "application/json").setResponseCode(200);
+							return new MockResponse().setResponseCode(HttpStatus.BAD_REQUEST.value());
 						}
-					}
-					else {
-						return new MockResponse().setResponseCode(HttpStatus.BAD_REQUEST.value());
-					}
-				default:
-					return new MockResponse().setResponseCode(HttpStatus.NOT_FOUND.value());
+					default:
+						return new MockResponse().setResponseCode(HttpStatus.NOT_FOUND.value());
 				}
 			}
 		});
@@ -118,15 +118,15 @@ public class KubernetesActuatorTemplateTests {
 		when(appInstanceStatus.getAttributes()).thenReturn(attributes);
 		when(appInstanceStatus.getState()).thenReturn(DeploymentState.deployed);
 		AppStatus appStatus = AppStatus.of("test-application-id")
-				.with(appInstanceStatus)
-				.build();
+	.with(appInstanceStatus)
+	.build();
 		when(appDeployer.status(anyString())).thenReturn(appStatus);
 	}
 
 	@Test
 	void actuatorInfo() {
 		Map<String, Object> info = actuatorOperations
-				.getFromActuator("test-application-id", "test-application-0", "/info", Map.class);
+	.getFromActuator("test-application-id", "test-application-0", "/info", Map.class);
 
 		assertThat(((Map<?, ?>) (info.get("app"))).get("name")).isEqualTo("log-sink-rabbit");
 	}
@@ -134,7 +134,7 @@ public class KubernetesActuatorTemplateTests {
 	@Test
 	void actuatorBindings() {
 		List<?> bindings = actuatorOperations
-				.getFromActuator("test-application-id", "test-application-0", "/bindings", List.class);
+	.getFromActuator("test-application-id", "test-application-0", "/bindings", List.class);
 
 		assertThat(((Map<?, ?>) (bindings.get(0))).get("bindingName")).isEqualTo("input");
 	}
@@ -142,15 +142,15 @@ public class KubernetesActuatorTemplateTests {
 	@Test
 	void actuatorBindingInput() {
 		Map<String, Object> binding = actuatorOperations
-				.getFromActuator("test-application-id", "test-application-0", "/bindings/input", Map.class);
+	.getFromActuator("test-application-id", "test-application-0", "/bindings/input", Map.class);
 		assertThat(binding.get("bindingName")).isEqualTo("input");
 	}
 
 	@Test
 	void actuatorPostBindingInput() {
 		Map<String, Object> state = actuatorOperations
-				.postToActuator("test-application-id", "test-application-0", "/bindings/input",
-						Collections.singletonMap("state", "STOPPED"), Map.class);
+	.postToActuator("test-application-id", "test-application-0", "/bindings/input",
+Collections.singletonMap("state", "STOPPED"), Map.class);
 		assertThat(state.get("state")).isEqualTo("STOPPED");
 	}
 
@@ -159,7 +159,7 @@ public class KubernetesActuatorTemplateTests {
 		when(appInstanceStatus.getState()).thenReturn(DeploymentState.failed);
 		assertThatThrownBy(() -> {
 			actuatorOperations
-					.getFromActuator("test-application-id", "test-application-0", "/info", Map.class);
+		.getFromActuator("test-application-id", "test-application-0", "/info", Map.class);
 
 		}).isInstanceOf(IllegalStateException.class).hasMessageContaining("not deployed");
 	}

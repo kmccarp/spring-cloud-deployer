@@ -78,7 +78,7 @@ public abstract class AbstractExternalResourceTestSupport<R> implements TestRule
 					}
 					catch (Exception ignored) {
 						logger.warn("Exception while trying to cleanup proper resource",
-								ignored);
+					ignored);
 					}
 				}
 			}
@@ -101,7 +101,7 @@ public abstract class AbstractExternalResourceTestSupport<R> implements TestRule
 				@Override
 				public void evaluate() throws Throwable {
 					Assume.assumeTrue("Skipping test due to " + resourceDescription
-							+ " not being available " + e, false);
+				+ " not being available " + e, false);
 				}
 			};
 		}

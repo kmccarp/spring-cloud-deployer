@@ -53,20 +53,20 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  */
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment= WebEnvironment.NONE)
+@SpringBootTest(webEnvironment = WebEnvironment.NONE)
 @ContextConfiguration(classes = AbstractIntegrationTests.Config.class)
 public abstract class AbstractIntegrationJUnit5Tests {
 
 	protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    protected String testName;
+	protected String testName;
 
 	@Autowired
 	protected MavenProperties mavenProperties;
 
 	@BeforeEach
 	public void setup(TestInfo testInfo) {
-        Optional<Method> testMethod = testInfo.getTestMethod();
+		Optional<Method> testMethod = testInfo.getTestMethod();
 		testMethod.ifPresent(method -> this.testName = method.getName());
 	}
 
@@ -112,12 +112,12 @@ public abstract class AbstractIntegrationJUnit5Tests {
 			throw new RuntimeException("Failed to determine which version of spring-cloud-deployer-spi-test-app to use", e);
 		}
 		return new MavenResource.Builder(mavenProperties)
-				.groupId("org.springframework.cloud")
-				.artifactId("spring-cloud-deployer-spi-test-app")
-				.classifier("exec")
-				.version(properties.getProperty("version"))
-				.extension("jar")
-				.build();
+	.groupId("org.springframework.cloud")
+	.artifactId("spring-cloud-deployer-spi-test-app")
+	.classifier("exec")
+	.version(properties.getProperty("version"))
+	.extension("jar")
+	.build();
 	}
 
 	@Configuration

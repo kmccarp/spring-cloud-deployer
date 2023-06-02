@@ -40,15 +40,15 @@ public class CloudFoundryActuatorTemplate extends AbstractActuatorTemplate {
 	@Override
 	protected String actuatorUrlForInstance(AppInstanceStatus appInstanceStatus) {
 		return UriComponentsBuilder.fromHttpUrl(appInstanceStatus.getAttributes().get("url"))
-				.path("/actuator").toUriString();
+	.path("/actuator").toUriString();
 	}
 
 	@Override
 	public Optional<HttpHeaders> httpHeadersForInstance(AppInstanceStatus appInstanceStatus) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("X-Cf-App-Instance", String.format("%s:%d", appInstanceStatus.getAttributes()
-				.get(CloudFoundryAppInstanceStatus.CF_GUID),
-				Integer.valueOf(appInstanceStatus.getAttributes().get(CloudFoundryAppInstanceStatus.INDEX))));
+.get(CloudFoundryAppInstanceStatus.CF_GUID),
+	Integer.valueOf(appInstanceStatus.getAttributes().get(CloudFoundryAppInstanceStatus.INDEX))));
 		return Optional.of(headers);
 	}
 }

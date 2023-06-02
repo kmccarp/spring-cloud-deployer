@@ -37,7 +37,7 @@ public class KubernetesDeployerPropertiesTests {
 		KubernetesDeployerProperties kubernetesDeployerProperties = new KubernetesDeployerProperties();
 		assertNotNull("Image pull policy should not be null", kubernetesDeployerProperties.getImagePullPolicy());
 		assertEquals("Invalid default image pull policy", ImagePullPolicy.IfNotPresent,
-				kubernetesDeployerProperties.getImagePullPolicy());
+	kubernetesDeployerProperties.getImagePullPolicy());
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class KubernetesDeployerPropertiesTests {
 		kubernetesDeployerProperties.setImagePullPolicy(ImagePullPolicy.Never);
 		assertNotNull("Image pull policy should not be null", kubernetesDeployerProperties.getImagePullPolicy());
 		assertEquals("Unexpected image pull policy", ImagePullPolicy.Never,
-				kubernetesDeployerProperties.getImagePullPolicy());
+	kubernetesDeployerProperties.getImagePullPolicy());
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class KubernetesDeployerPropertiesTests {
 		KubernetesDeployerProperties kubernetesDeployerProperties = new KubernetesDeployerProperties();
 		assertNotNull("Restart policy should not be null", kubernetesDeployerProperties.getRestartPolicy());
 		assertEquals("Invalid default restart policy", RestartPolicy.Always,
-				kubernetesDeployerProperties.getRestartPolicy());
+	kubernetesDeployerProperties.getRestartPolicy());
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class KubernetesDeployerPropertiesTests {
 		kubernetesDeployerProperties.setRestartPolicy(RestartPolicy.OnFailure);
 		assertNotNull("Restart policy should not be null", kubernetesDeployerProperties.getRestartPolicy());
 		assertEquals("Unexpected restart policy", RestartPolicy.OnFailure,
-				kubernetesDeployerProperties.getRestartPolicy());
+	kubernetesDeployerProperties.getRestartPolicy());
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class KubernetesDeployerPropertiesTests {
 		KubernetesDeployerProperties kubernetesDeployerProperties = new KubernetesDeployerProperties();
 		assertNotNull("Entry point style should not be null", kubernetesDeployerProperties.getEntryPointStyle());
 		assertEquals("Invalid default entry point style", EntryPointStyle.exec,
-				kubernetesDeployerProperties.getEntryPointStyle());
+	kubernetesDeployerProperties.getEntryPointStyle());
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class KubernetesDeployerPropertiesTests {
 		kubernetesDeployerProperties.setEntryPointStyle(EntryPointStyle.shell);
 		assertNotNull("Entry point style should not be null", kubernetesDeployerProperties.getEntryPointStyle());
 		assertEquals("Unexpected entry point stype", EntryPointStyle.shell,
-				kubernetesDeployerProperties.getEntryPointStyle());
+	kubernetesDeployerProperties.getEntryPointStyle());
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class KubernetesDeployerPropertiesTests {
 			kubernetesDeployerProperties.setNamespace("default");
 
 			assertTrue("Namespace should not be empty or null",
-					StringUtils.hasText(kubernetesDeployerProperties.getNamespace()));
+		StringUtils.hasText(kubernetesDeployerProperties.getNamespace()));
 			assertEquals("Invalid default namespace", "default", kubernetesDeployerProperties.getNamespace());
 		}
 	}
@@ -100,7 +100,7 @@ public class KubernetesDeployerPropertiesTests {
 		KubernetesDeployerProperties kubernetesDeployerProperties = new KubernetesDeployerProperties();
 		kubernetesDeployerProperties.setNamespace("myns");
 		assertTrue("Namespace should not be empty or null",
-				StringUtils.hasText(kubernetesDeployerProperties.getNamespace()));
+	StringUtils.hasText(kubernetesDeployerProperties.getNamespace()));
 		assertEquals("Unexpected namespace", "myns", kubernetesDeployerProperties.getNamespace());
 	}
 
@@ -123,28 +123,28 @@ public class KubernetesDeployerPropertiesTests {
 	public void testEnvironmentVariablesDefault() {
 		KubernetesDeployerProperties kubernetesDeployerProperties = new KubernetesDeployerProperties();
 		assertEquals("No default environment variables should be set", 0,
-				kubernetesDeployerProperties.getEnvironmentVariables().length);
+	kubernetesDeployerProperties.getEnvironmentVariables().length);
 	}
 
 	@Test
 	public void testEnvironmentVariablesCanBeCustomized() {
-		String[] envVars = new String[] { "var1=val1", "var2=val2" };
+		String[] envVars = new String[]{"var1=val1", "var2=val2"};
 		KubernetesDeployerProperties kubernetesDeployerProperties = new KubernetesDeployerProperties();
 		kubernetesDeployerProperties.setEnvironmentVariables(envVars);
 		assertNotNull("Environment variables should not be null",
-				kubernetesDeployerProperties.getEnvironmentVariables());
+	kubernetesDeployerProperties.getEnvironmentVariables());
 		assertEquals("Unexpected number of environment variables", 2,
-				kubernetesDeployerProperties.getEnvironmentVariables().length);
+	kubernetesDeployerProperties.getEnvironmentVariables().length);
 	}
 
 	@Test
 	public void testTaskServiceAccountNameDefault() {
 		KubernetesDeployerProperties kubernetesDeployerProperties = new KubernetesDeployerProperties();
 		assertNotNull("Task service account name should not be null",
-				kubernetesDeployerProperties.getTaskServiceAccountName());
+	kubernetesDeployerProperties.getTaskServiceAccountName());
 		assertEquals("Unexpected default task service account name",
-				kubernetesDeployerProperties.DEFAULT_TASK_SERVICE_ACCOUNT_NAME,
-				kubernetesDeployerProperties.getTaskServiceAccountName());
+	kubernetesDeployerProperties.DEFAULT_TASK_SERVICE_ACCOUNT_NAME,
+	kubernetesDeployerProperties.getTaskServiceAccountName());
 	}
 
 	@Test
@@ -153,8 +153,8 @@ public class KubernetesDeployerPropertiesTests {
 		KubernetesDeployerProperties kubernetesDeployerProperties = new KubernetesDeployerProperties();
 		kubernetesDeployerProperties.setTaskServiceAccountName(taskServiceAccountName);
 		assertNotNull("Task service account name should not be null",
-				kubernetesDeployerProperties.getTaskServiceAccountName());
+	kubernetesDeployerProperties.getTaskServiceAccountName());
 		assertEquals("Unexpected task service account name", taskServiceAccountName,
-				kubernetesDeployerProperties.getTaskServiceAccountName());
+	kubernetesDeployerProperties.getTaskServiceAccountName());
 	}
 }

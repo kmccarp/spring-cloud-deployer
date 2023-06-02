@@ -60,7 +60,7 @@ public class KubernetesScheduler extends AbstractKubernetesDeployer implements S
 	static final String KUBERNETES_DEPLOYER_CRON_BACKOFF_LIMIT = KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX + ".cron.backoffLimit";
 
 	public KubernetesScheduler(KubernetesClient client,
-			KubernetesDeployerProperties properties) {
+KubernetesDeployerProperties properties) {
 		Assert.notNull(client, "KubernetesClient must not be null");
 		Assert.notNull(properties, "KubernetesSchedulerProperties must not be null");
 
@@ -68,9 +68,9 @@ public class KubernetesScheduler extends AbstractKubernetesDeployer implements S
 		this.properties = properties;
 		this.containerFactory = new DefaultContainerFactory(properties);
 		this.deploymentPropertiesResolver = new DeploymentPropertiesResolver(
-				(properties instanceof KubernetesSchedulerProperties) ?
-						KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX :
-						KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX, properties);
+	(properties instanceof KubernetesSchedulerProperties) ?
+KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX :
+KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX, properties);
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class KubernetesScheduler extends AbstractKubernetesDeployer implements S
 	static Map<String, String> mergeSchedulerProperties(ScheduleRequest scheduleRequest) {
 		Map<String, String> deploymentProperties = new HashMap<>();
 		Map<String, String> schedulerProperties = scheduleRequest.getSchedulerProperties();
-		if(scheduleRequest.getDeploymentProperties() != null) {
+		if (scheduleRequest.getDeploymentProperties() != null) {
 			deploymentProperties.putAll(scheduleRequest.getDeploymentProperties());
 		}
 		if (schedulerProperties != null) {
@@ -108,20 +108,20 @@ public class KubernetesScheduler extends AbstractKubernetesDeployer implements S
 				String schedulerPropertyKey = schedulerProperty.getKey();
 				if (StringUtils.hasText(schedulerPropertyKey) && schedulerPropertyKey.startsWith(KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX)) {
 					String deployerPropertyKey = KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX +
-							schedulerPropertyKey.substring(KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX.length());
+				schedulerPropertyKey.substring(KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX.length());
 					deploymentProperties.put(deployerPropertyKey, schedulerProperty.getValue());
 				}
-				else if(StringUtils.hasText(schedulerPropertyKey) && schedulerPropertyKey.startsWith(SchedulerPropertyKeys.PREFIX)) {
+				else if (StringUtils.hasText(schedulerPropertyKey) && schedulerPropertyKey.startsWith(SchedulerPropertyKeys.PREFIX)) {
 					if (!deploymentProperties.containsKey(schedulerPropertyKey)) {
 						deploymentProperties.put(schedulerPropertyKey, schedulerProperty.getValue());
 					}
 				}
 			}
 		}
-		if(!deploymentProperties.containsKey(KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX + ".restartPolicy")) {
+		if (!deploymentProperties.containsKey(KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX + ".restartPolicy")) {
 			deploymentProperties.put(KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX + ".restartPolicy", RestartPolicy.Never.name());
 		}
-		if(deploymentProperties.containsKey("spring.cloud.deployer.cron.expression")) {
+		if (deploymentProperties.containsKey("spring.cloud.deployer.cron.expression")) {
 			deploymentProperties.put(KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX + ".cron.expression", deploymentProperties.get("spring.cloud.deployer.cron.expression"));
 		}
 		Map<String, String> updatedDeploymentProperties = new HashMap<>();
@@ -130,7 +130,7 @@ public class KubernetesScheduler extends AbstractKubernetesDeployer implements S
 			String schedulerPropertyKey = schedulerProperty.getKey();
 			if (StringUtils.hasText(schedulerPropertyKey) && schedulerPropertyKey.startsWith(KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX)) {
 				String deployerPropertyKey = KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX +
-						schedulerPropertyKey.substring(KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX.length());
+			schedulerPropertyKey.substring(KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX.length());
 				updatedSchedulerProperties.put(deployerPropertyKey, schedulerProperty.getValue());
 			}
 			else {
@@ -144,13 +144,13 @@ public class KubernetesScheduler extends AbstractKubernetesDeployer implements S
 	}
 
 	public void validateScheduleName(ScheduleRequest request) {
-		if(request.getScheduleName() == null) {
+		if (request.getScheduleName() == null) {
 			throw new CreateScheduleException("The name for the schedule request is null", null);
 		}
-		if(request.getScheduleName().length() > 52) {
+		if (request.getScheduleName().length() > 52) {
 			throw new CreateScheduleException(String.format("because Schedule Name: '%s' has too many characters.  Schedule name length must be 52 characters or less", request.getScheduleName()), null);
 		}
-		if(!Pattern.matches("^[a-z0-9]([-a-z0-9]*[a-z0-9])?$", request.getScheduleName())) {
+		if (!Pattern.matches("^[a-z0-9]([-a-z0-9]*[a-z0-9])?$", request.getScheduleName())) {
 			throw new CreateScheduleException("Invalid Format for Schedule Name. Schedule name can only contain lowercase letters, numbers 0-9 and hyphens.", null);
 		}
 
@@ -168,9 +168,9 @@ public class KubernetesScheduler extends AbstractKubernetesDeployer implements S
 	@Override
 	public List<ScheduleInfo> list(String taskDefinitionName) {
 		return list()
-				.stream()
-				.filter(scheduleInfo -> taskDefinitionName.equals(scheduleInfo.getTaskDefinitionName()))
-				.collect(Collectors.toList());
+	.stream()
+	.filter(scheduleInfo -> taskDefinitionName.equals(scheduleInfo.getTaskDefinitionName()))
+	.collect(Collectors.toList());
 	}
 
 	@Override
@@ -182,7 +182,7 @@ public class KubernetesScheduler extends AbstractKubernetesDeployer implements S
 
 		for (CronJob cronJob : cronJobs) {
 			if (cronJob.getMetadata() != null && cronJob.getMetadata().getLabels() != null &&
-					StringUtils.hasText(cronJob.getMetadata().getLabels().get(SPRING_CRONJOB_ID_KEY))) {
+		StringUtils.hasText(cronJob.getMetadata().getLabels().get(SPRING_CRONJOB_ID_KEY))) {
 				Map<String, String> properties = new HashMap<>();
 				properties.put(SchedulerPropertyKeys.CRON_EXPRESSION, cronJob.getSpec().getSchedule());
 
@@ -205,8 +205,8 @@ public class KubernetesScheduler extends AbstractKubernetesDeployer implements S
 		Map<String, String> schedulerProperties = mergeSchedulerProperties(scheduleRequest);
 
 		String schedule = schedulerProperties.get("spring.cloud.deployer.kubernetes.cron.expression") != null ?
-				schedulerProperties.get("spring.cloud.deployer.kubernetes.cron.expression") :
-				schedulerProperties.get(SchedulerPropertyKeys.CRON_EXPRESSION);
+	schedulerProperties.get("spring.cloud.deployer.kubernetes.cron.expression") :
+	schedulerProperties.get(SchedulerPropertyKeys.CRON_EXPRESSION);
 		Assert.hasText(schedule, "The property spring.cloud.deployer.cron.expression must be defined");
 
 		String concurrencyPolicy = schedulerProperties.get(KUBERNETES_DEPLOYER_CRON_CONCURRENCY_POLICY);
@@ -236,7 +236,7 @@ public class KubernetesScheduler extends AbstractKubernetesDeployer implements S
 			backoffLimit = this.properties.getCron().getBackoffLimit();
 		}
 
-		PodSpec podSpec = createPodSpec(new ScheduleRequest(scheduleRequest.getDefinition(),schedulerProperties, scheduleRequest.getCommandlineArguments(), scheduleRequest.getScheduleName(),scheduleRequest.getResource()));
+		PodSpec podSpec = createPodSpec(new ScheduleRequest(scheduleRequest.getDefinition(), schedulerProperties, scheduleRequest.getCommandlineArguments(), scheduleRequest.getScheduleName(), scheduleRequest.getResource()));
 		String taskServiceAccountName = this.deploymentPropertiesResolver.getTaskServiceAccountName(schedulerProperties);
 		taskServiceAccountName = taskServiceAccountName != null ? taskServiceAccountName : KubernetesDeployerProperties.DEFAULT_TASK_SERVICE_ACCOUNT_NAME;
 		if (StringUtils.hasText(taskServiceAccountName)) {
@@ -246,28 +246,28 @@ public class KubernetesScheduler extends AbstractKubernetesDeployer implements S
 		labels.putAll(this.deploymentPropertiesResolver.getDeploymentLabels(schedulerProperties));
 
 		CronJob cronJob = new CronJobBuilder()
-				.withNewMetadata()
-					.withName(scheduleRequest.getScheduleName())
-					.withLabels(labels)
-					.withAnnotations(this.deploymentPropertiesResolver.getJobAnnotations(schedulerProperties))
-				.endMetadata()
-				.withNewSpec()
-					.withSchedule(schedule)
-						.withConcurrencyPolicy(concurrencyPolicy)
-						.withNewJobTemplate()
-							.withNewSpec()
-								.withBackoffLimit(backoffLimit)
-								.withTtlSecondsAfterFinished(ttlSecondsAfterFinished)
-								.withNewTemplate()
-									.withNewMetadata()
-										.addToAnnotations(annotations).addToLabels(labels)
-									.endMetadata()
-									.withSpec(podSpec)
-								.endTemplate()
-							.endSpec()
-						.endJobTemplate()
-				.endSpec()
-				.build();
+	.withNewMetadata()
+	.withName(scheduleRequest.getScheduleName())
+	.withLabels(labels)
+	.withAnnotations(this.deploymentPropertiesResolver.getJobAnnotations(schedulerProperties))
+	.endMetadata()
+	.withNewSpec()
+	.withSchedule(schedule)
+	.withConcurrencyPolicy(concurrencyPolicy)
+	.withNewJobTemplate()
+	.withNewSpec()
+	.withBackoffLimit(backoffLimit)
+	.withTtlSecondsAfterFinished(ttlSecondsAfterFinished)
+	.withNewTemplate()
+	.withNewMetadata()
+	.addToAnnotations(annotations).addToLabels(labels)
+	.endMetadata()
+	.withSpec(podSpec)
+	.endTemplate()
+	.endSpec()
+	.endJobTemplate()
+	.endSpec()
+	.build();
 
 		setImagePullSecret(scheduleRequest, cronJob);
 
@@ -275,7 +275,7 @@ public class KubernetesScheduler extends AbstractKubernetesDeployer implements S
 	}
 
 	protected String getExceptionMessageForField(KubernetesClientException clientException,
-			String fieldName) {
+String fieldName) {
 		if (clientException.getStatus() == null || clientException.getStatus().getDetails() == null) {
 			return null;
 		}
@@ -301,7 +301,7 @@ public class KubernetesScheduler extends AbstractKubernetesDeployer implements S
 			localObjectReference.setName(imagePullSecret);
 
 			cronJob.getSpec().getJobTemplate().getSpec().getTemplate().getSpec().getImagePullSecrets()
-					.add(localObjectReference);
+		.add(localObjectReference);
 		}
 	}
 }

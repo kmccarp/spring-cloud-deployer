@@ -86,8 +86,8 @@ public class RuntimeEnvironmentInfo {
 	private Map<String, String> platformSpecificInfo = new HashMap<>();
 
 	private RuntimeEnvironmentInfo(Class spiClass, String implementationName, String implementationVersion,
-	                               String platformType, String platformApiVersion, String platformClientVersion,
-	                               String platformHostVersion, Map<String, String> platformSpecificInfo) {
+String platformType, String platformApiVersion, String platformClientVersion,
+String platformHostVersion, Map<String, String> platformSpecificInfo) {
 		Assert.notNull(spiClass, "spiClass is required");
 		Assert.notNull(implementationName, "implementationName is required");
 		Assert.notNull(implementationVersion, "implementationVersion is required");
@@ -215,7 +215,7 @@ public class RuntimeEnvironmentInfo {
 
 		public RuntimeEnvironmentInfo build() {
 			return new RuntimeEnvironmentInfo(spiClass, implementationName, implementationVersion, platformType,
-					platformApiVersion, platformClientVersion, platformHostVersion, platformSpecificInfo);
+		platformApiVersion, platformClientVersion, platformHostVersion, platformSpecificInfo);
 		}
 	}
 }

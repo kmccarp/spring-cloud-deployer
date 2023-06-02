@@ -111,7 +111,7 @@ public class MavenResource extends AbstractResource {
 	 * @param properties Maven configuration properties
 	 */
 	private MavenResource(String groupId, String artifactId, String extension, String classifier,
-			String version, MavenProperties properties) {
+String version, MavenProperties properties) {
 		Assert.hasText(groupId, "groupId must not be blank");
 		Assert.hasText(artifactId, "artifactId must not be blank");
 		Assert.hasText(extension, "extension must not be blank");
@@ -173,12 +173,12 @@ public class MavenResource extends AbstractResource {
 	public File getFile() throws IOException {
 		return resolver.resolve(this).getFile();
 	}
-	
+
 	@Override
 	public String getFilename() {
 		return StringUtils.hasLength(classifier) ?
-				String.format("%s-%s-%s.%s", artifactId, version, classifier, extension) :
-				String.format("%s-%s.%s", artifactId, version, extension);
+	String.format("%s-%s-%s.%s", artifactId, version, classifier, extension) :
+	String.format("%s-%s.%s", artifactId, version, extension);
 	}
 
 	@Override
@@ -202,10 +202,10 @@ public class MavenResource extends AbstractResource {
 		}
 		MavenResource that = (MavenResource) o;
 		return this.groupId.equals(that.groupId) &&
-				this.artifactId.equals(that.artifactId) &&
-				this.extension.equals(that.extension) &&
-				this.classifier.equals(that.classifier) &&
-				this.version.equals(that.version);
+	this.artifactId.equals(that.artifactId) &&
+	this.extension.equals(that.extension) &&
+	this.classifier.equals(that.classifier) &&
+	this.version.equals(that.version);
 	}
 
 	@Override
@@ -228,8 +228,8 @@ public class MavenResource extends AbstractResource {
 	@Override
 	public String toString() {
 		return StringUtils.hasLength(classifier) ?
-				String.format("%s:%s:%s:%s:%s", groupId, artifactId, extension, classifier, version) :
-				String.format("%s:%s:%s:%s", groupId, artifactId, extension, version);
+	String.format("%s:%s:%s:%s:%s", groupId, artifactId, extension, classifier, version) :
+	String.format("%s:%s:%s:%s", groupId, artifactId, extension, version);
 	}
 
 	@Override
@@ -247,7 +247,7 @@ public class MavenResource extends AbstractResource {
 	public static MavenResource parse(String coordinates) {
 		return parse(coordinates, null);
 	}
-			
+
 	/**
 	 * Create a {@link MavenResource} for the provided coordinates and properties.
 	 *
@@ -261,7 +261,7 @@ public class MavenResource extends AbstractResource {
 		Pattern p = Pattern.compile("([^: ]+):([^: ]+)(:([^: ]*)(:([^: ]+))?)?:([^: ]+)");
 		Matcher m = p.matcher(coordinates);
 		Assert.isTrue(m.matches(), "Bad artifact coordinates " + coordinates
-				+ ", expected format is <groupId>:<artifactId>[:<extension>[:<classifier>]]:<version>");
+	+ ", expected format is <groupId>:<artifactId>[:<extension>[:<classifier>]]:<version>");
 		String groupId = m.group(1);
 		String artifactId = m.group(2);
 		String extension = StringUtils.hasLength(m.group(4)) ? m.group(4) : DEFAULT_EXTENSION;

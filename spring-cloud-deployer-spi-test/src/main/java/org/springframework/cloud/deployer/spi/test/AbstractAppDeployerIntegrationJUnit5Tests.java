@@ -131,10 +131,10 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 		String deploymentId = appDeployer().deploy(request);
 		Timeout timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
+	});
 
 
 		log.info("Deploying {} again...", request.getDefinition().getName());
@@ -148,10 +148,10 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 		timeout = undeploymentTimeout();
 		appDeployer().undeploy(deploymentId);
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
+	});
 
 		assertThatThrownBy(() -> {
 			appDeployer().undeploy(deploymentId);
@@ -173,20 +173,20 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 		String deploymentId = appDeployer().deploy(request);
 		Timeout timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
+	});
 
 		log.info("Undeploying {}...", deploymentId);
 
 		timeout = undeploymentTimeout();
 		appDeployer().undeploy(deploymentId);
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
+	});
 
 		// Optionally pause before re-using request
 		try {
@@ -202,20 +202,20 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 		String deploymentId2 = appDeployer().deploy(request);
 		timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId2).getState()).isEqualTo(DeploymentState.deployed);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId2).getState()).isEqualTo(DeploymentState.deployed);
+	});
 
 		log.info("Undeploying {}...", deploymentId2);
 
 		timeout = undeploymentTimeout();
 		appDeployer().undeploy(deploymentId2);
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId2).getState()).isEqualTo(DeploymentState.unknown);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId2).getState()).isEqualTo(DeploymentState.unknown);
+	});
 	}
 
 	/**
@@ -235,20 +235,20 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 		String deploymentId = appDeployer().deploy(request);
 		Timeout timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deploying);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deploying);
+	});
 
 		log.info("Undeploying {}...", deploymentId);
 
 		timeout = undeploymentTimeout();
 		appDeployer().undeploy(deploymentId);
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
+	});
 	}
 
 	@Test
@@ -264,20 +264,20 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 		String deploymentId = appDeployer().deploy(request);
 		Timeout timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.failed);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.failed);
+	});
 
 		log.info("Undeploying {}...", deploymentId);
 
 		timeout = undeploymentTimeout();
 		appDeployer().undeploy(deploymentId);
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
+	});
 	}
 
 	/**
@@ -300,20 +300,20 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 		String deploymentId = appDeployer().deploy(request);
 		Timeout timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
+	});
 
 		log.info("Undeploying {}...", deploymentId);
 
 		timeout = undeploymentTimeout();
 		appDeployer().undeploy(deploymentId);
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
+	});
 
 
 		// This second pass makes sure that properties are indeed passed
@@ -328,20 +328,20 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 		String deploymentId2 = appDeployer().deploy(request);
 		timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId2).getState()).isEqualTo(DeploymentState.failed);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId2).getState()).isEqualTo(DeploymentState.failed);
+	});
 
 		log.info("Undeploying {}...", deploymentId2);
 
 		timeout = undeploymentTimeout();
 		appDeployer().undeploy(deploymentId2);
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId2).getState()).isEqualTo(DeploymentState.unknown);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId2).getState()).isEqualTo(DeploymentState.unknown);
+	});
 	}
 
 	/**
@@ -356,27 +356,27 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 
 		List<String> cmdLineArgs = Arrays.asList("--commandLineArgValueThatMayNeedEscaping=" + DeployerIntegrationTestProperties.FUNNY_CHARACTERS);
 		AppDeploymentRequest request =
-				new AppDeploymentRequest(definition, testApplication(), deploymentProperties, cmdLineArgs);
+	new AppDeploymentRequest(definition, testApplication(), deploymentProperties, cmdLineArgs);
 
 		log.info("Deploying {}...", request.getDefinition().getName());
 
 		String deploymentId = appDeployer().deploy(request);
 		Timeout timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
+	});
 
 		log.info("Undeploying {}...", deploymentId);
 
 		timeout = undeploymentTimeout();
 		appDeployer().undeploy(deploymentId);
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
+	});
 
 		// This second pass makes sure that commandLine args are indeed understood
 		properties = new HashMap<>();
@@ -385,27 +385,27 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 
 		cmdLineArgs = Arrays.asList("--commandLineArgValueThatMayNeedEscaping=" + "notWhatIsExpected");
 		request =
-				new AppDeploymentRequest(definition, testApplication(), deploymentProperties, cmdLineArgs);
+	new AppDeploymentRequest(definition, testApplication(), deploymentProperties, cmdLineArgs);
 
 		log.info("Deploying {}, expecting it to fail...", request.getDefinition().getName());
 
 		String deploymentId2 = appDeployer().deploy(request);
 		timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId2).getState()).isEqualTo(DeploymentState.failed);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId2).getState()).isEqualTo(DeploymentState.failed);
+	});
 
 		log.info("Undeploying {}...", deploymentId2);
 
 		timeout = undeploymentTimeout();
 		appDeployer().undeploy(deploymentId2);
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId2).getState()).isEqualTo(DeploymentState.unknown);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId2).getState()).isEqualTo(DeploymentState.unknown);
+	});
 	}
 
 
@@ -430,10 +430,10 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 		String deploymentId = appDeployer().deploy(request);
 		Timeout timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.partial);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.partial);
+	});
 
 		// Assert individual instance state
 		// Note we can't rely on instances order, neither on their id indicating their ordinal number
@@ -443,17 +443,17 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 		}
 
 		assertThat(individualStates).containsExactlyInAnyOrder(DeploymentState.deployed, DeploymentState.deployed,
-				DeploymentState.failed);
+	DeploymentState.failed);
 
 		log.info("Undeploying {}...", deploymentId);
 
 		timeout = undeploymentTimeout();
 		appDeployer().undeploy(deploymentId);
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
+	});
 	}
 
 	/**
@@ -484,7 +484,7 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 		final int DESIRED_COUNT = 3;
 
 		Map<String, String> deploymentProperties =
-			Collections.singletonMap(AppDeployer.INDEXED_PROPERTY_KEY, indexed.toString());
+	Collections.singletonMap(AppDeployer.INDEXED_PROPERTY_KEY, indexed.toString());
 
 		AppDefinition definition = new AppDefinition(randomName(), null);
 		Resource resource = testApplication();
@@ -497,26 +497,26 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 		Timeout timeout = deploymentTimeout();
 
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
+	});
 
 		log.info("Scaling {} to {} instances...", request.getDefinition().getName(), DESIRED_COUNT);
 
 		appDeployer().scale(new AppScaleRequest(deploymentId, DESIRED_COUNT));
 
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
+	});
 
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getInstances()).hasSize(DESIRED_COUNT);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getInstances()).hasSize(DESIRED_COUNT);
+	});
 
 		List<DeploymentState> individualStates = new ArrayList<>();
 		for (AppInstanceStatus status : appDeployer().status(deploymentId).getInstances().values()) {
@@ -530,26 +530,26 @@ public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends Abstract
 		appDeployer().scale(new AppScaleRequest(deploymentId, 1));
 
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.deployed);
+	});
 
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getInstances()).hasSize(1);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getInstances()).hasSize(1);
+	});
 
 		log.info("Undeploying {}...", deploymentId);
 
 		timeout = undeploymentTimeout();
 		appDeployer().undeploy(deploymentId);
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-				.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-				.untilAsserted(() -> {
-			assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
-		});
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(appDeployer().status(deploymentId).getState()).isEqualTo(DeploymentState.unknown);
+	});
 
 	}
 

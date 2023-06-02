@@ -30,66 +30,68 @@ import org.springframework.util.StringUtils;
  * @author Ilayaperumal Gopinathan
  */
 abstract class ProbeCreator {
-    static final String KUBERNETES_DEPLOYER_PREFIX = "spring.cloud.deployer.kubernetes";
-    static final String LIVENESS_DEPLOYER_PROPERTY_PREFIX = KUBERNETES_DEPLOYER_PREFIX + ".liveness";
-    static final String READINESS_DEPLOYER_PROPERTY_PREFIX = KUBERNETES_DEPLOYER_PREFIX + ".readiness";
-    static final String STARTUP_DEPLOYER_PROPERTY_PREFIX = KUBERNETES_DEPLOYER_PREFIX + ".startup";
+	static final String KUBERNETES_DEPLOYER_PREFIX = "spring.cloud.deployer.kubernetes";
+	static final String LIVENESS_DEPLOYER_PROPERTY_PREFIX = KUBERNETES_DEPLOYER_PREFIX + ".liveness";
+	static final String READINESS_DEPLOYER_PROPERTY_PREFIX = KUBERNETES_DEPLOYER_PREFIX + ".readiness";
+	static final String STARTUP_DEPLOYER_PROPERTY_PREFIX = KUBERNETES_DEPLOYER_PREFIX + ".startup";
 
-    private ContainerConfiguration containerConfiguration;
-    private KubernetesDeployerProperties kubernetesDeployerProperties;
+	private ContainerConfiguration containerConfiguration;
+	private KubernetesDeployerProperties kubernetesDeployerProperties;
 
-    ProbeCreator(KubernetesDeployerProperties kubernetesDeployerProperties,
-                 ContainerConfiguration containerConfiguration) {
-        this.containerConfiguration = containerConfiguration;
-        this.kubernetesDeployerProperties = kubernetesDeployerProperties;
-    }
+	ProbeCreator(KubernetesDeployerProperties kubernetesDeployerProperties,
+ContainerConfiguration containerConfiguration) {
+		this.containerConfiguration = containerConfiguration;
+		this.kubernetesDeployerProperties = kubernetesDeployerProperties;
+	}
 
-    abstract Probe create();
+	abstract Probe create();
 
-    abstract int getInitialDelay();
+	abstract int getInitialDelay();
 
-    abstract int getPeriod();
+	abstract int getPeriod();
 
-    abstract int getFailure();
+	abstract int getFailure();
 
-    abstract int getSuccess();
+	abstract int getSuccess();
 
-    KubernetesDeployerProperties getKubernetesDeployerProperties() {
-        return kubernetesDeployerProperties;
-    }
+	KubernetesDeployerProperties getKubernetesDeployerProperties() {
+		return kubernetesDeployerProperties;
+	}
 
-    private Map<String, String> getDeploymentProperties() {
-        return this.containerConfiguration.getAppDeploymentRequest().getDeploymentProperties();
-    }
+	private Map<String, String> getDeploymentProperties() {
+		return this.containerConfiguration.getAppDeploymentRequest().getDeploymentProperties();
+	}
 
-    protected String getDeploymentPropertyValue(String propertyName) {
-        return PropertyParserUtils.getDeploymentPropertyValue(getDeploymentProperties(), propertyName);
-    }
-    protected String getDeploymentPropertyValue(String propertyName, String defaultValue) {
-        return PropertyParserUtils.getDeploymentPropertyValue(getDeploymentProperties(), propertyName, defaultValue);
-    }
+	protected String getDeploymentPropertyValue(String propertyName) {
+		return PropertyParserUtils.getDeploymentPropertyValue(getDeploymentProperties(), propertyName);
+	}
 
-    ContainerConfiguration getContainerConfiguration() {
-        return containerConfiguration;
-    }
+	protected String getDeploymentPropertyValue(String propertyName, String defaultValue) {
+		return PropertyParserUtils.getDeploymentPropertyValue(getDeploymentProperties(), propertyName, defaultValue);
+	}
 
-    // used to resolve deprecated HTTP probe property names that do not include "Http" in them
-    // can be removed when deprecated HTTP probes without "Http" in them get removed
-    String getProbeProperty(String propertyPrefix, String probeName, String propertySuffix) {
-        String defaultValue = getDeploymentPropertyValue(propertyPrefix + probeName + propertySuffix);
-        return StringUtils.hasText(defaultValue) ? defaultValue :
-                getDeploymentPropertyValue(propertyPrefix + propertySuffix);
-    }
+	ContainerConfiguration getContainerConfiguration() {
+		return containerConfiguration;
+	}
 
-    String getProbeProperty(String propertyPrefix, String probeName, String propertySuffix, String defaultValue) {
-        return getDeploymentPropertyValue(propertyPrefix + probeName + propertySuffix,
-                getDeploymentPropertyValue(propertyPrefix + propertySuffix, defaultValue)
-        );
-    }
-    int getProbeIntProperty(String propertyPrefix, String probeName, String propertySuffix, int defaultValue) {
-        String propertyValue = getDeploymentPropertyValue(propertyPrefix + probeName + propertySuffix,
-                getDeploymentPropertyValue(propertyPrefix + propertySuffix)
-        );
-        return StringUtils.hasText(propertyValue) ? Integer.parseInt(propertyValue) : defaultValue;
-    }
+	// used to resolve deprecated HTTP probe property names that do not include "Http" in them
+	// can be removed when deprecated HTTP probes without "Http" in them get removed
+	String getProbeProperty(String propertyPrefix, String probeName, String propertySuffix) {
+		String defaultValue = getDeploymentPropertyValue(propertyPrefix + probeName + propertySuffix);
+		return StringUtils.hasText(defaultValue) ? defaultValue :
+	getDeploymentPropertyValue(propertyPrefix + propertySuffix);
+	}
+
+	String getProbeProperty(String propertyPrefix, String probeName, String propertySuffix, String defaultValue) {
+		return getDeploymentPropertyValue(propertyPrefix + probeName + propertySuffix,
+	getDeploymentPropertyValue(propertyPrefix + propertySuffix, defaultValue)
+		);
+	}
+
+	int getProbeIntProperty(String propertyPrefix, String probeName, String propertySuffix, int defaultValue) {
+		String propertyValue = getDeploymentPropertyValue(propertyPrefix + probeName + propertySuffix,
+	getDeploymentPropertyValue(propertyPrefix + propertySuffix)
+		);
+		return StringUtils.hasText(propertyValue) ? Integer.parseInt(propertyValue) : defaultValue;
+	}
 }

@@ -126,10 +126,10 @@ public abstract class AbstractTaskLauncherIntegrationJUnit5Tests extends Abstrac
 
 		Timeout timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-                .atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-                .untilAsserted(() -> {
-			assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.complete);
-        });
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.complete);
+	});
 
 		taskLauncher().destroy(definition.getName());
 	}
@@ -148,10 +148,10 @@ public abstract class AbstractTaskLauncherIntegrationJUnit5Tests extends Abstrac
 
 		Timeout timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-                .atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-                .untilAsserted(() -> {
-			assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.complete);
-        });
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.complete);
+	});
 
 		log.info("Re-Launching {}...", request.getDefinition().getName());
 		String newLaunchId = taskLauncher().launch(request);
@@ -160,10 +160,10 @@ public abstract class AbstractTaskLauncherIntegrationJUnit5Tests extends Abstrac
 
 		timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-                .atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-                .untilAsserted(() -> {
-			assertThat(taskLauncher().status(newLaunchId).getState()).isEqualTo(LaunchState.complete);
-        });
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(taskLauncher().status(newLaunchId).getState()).isEqualTo(LaunchState.complete);
+	});
 
 		taskLauncher().destroy(definition.getName());
 	}
@@ -182,10 +182,10 @@ public abstract class AbstractTaskLauncherIntegrationJUnit5Tests extends Abstrac
 
 		Timeout timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-                .atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-                .untilAsserted(() -> {
-			assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.failed);
-        });
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.failed);
+	});
 
 		taskLauncher().destroy(definition.getName());
 	}
@@ -204,20 +204,20 @@ public abstract class AbstractTaskLauncherIntegrationJUnit5Tests extends Abstrac
 
 		Timeout timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-                .atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-                .untilAsserted(() -> {
-			assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.running);
-        });
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.running);
+	});
 
 		log.info("Cancelling {}...", request.getDefinition().getName());
 		taskLauncher().cancel(launchId);
 
 		timeout = undeploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-                .atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-                .untilAsserted(() -> {
-			assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.cancelled);
-        });
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.cancelled);
+	});
 
 		taskLauncher().destroy(definition.getName());
 	}
@@ -232,16 +232,16 @@ public abstract class AbstractTaskLauncherIntegrationJUnit5Tests extends Abstrac
 		AppDefinition definition = new AppDefinition(randomName(), properties);
 		Resource resource = testApplication();
 		AppDeploymentRequest request = new AppDeploymentRequest(definition, resource, Collections.<String, String>emptyMap(),
-				Collections.singletonList("--exitCode=0"));
+	Collections.singletonList("--exitCode=0"));
 		log.info("Launching {}...", request.getDefinition().getName());
 		String deploymentId = taskLauncher().launch(request);
 
 		Timeout timeout = deploymentTimeout();
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-                .atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-                .untilAsserted(() -> {
-			assertThat(taskLauncher().status(deploymentId).getState()).isEqualTo(LaunchState.complete);
-        });
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(taskLauncher().status(deploymentId).getState()).isEqualTo(LaunchState.complete);
+	});
 		taskLauncher().destroy(definition.getName());
 	}
 
@@ -257,7 +257,7 @@ public abstract class AbstractTaskLauncherIntegrationJUnit5Tests extends Abstrac
 		assertThat(info.getPlatformHostVersion()).isNotNull();
 	}
 
-    protected static class TaskLauncherAssert extends AbstractAssert<TaskLauncherAssert, TaskLauncher> {
+	protected static class TaskLauncherAssert extends AbstractAssert<TaskLauncherAssert, TaskLauncher> {
 
 		public TaskLauncherAssert(TaskLauncher launcher) {
 			super(launcher, TaskLauncherAssert.class);
@@ -315,10 +315,12 @@ public abstract class AbstractTaskLauncherIntegrationJUnit5Tests extends Abstrac
 		public RuntimeEnvironmentInfo environmentInfo() {
 			return wrapped.environmentInfo();
 		}
+
 		@Override
 		public int getMaximumConcurrentTasks() {
 			return wrapped.getMaximumConcurrentTasks();
 		}
+
 		@Override
 		public int getRunningTaskExecutionCount() {
 			return wrapped.getRunningTaskExecutionCount();

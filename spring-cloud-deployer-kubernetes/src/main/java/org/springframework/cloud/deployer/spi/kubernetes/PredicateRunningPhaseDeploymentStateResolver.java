@@ -35,9 +35,9 @@ public class PredicateRunningPhaseDeploymentStateResolver implements RunningPhas
 	protected final KubernetesDeployerProperties properties;
 
 	PredicateRunningPhaseDeploymentStateResolver(
-		KubernetesDeployerProperties properties,
-		DeploymentState resolvedState,
-		ContainerStatusCondition... conditions) {
+KubernetesDeployerProperties properties,
+DeploymentState resolvedState,
+ContainerStatusCondition... conditions) {
 		this.conditions = conditions;
 		this.resolvedState = resolvedState;
 		this.properties = properties;
@@ -55,7 +55,7 @@ public class PredicateRunningPhaseDeploymentStateResolver implements RunningPhas
 		else {
 			Stream<ContainerStatusCondition> report = Stream.of(conditions);
 			report.filter(c -> {
-				boolean result= false;
+				boolean result = false;
 				try {
 					result = c.test(containerStatus);
 				}
@@ -76,6 +76,7 @@ public class PredicateRunningPhaseDeploymentStateResolver implements RunningPhas
 		ContainerStatusCondition(String description) {
 			this.description = description;
 		}
+
 		public String toString() {
 			String className = this.getClass().getName();
 
@@ -97,24 +98,24 @@ public class PredicateRunningPhaseDeploymentStateResolver implements RunningPhas
 	static class ContainerCrashed extends PredicateRunningPhaseDeploymentStateResolver {
 		ContainerCrashed(KubernetesDeployerProperties properties) {
 			super(properties,
-				DeploymentState.failed,
-				new ContainerStatusCondition("restart count > maxTerminatedErrorRestarts") {
-					@Override
-					public boolean test(ContainerStatus containerStatus) {
-						return containerStatus.getRestartCount() > properties.getMaxTerminatedErrorRestarts();
-					}
-				}, new ContainerStatusCondition("exit code in (1, 137, 143)") {
-					@Override
-					public boolean test(ContainerStatus containerStatus) {
-						// if we are being killed repeatedly due to OOM or using too much CPU, or abnormal termination.
-						return
-							containerStatus.getLastState() != null &&
-								containerStatus.getLastState().getTerminated() != null &&
-								(containerStatus.getLastState().getTerminated().getExitCode() == 137 ||
-									containerStatus.getLastState().getTerminated().getExitCode() == 143 ||
-									containerStatus.getLastState().getTerminated().getExitCode() == 1);
-					}
-				});
+		DeploymentState.failed,
+		new ContainerStatusCondition("restart count > maxTerminatedErrorRestarts") {
+			@Override
+			public boolean test(ContainerStatus containerStatus) {
+				return containerStatus.getRestartCount() > properties.getMaxTerminatedErrorRestarts();
+			}
+		}, new ContainerStatusCondition("exit code in (1, 137, 143)") {
+			@Override
+			public boolean test(ContainerStatus containerStatus) {
+				// if we are being killed repeatedly due to OOM or using too much CPU, or abnormal termination.
+				return
+			containerStatus.getLastState() != null &&
+		containerStatus.getLastState().getTerminated() != null &&
+		(containerStatus.getLastState().getTerminated().getExitCode() == 137 ||
+	containerStatus.getLastState().getTerminated().getExitCode() == 143 ||
+	containerStatus.getLastState().getTerminated().getExitCode() == 1);
+			}
+		});
 		}
 	}
 
@@ -123,28 +124,28 @@ public class PredicateRunningPhaseDeploymentStateResolver implements RunningPhas
 
 		RestartsDueToTheSameError(KubernetesDeployerProperties properties) {
 			super(properties, DeploymentState.failed, new ContainerStatusCondition("restart count > "
-				+ "maxTerminatedErrorRestarts") {
+		+ "maxTerminatedErrorRestarts") {
 				@Override
 				public boolean test(ContainerStatus containerStatus) {
 					return containerStatus.getRestartCount() > properties.getMaxTerminatedErrorRestarts();
 				}
 			}, new ContainerStatusCondition("last state termination reason == 'Error' and termination reason == "
-				+ "'Error'") {
+		+ "'Error'") {
 				public boolean test(ContainerStatus containerStatus) {
 					return
-						containerStatus.getLastState() != null && containerStatus.getState() != null &&
-							containerStatus.getLastState().getTerminated() != null &&
-							containerStatus.getLastState().getTerminated().getReason() != null &&
-							containerStatus.getLastState().getTerminated().getReason().contains("Error") &&
-							containerStatus.getState().getTerminated() != null &&
-							containerStatus.getState().getTerminated().getReason() != null &&
-							containerStatus.getState().getTerminated().getReason().contains("Error");
+				containerStatus.getLastState() != null && containerStatus.getState() != null &&
+			containerStatus.getLastState().getTerminated() != null &&
+			containerStatus.getLastState().getTerminated().getReason() != null &&
+			containerStatus.getLastState().getTerminated().getReason().contains("Error") &&
+			containerStatus.getState().getTerminated() != null &&
+			containerStatus.getState().getTerminated().getReason() != null &&
+			containerStatus.getState().getTerminated().getReason().contains("Error");
 				}
 			}, new ContainerStatusCondition("last state exit code == exit code") {
 				@Override
 				public boolean test(ContainerStatus containerStatus) {
 					return containerStatus.getLastState().getTerminated().getExitCode().equals(
-						containerStatus.getState().getTerminated().getExitCode());
+				containerStatus.getState().getTerminated().getExitCode());
 				}
 			});
 		}
@@ -153,7 +154,7 @@ public class PredicateRunningPhaseDeploymentStateResolver implements RunningPhas
 	static class CrashLoopBackOffRestarts extends PredicateRunningPhaseDeploymentStateResolver {
 		CrashLoopBackOffRestarts(KubernetesDeployerProperties properties) {
 			super(properties, DeploymentState.failed, new ContainerStatusCondition("restart count > "
-				+ "CrashLoopBackOffRestarts") {
+		+ "CrashLoopBackOffRestarts") {
 				@Override
 				public boolean test(ContainerStatus containerStatus) {
 					return containerStatus.getRestartCount() > properties.getMaxCrashLoopBackOffRestarts();
@@ -162,12 +163,12 @@ public class PredicateRunningPhaseDeploymentStateResolver implements RunningPhas
 				@Override
 				public boolean test(ContainerStatus containerStatus) {
 					return
-						containerStatus.getLastState() != null &&
-							containerStatus.getState() != null &&
-							containerStatus.getLastState().getTerminated() != null &&
-							containerStatus.getState().getWaiting() != null &&
-							containerStatus.getState().getWaiting().getReason() != null &&
-							containerStatus.getState().getWaiting().getReason().contains("CrashLoopBackOff");
+				containerStatus.getLastState() != null &&
+			containerStatus.getState() != null &&
+			containerStatus.getLastState().getTerminated() != null &&
+			containerStatus.getState().getWaiting() != null &&
+			containerStatus.getState().getWaiting().getReason() != null &&
+			containerStatus.getState().getWaiting().getReason().contains("CrashLoopBackOff");
 				}
 			});
 		}
@@ -185,7 +186,7 @@ public class PredicateRunningPhaseDeploymentStateResolver implements RunningPhas
 				@Override
 				public boolean test(ContainerStatus containerStatus) {
 					return containerStatus.getState() != null &&
-						containerStatus.getState().getTerminated() != null;
+				containerStatus.getState().getTerminated() != null;
 				}
 			});
 		}

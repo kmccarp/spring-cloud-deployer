@@ -107,14 +107,14 @@ public class CloudFoundryAppInstanceStatus implements AppInstanceStatus {
 		List<String> urls = applicationDetail.getUrls();
 		if (!urls.isEmpty()) {
 			attributes.put("url", "http://" + urls.get(0));
-			for (int i = 0; i < urls.size() ; i++) {
+			for (int i = 0; i < urls.size(); i++) {
 				attributes.put("url." + i, "http://" + urls.get(i));
 			}
 		}
 		// TODO cf-java-client versions > 2.8 will have an index formally added ot InstanceDetail
 		/*
-		 The deployer GUID must be unique for each app instance, the CloudFoundry GUID is common to all instances of
-		 the same app.
+			e deployer GUID must be unique for each app instance, the CloudFoundry GUID is common to all instances of
+			e same app.
 		 */
 		attributes.put(GUID, applicationDetail.getName() + ":" + index);
 		attributes.put(CF_GUID, applicationDetail.getId());
@@ -124,6 +124,6 @@ public class CloudFoundryAppInstanceStatus implements AppInstanceStatus {
 
 	@Override
 	public String toString() {
-		return String.format("%s[%s : %s]" , getClass().getSimpleName(), getId(), getState());
+		return String.format("%s[%s : %s]", getClass().getSimpleName(), getId(), getState());
 	}
 }

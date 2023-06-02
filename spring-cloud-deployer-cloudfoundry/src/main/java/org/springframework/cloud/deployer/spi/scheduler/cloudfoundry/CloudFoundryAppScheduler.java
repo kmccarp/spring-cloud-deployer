@@ -89,8 +89,8 @@ public class CloudFoundryAppScheduler implements Scheduler {
 
 	@Deprecated
 	public CloudFoundryAppScheduler(SchedulerClient client, CloudFoundryOperations operations,
-			CloudFoundryConnectionProperties properties, CloudFoundryTaskLauncher taskLauncher,
-			CloudFoundrySchedulerProperties schedulerProperties) {
+CloudFoundryConnectionProperties properties, CloudFoundryTaskLauncher taskLauncher,
+CloudFoundrySchedulerProperties schedulerProperties) {
 		Assert.notNull(client, "client must not be null");
 		Assert.notNull(operations, "operations must not be null");
 		Assert.notNull(properties, "properties must not be null");
@@ -110,9 +110,10 @@ public class CloudFoundryAppScheduler implements Scheduler {
 		this.deploymentProperties.setUnScheduleTimeoutInSeconds(this.schedulerProperties.getScheduleTimeoutInSeconds());
 		this.deploymentProperties.setListTimeoutInSeconds(this.schedulerProperties.getListTimeoutInSeconds());
 	}
+
 	public CloudFoundryAppScheduler(SchedulerClient client, CloudFoundryOperations operations,
-			CloudFoundryConnectionProperties properties, CloudFoundryTaskLauncher taskLauncher,
-			CloudFoundryDeploymentProperties deploymentProperties) {
+CloudFoundryConnectionProperties properties, CloudFoundryTaskLauncher taskLauncher,
+CloudFoundryDeploymentProperties deploymentProperties) {
 		Assert.notNull(client, "client must not be null");
 		Assert.notNull(operations, "operations must not be null");
 		Assert.notNull(properties, "properties must not be null");
@@ -135,9 +136,9 @@ public class CloudFoundryAppScheduler implements Scheduler {
 
 		if (scheduleName.length() > MAX_SCHEDULE_NAME_LENGTH) {
 			throw new CreateScheduleException(String.format("Schedule can not be created because its name " +
-							"'%s' has too many characters.  Schedule name length" +
-							" must be %s characters or less.",
-					scheduleName, MAX_SCHEDULE_NAME_LENGTH), null);
+		"'%s' has too many characters.  Schedule name length" +
+		" must be %s characters or less.",
+		scheduleName, MAX_SCHEDULE_NAME_LENGTH), null);
 		}
 
 		String cronExpressionCandidate = null;
@@ -154,57 +155,57 @@ public class CloudFoundryAppScheduler implements Scheduler {
 			cronExpressionCandidate = scheduleRequest.getDeploymentProperties().get(CRON_EXPRESSION_KEY);
 		}
 		Assert.hasText(cronExpressionCandidate, String.format(
-				"request's scheduleProperties must have a %s or %s that is not null nor empty",
-				SchedulerPropertyKeys.CRON_EXPRESSION, CRON_EXPRESSION_KEY));
+	"request's scheduleProperties must have a %s or %s that is not null nor empty",
+	SchedulerPropertyKeys.CRON_EXPRESSION, CRON_EXPRESSION_KEY));
 		String cronExpression = cronExpressionCandidate;
 		try {
 			new QuartzCronExpression("0 " + cronExpression);
 		}
-		catch(ParseException pe) {
+		catch (ParseException pe) {
 			throw new CreateScheduleException("Cron Expression is invalid: " + pe.getMessage(), pe);
 		}
 		String command = stageTask(scheduleRequest);
 
 		retryTemplate().execute(new RetryCallback<Void, RuntimeException>() {
-					@Override
-					public Void doWithRetry(RetryContext retryContext) throws RuntimeException {
-						scheduleTask(appName, scheduleName, cronExpression, command);
-						return null;
-					}
-				},
-				new RecoveryCallback<Void>() {
-					@Override
-					public Void recover(RetryContext retryContext) throws Exception {
-						if (retryContext.getLastThrowable() != null) {
-							logger.error("Retry Context reported the following exception: " + retryContext.getLastThrowable().getMessage());
-						}
-						logger.error("Unable to schedule application");
-						try {
-							logger.debug("removing job portion of the schedule.");
-							unschedule(scheduleName);
-						}
-						catch (UnScheduleException ex) {
-							logger.debug("No job to be removed.");
-						}
-						throw new CreateScheduleException(scheduleName, retryContext.getLastThrowable());
-					}
-				});
+		@Override
+		public Void doWithRetry(RetryContext retryContext) throws RuntimeException {
+			scheduleTask(appName, scheduleName, cronExpression, command);
+			return null;
+		}
+	},
+	new RecoveryCallback<Void>() {
+		@Override
+		public Void recover(RetryContext retryContext) throws Exception {
+			if (retryContext.getLastThrowable() != null) {
+				logger.error("Retry Context reported the following exception: " + retryContext.getLastThrowable().getMessage());
+			}
+			logger.error("Unable to schedule application");
+			try {
+				logger.debug("removing job portion of the schedule.");
+				unschedule(scheduleName);
+			}
+			catch (UnScheduleException ex) {
+				logger.debug("No job to be removed.");
+			}
+			throw new CreateScheduleException(scheduleName, retryContext.getLastThrowable());
+		}
+	});
 	}
 
 	@Override
 	public void unschedule(String scheduleName) {
 		logger.debug(String.format("Unscheduling: %s", scheduleName));
 		this.client.jobs().delete(DeleteJobRequest.builder()
-				.jobId(getJob(scheduleName))
-				.build())
-				.block(Duration.ofSeconds(this.deploymentProperties.getUnScheduleTimeoutInSeconds()));
+	.jobId(getJob(scheduleName))
+	.build())
+	.block(Duration.ofSeconds(this.deploymentProperties.getUnScheduleTimeoutInSeconds()));
 	}
 
 	@Override
 	public List<ScheduleInfo> list(String taskDefinitionName) {
 		return list().stream().filter(scheduleInfo ->
-				scheduleInfo.getTaskDefinitionName().equals(taskDefinitionName))
-				.collect(Collectors.toList());
+	scheduleInfo.getTaskDefinitionName().equals(taskDefinitionName))
+	.collect(Collectors.toList());
 	}
 
 	@Override
@@ -212,9 +213,9 @@ public class CloudFoundryAppScheduler implements Scheduler {
 		List<ScheduleInfo> result = new ArrayList<>();
 		for (int i = PCF_PAGE_START_NUM; i <= getJobPageCount(); i++) {
 			List<ScheduleInfo> scheduleInfoPage = getSchedules(i)
-					.collectList()
-					.block(Duration.ofSeconds(this.deploymentProperties.getListTimeoutInSeconds()));
-			if(scheduleInfoPage == null) {
+		.collectList()
+		.block(Duration.ofSeconds(this.deploymentProperties.getListTimeoutInSeconds()));
+			if (scheduleInfoPage == null) {
 				throw new SchedulerException(SCHEDULER_SERVICE_ERROR_MESSAGE);
 			}
 			result.addAll(scheduleInfoPage);
@@ -230,35 +231,35 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	 * @param command the command returned from the staging.
 	 */
 	private void scheduleTask(String appName, String scheduleName,
-			String expression, String command) {
+String expression, String command) {
 		logger.debug(String.format("Scheduling Task: ", appName));
 
 		ScheduleJobResponse response = getApplicationByAppName(appName)
-				.flatMap(abstractApplicationSummary -> {
-					return this.client.jobs().create(CreateJobRequest.builder()
-							.applicationId(abstractApplicationSummary.getId()) // App GUID
-							.command(command)
-							.name(scheduleName)
-							.build());
-				}).flatMap(createJobResponse -> {
+	.flatMap(abstractApplicationSummary -> {
+		return this.client.jobs().create(CreateJobRequest.builder()
+	.applicationId(abstractApplicationSummary.getId()) // App GUID
+	.command(command)
+	.name(scheduleName)
+	.build());
+	}).flatMap(createJobResponse -> {
 			return this.client.jobs().schedule(ScheduleJobRequest.
-					builder().
-					jobId(createJobResponse.getId()).
-					expression(expression).
-					expressionType(ExpressionType.CRON).
-					enabled(true).
-					build());
+		builder().
+		jobId(createJobResponse.getId()).
+		expression(expression).
+		expressionType(ExpressionType.CRON).
+		enabled(true).
+		build());
 		})
-				.onErrorMap(e -> {
-					if (e instanceof SSLException) {
-						throw new CloudFoundryScheduleSSLException("Failed to schedule" + scheduleName, e);
-					}
-					else {
-						throw new CreateScheduleException(scheduleName, e);
-					}
-				})
-				.block(Duration.ofSeconds(this.deploymentProperties.getScheduleTimeoutInSeconds()));
-		if(response == null) {
+	.onErrorMap(e -> {
+		if (e instanceof SSLException) {
+			throw new CloudFoundryScheduleSSLException("Failed to schedule" + scheduleName, e);
+		}
+		else {
+			throw new CreateScheduleException(scheduleName, e);
+		}
+	})
+	.block(Duration.ofSeconds(this.deploymentProperties.getScheduleTimeoutInSeconds()));
+		if (response == null) {
 			throw new SchedulerException(SCHEDULER_SERVICE_ERROR_MESSAGE);
 		}
 	}
@@ -270,12 +271,12 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	 */
 	private String stageTask(ScheduleRequest scheduleRequest) {
 		logger.debug(String.format("Staging Task: ",
-				scheduleRequest.getDefinition().getName()));
+	scheduleRequest.getDefinition().getName()));
 		AppDeploymentRequest request = new AppDeploymentRequest(
-				scheduleRequest.getDefinition(),
-				scheduleRequest.getResource(),
-				scheduleRequest.getDeploymentProperties(),
-				scheduleRequest.getCommandlineArguments());
+	scheduleRequest.getDefinition(),
+	scheduleRequest.getResource(),
+	scheduleRequest.getDeploymentProperties(),
+	scheduleRequest.getCommandlineArguments());
 		SummaryApplicationResponse response = taskLauncher.stage(request);
 		return taskLauncher.getCommand(response, request);
 	}
@@ -286,9 +287,9 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	 */
 	private Mono<AbstractApplicationSummary> getApplicationByAppName(String appName) {
 		return requestListApplications()
-				.filter(application -> appName.equals(application.getName()))
-				.singleOrEmpty()
-				.cast(AbstractApplicationSummary.class);
+	.filter(application -> appName.equals(application.getName()))
+	.singleOrEmpty()
+	.cast(AbstractApplicationSummary.class);
 	}
 
 	/**
@@ -296,7 +297,7 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	 */
 	private Flux<ApplicationSummary> requestListApplications() {
 		return this.operations.applications()
-				.list();
+	.list();
 	}
 
 	/**
@@ -304,7 +305,7 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	 */
 	private Flux<ApplicationSummary> cacheAppSummaries() {
 		return requestListApplications()
-				.cache(); //cache results from first call.  No need to re-retrieve each time.
+	.cache(); //cache results from first call.  No need to re-retrieve each time.
 	}
 
 	/**
@@ -313,7 +314,7 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	 */
 	private Flux<SpaceSummary> requestSpaces() {
 		return this.operations.spaces()
-				.list();
+	.list();
 	}
 
 	/**
@@ -323,10 +324,10 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	 */
 	private Mono<SpaceSummary> getSpace(String spaceName) {
 		return requestSpaces()
-				.cache() //cache results from first call.
-				.filter(space -> spaceName.equals(space.getName()))
-				.singleOrEmpty()
-				.cast(SpaceSummary.class);
+	.cache() //cache results from first call.
+	.filter(space -> spaceName.equals(space.getName()))
+	.singleOrEmpty()
+	.cast(SpaceSummary.class);
 	}
 
 	/**
@@ -335,10 +336,10 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	 * @param appId the id of the {@link ApplicationSummary} to search.
 	 */
 	private Mono<ApplicationSummary> getApplication(Flux<ApplicationSummary> applicationSummaries,
-			String appId) {
+String appId) {
 		return applicationSummaries
-				.filter(application -> appId.equals(application.getId()))
-				.singleOrEmpty();
+	.filter(application -> appId.equals(application.getId()))
+	.singleOrEmpty();
 	}
 
 	/**
@@ -354,28 +355,29 @@ public class CloudFoundryAppScheduler implements Scheduler {
 		Flux<ApplicationSummary> applicationSummaries = cacheAppSummaries();
 		return this.getSpace(this.properties.getSpace()).flatMap(requestSummary -> {
 			return this.client.jobs().list(ListJobsRequest.builder()
-					.spaceId(requestSummary.getId())
-					.page(pageNumber)
-					.detailed(true).build());})
-				.flatMapIterable(jobs -> jobs.getResources())// iterate over the resources returned.
-				.flatMap(job -> {
-					return getApplication(applicationSummaries,
-							job.getApplicationId()) // get the application name for each job.
-							.map(optionalApp -> {
-								ScheduleInfo scheduleInfo = new ScheduleInfo();
-								scheduleInfo.setScheduleProperties(new HashMap<>());
-								scheduleInfo.setScheduleName(job.getName());
-								scheduleInfo.setTaskDefinitionName(optionalApp.getName());
-								if (job.getJobSchedules() != null) {
-									scheduleInfo.getScheduleProperties().put(SchedulerPropertyKeys.CRON_EXPRESSION,
-											job.getJobSchedules().get(0).getExpression());
-								}
-								else {
-									logger.warn(String.format("Job %s does not have an associated schedule", job.getName()));
-								}
-								return scheduleInfo;
-							});
-				});
+		.spaceId(requestSummary.getId())
+		.page(pageNumber)
+		.detailed(true).build());
+		})
+	.flatMapIterable(jobs -> jobs.getResources())// iterate over the resources returned.
+	.flatMap(job -> {
+		return getApplication(applicationSummaries,
+	job.getApplicationId()) // get the application name for each job.
+	.map(optionalApp -> {
+		ScheduleInfo scheduleInfo = new ScheduleInfo();
+		scheduleInfo.setScheduleProperties(new HashMap<>());
+		scheduleInfo.setScheduleName(job.getName());
+		scheduleInfo.setTaskDefinitionName(optionalApp.getName());
+		if (job.getJobSchedules() != null) {
+			scheduleInfo.getScheduleProperties().put(SchedulerPropertyKeys.CRON_EXPRESSION,
+		job.getJobSchedules().get(0).getExpression());
+		}
+		else {
+			logger.warn(String.format("Job %s does not have an associated schedule", job.getName()));
+		}
+		return scheduleInfo;
+	});
+	});
 	}
 
 	/**
@@ -385,10 +387,10 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	private int getJobPageCount() {
 		ListJobsResponse response = this.getSpace(this.properties.getSpace()).flatMap(requestSummary -> {
 			return this.client.jobs().list(ListJobsRequest.builder()
-					.spaceId(requestSummary.getId())
-					.detailed(false).build());
+		.spaceId(requestSummary.getId())
+		.detailed(false).build());
 		}).block();
-		if(response == null) {
+		if (response == null) {
 			throw new SchedulerException(SCHEDULER_SERVICE_ERROR_MESSAGE);
 		}
 		return response.getPagination().getTotalPages();
@@ -403,14 +405,15 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	private Mono<Job> getJobMono(String jobName, int page) {
 		return this.getSpace(this.properties.getSpace()).flatMap(requestSummary -> {
 			return this.client
-					.jobs()
-					.list(ListJobsRequest.builder()
-							.spaceId(requestSummary.getId())
-							.page(page)
-							.build()); })
-				.flatMapIterable(jobs -> jobs.getResources())
-				.filter(job -> job.getName().equals(jobName))
-				.singleOrEmpty();// iterate over the resources returned.
+		.jobs()
+		.list(ListJobsRequest.builder()
+	.spaceId(requestSummary.getId())
+	.page(page)
+	.build());
+		})
+	.flatMapIterable(jobs -> jobs.getResources())
+	.filter(job -> job.getName().equals(jobName))
+	.singleOrEmpty();// iterate over the resources returned.
 	}
 
 	/**
@@ -423,12 +426,12 @@ public class CloudFoundryAppScheduler implements Scheduler {
 		final int pageCount = getJobPageCount();
 		for (int pageNum = PCF_PAGE_START_NUM; pageNum <= pageCount; pageNum++) {
 			result = getJobMono(jobName, pageNum)
-					.block();
+		.block();
 			if (result != null) {
 				break;
 			}
 		}
-		if(result == null) {
+		if (result == null) {
 			throw new UnScheduleException(String.format("schedule %s does not exist.", jobName));
 		}
 		return result.getId();
@@ -437,8 +440,8 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	private RetryTemplate retryTemplate() {
 		RetryTemplate retryTemplate = new RetryTemplate();
 		SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy(
-				this.deploymentProperties.getScheduleSSLRetryCount(),
-				Collections.singletonMap(CloudFoundryScheduleSSLException.class, true));
+	this.deploymentProperties.getScheduleSSLRetryCount(),
+	Collections.singletonMap(CloudFoundryScheduleSSLException.class, true));
 		retryTemplate.setRetryPolicy(retryPolicy);
 		return retryTemplate;
 	}

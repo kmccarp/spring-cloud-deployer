@@ -48,9 +48,9 @@ public class StaticWagonConfigurator implements WagonConfigurator {
 	public void configure(Wagon wagon, Object configuration) throws Exception {
 		logger.debug("Configuring wagon {} with {}", wagon, configuration);
 		if (wagon instanceof HttpWagon && configuration instanceof MavenProperties.Wagon) {
-			HttpWagon httpWagon = (HttpWagon)wagon;
+			HttpWagon httpWagon = (HttpWagon) wagon;
 			Map<WagonHttpMethod, WagonHttpMethodProperties> httpMethodProperties = ((MavenProperties.Wagon) configuration)
-					.getHttp();
+		.getHttp();
 			HttpConfiguration httpConfiguration = new HttpConfiguration();
 			for (Entry<WagonHttpMethod, WagonHttpMethodProperties> entry : httpMethodProperties.entrySet()) {
 				switch (entry.getKey()) {

@@ -39,7 +39,7 @@ public class ByteSizeUtils {
 		Matcher matcher = SIZE_PATTERN.matcher(text);
 		if (!matcher.matches()) {
 			throw new IllegalArgumentException(String.format("Could not parse '%s' as a byte size." +
-				" Expected a number with optional 'm' or 'g' suffix", text));
+		" Expected a number with optional 'm' or 'g' suffix", text));
 		}
 		long size = Long.parseLong(matcher.group("amount"));
 		if (matcher.group("unit").equalsIgnoreCase("g")) {

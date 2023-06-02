@@ -102,7 +102,7 @@ class MavenArtifactResolver {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Local repository: " + properties.getLocalRepository());
 			logger.debug("Remote repositories: " +
-					StringUtils.collectionToCommaDelimitedString(properties.getRemoteRepositories().keySet()));
+		StringUtils.collectionToCommaDelimitedString(properties.getRemoteRepositories().keySet()));
 		}
 		this.properties = properties;
 		if (isProxyEnabled() && proxyHasCredentials()) {
@@ -118,30 +118,30 @@ class MavenArtifactResolver {
 			boolean created = localRepository.mkdirs();
 			// May have been created by another thread after above check. Double check.
 			Assert.isTrue(created || localRepository.exists(),
-					"Unable to create directory for local repository: " + localRepository);
+		"Unable to create directory for local repository: " + localRepository);
 		}
 		for (Map.Entry<String, MavenProperties.RemoteRepository> entry : this.properties.getRemoteRepositories()
 				.entrySet()) {
 			MavenProperties.RemoteRepository remoteRepository = entry.getValue();
 			RemoteRepository.Builder remoteRepositoryBuilder = new RemoteRepository.Builder(
-					entry.getKey(), DEFAULT_CONTENT_TYPE, remoteRepository.getUrl());
+		entry.getKey(), DEFAULT_CONTENT_TYPE, remoteRepository.getUrl());
 			// Update policies when set.
 			if (remoteRepository.getPolicy() != null) {
 				remoteRepositoryBuilder.setPolicy(new RepositoryPolicy(remoteRepository.getPolicy().isEnabled(),
-						remoteRepository.getPolicy().getUpdatePolicy(),
-						remoteRepository.getPolicy().getChecksumPolicy()));
+			remoteRepository.getPolicy().getUpdatePolicy(),
+			remoteRepository.getPolicy().getChecksumPolicy()));
 			}
 			if (remoteRepository.getReleasePolicy() != null) {
 				remoteRepositoryBuilder
-						.setReleasePolicy(new RepositoryPolicy(remoteRepository.getReleasePolicy().isEnabled(),
-								remoteRepository.getReleasePolicy().getUpdatePolicy(),
-								remoteRepository.getReleasePolicy().getChecksumPolicy()));
+			.setReleasePolicy(new RepositoryPolicy(remoteRepository.getReleasePolicy().isEnabled(),
+		remoteRepository.getReleasePolicy().getUpdatePolicy(),
+		remoteRepository.getReleasePolicy().getChecksumPolicy()));
 			}
 			if (remoteRepository.getSnapshotPolicy() != null) {
 				remoteRepositoryBuilder
-						.setSnapshotPolicy(new RepositoryPolicy(remoteRepository.getSnapshotPolicy().isEnabled(),
-								remoteRepository.getSnapshotPolicy().getUpdatePolicy(),
-								remoteRepository.getSnapshotPolicy().getChecksumPolicy()));
+			.setSnapshotPolicy(new RepositoryPolicy(remoteRepository.getSnapshotPolicy().isEnabled(),
+		remoteRepository.getSnapshotPolicy().getUpdatePolicy(),
+		remoteRepository.getSnapshotPolicy().getChecksumPolicy()));
 			}
 			if (remoteRepositoryHasCredentials(remoteRepository)) {
 				final String username = remoteRepository.getAuth().getUsername();
@@ -155,17 +155,17 @@ class MavenArtifactResolver {
 				MavenProperties.Proxy proxyProperties = this.properties.getProxy();
 				if (this.proxyAuthentication != null) {
 					proxy = new Proxy(
-							proxyProperties.getProtocol(),
-							proxyProperties.getHost(),
-							proxyProperties.getPort(),
-							this.proxyAuthentication);
+				proxyProperties.getProtocol(),
+				proxyProperties.getHost(),
+				proxyProperties.getPort(),
+				this.proxyAuthentication);
 				}
 				else {
 					// if proxy does not require authentication
 					proxy = new Proxy(
-							proxyProperties.getProtocol(),
-							proxyProperties.getHost(),
-							proxyProperties.getPort());
+				proxyProperties.getProtocol(),
+				proxyProperties.getHost(),
+				proxyProperties.getPort());
 				}
 
 				DefaultProxySelector proxySelector = new DefaultProxySelector();
@@ -188,8 +188,8 @@ class MavenArtifactResolver {
 	 */
 	private boolean isProxyEnabled() {
 		return (this.properties.getProxy() != null &&
-				this.properties.getProxy().getHost() != null &&
-				this.properties.getProxy().getPort() > 0);
+	this.properties.getProxy().getHost() != null &&
+	this.properties.getProxy().getPort() > 0);
 	}
 
 	/**
@@ -199,9 +199,9 @@ class MavenArtifactResolver {
 	 */
 	private boolean proxyHasCredentials() {
 		return (this.properties.getProxy() != null &&
-				this.properties.getProxy().getAuth() != null &&
-				this.properties.getProxy().getAuth().getUsername() != null &&
-				this.properties.getProxy().getAuth().getPassword() != null);
+	this.properties.getProxy().getAuth() != null &&
+	this.properties.getProxy().getAuth().getUsername() != null &&
+	this.properties.getProxy().getAuth().getPassword() != null);
 	}
 
 	/**
@@ -211,9 +211,9 @@ class MavenArtifactResolver {
 	 */
 	private boolean remoteRepositoryHasCredentials(MavenProperties.RemoteRepository remoteRepository) {
 		return remoteRepository != null &&
-				remoteRepository.getAuth() != null &&
-				remoteRepository.getAuth().getUsername() != null &&
-				remoteRepository.getAuth().getPassword() != null;
+	remoteRepository.getAuth() != null &&
+	remoteRepository.getAuth().getUsername() != null &&
+	remoteRepository.getAuth().getPassword() != null;
 	}
 
 	/**
@@ -235,7 +235,7 @@ class MavenArtifactResolver {
 			@Override
 			public void digest(AuthenticationDigest digest) {
 				digest.update(AuthenticationContext.USERNAME, username,
-						AuthenticationContext.PASSWORD, password);
+			AuthenticationContext.PASSWORD, password);
 			}
 		};
 	}
@@ -244,6 +244,7 @@ class MavenArtifactResolver {
 	DefaultRepositorySystemSession newRepositorySystemSession() {
 		return this.newRepositorySystemSession(this.repositorySystem, this.properties.getLocalRepository());
 	}
+
 	/*
 	 * Create a session to manage remote and local synchronization.
 	 */
@@ -266,9 +267,9 @@ class MavenArtifactResolver {
 		if (isProxyEnabled()) {
 			DefaultProxySelector proxySelector = new DefaultProxySelector();
 			Proxy proxy = new Proxy(this.properties.getProxy().getProtocol(),
-					this.properties.getProxy().getHost(),
-					this.properties.getProxy().getPort(),
-					this.proxyAuthentication);
+		this.properties.getProxy().getHost(),
+		this.properties.getProxy().getPort(),
+		this.proxyAuthentication);
 			proxySelector.add(proxy, this.properties.getProxy().getNonProxyHosts());
 			session.setProxySelector(proxySelector);
 		}
@@ -293,7 +294,8 @@ class MavenArtifactResolver {
 			locator.addService(WagonProvider.class, StaticWagonProvider.class);
 			locator.addService(WagonConfigurator.class, StaticWagonConfigurator.class);
 			locator.addService(TransporterFactory.class, WagonTransporterFactory.class);
-		} else {
+		}
+		else {
 			locator.addService(TransporterFactory.class, HttpTransporterFactory.class);
 		}
 
@@ -314,7 +316,7 @@ class MavenArtifactResolver {
 		try {
 			VersionRangeResult versionResult = this.repositorySystem.resolveVersionRange(newRepositorySystemSession(), rangeRequest);
 			List<String> versions = new ArrayList<>();
-			for (Version version: versionResult.getVersions()) {
+			for (Version version : versionResult.getVersions()) {
 				versions.add(version.toString());
 			}
 			return versions;
@@ -337,18 +339,18 @@ class MavenArtifactResolver {
 		Assert.notNull(resource, "MavenResource must not be null");
 		validateCoordinates(resource);
 		RepositorySystemSession session = newRepositorySystemSession(this.repositorySystem,
-				this.properties.getLocalRepository());
+	this.properties.getLocalRepository());
 		ArtifactResult resolvedArtifact;
 		try {
 			List<ArtifactRequest> artifactRequests = new ArrayList<>(2);
 			if (properties.isResolvePom()) {
 				artifactRequests.add(new ArtifactRequest(toPomArtifact(resource),
-						this.remoteRepositories,
-						JavaScopes.RUNTIME));
+			this.remoteRepositories,
+			JavaScopes.RUNTIME));
 			}
 			artifactRequests.add(new ArtifactRequest(toJarArtifact(resource),
-					this.remoteRepositories,
-					JavaScopes.RUNTIME));
+		this.remoteRepositories,
+		JavaScopes.RUNTIME));
 
 			List<ArtifactResult> results = this.repositorySystem.resolveArtifacts(session, artifactRequests);
 			resolvedArtifact = results.get(results.size() - 1);
@@ -356,17 +358,17 @@ class MavenArtifactResolver {
 		catch (ArtifactResolutionException e) {
 
 			ChoiceFormat pluralizer = new ChoiceFormat(
-					new double[] { 0d, 1d, ChoiceFormat.nextDouble(1d) },
-					new String[] { "repositories: ", "repository: ", "repositories: " });
+		new double[]{0d, 1d, ChoiceFormat.nextDouble(1d)},
+		new String[]{"repositories: ", "repository: ", "repositories: "});
 			MessageFormat messageFormat = new MessageFormat(
-					"Failed to resolve MavenResource: {0}. Configured remote {1}: {2}");
+		"Failed to resolve MavenResource: {0}. Configured remote {1}: {2}");
 			messageFormat.setFormat(1, pluralizer);
 			String repos = properties.getRemoteRepositories().isEmpty()
-					? "none"
-					: StringUtils.collectionToDelimitedString(properties.getRemoteRepositories().keySet(), ",", "[", "]");
+		? "none"
+		: StringUtils.collectionToDelimitedString(properties.getRemoteRepositories().keySet(), ",", "[", "]");
 			throw new IllegalStateException(
-					messageFormat.format(new Object[] { resource, properties.getRemoteRepositories().size(), repos }),
-					e);
+		messageFormat.format(new Object[]{resource, properties.getRemoteRepositories().size(), repos}),
+		e);
 		}
 		return toResource(resolvedArtifact);
 	}
@@ -392,9 +394,9 @@ class MavenArtifactResolver {
 
 	private Artifact toArtifact(MavenResource resource, String extension) {
 		return new DefaultArtifact(resource.getGroupId(),
-				resource.getArtifactId(),
-				resource.getClassifier() != null ? resource.getClassifier() : "",
-				extension,
-				resource.getVersion());
+	resource.getArtifactId(),
+	resource.getClassifier() != null ? resource.getClassifier() : "",
+	extension,
+	resource.getVersion());
 	}
 }

@@ -70,7 +70,7 @@ public class DeploymentPropertiesResolverTests {
 
 	private DeploymentPropertiesResolver getDeploymentPropertiesResolver(boolean isDeprecated, KubernetesDeployerProperties properties) {
 		String propertiesPrefix = (isDeprecated) ? KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX :
-				KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX;
+	KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX;
 		return new DeploymentPropertiesResolver(propertiesPrefix, properties);
 	}
 }

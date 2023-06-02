@@ -45,7 +45,7 @@ import org.springframework.core.style.ToStringCreator;
  * @author Glenn Renfro
  * @author Ilayaperumal Gopinathan
  */
-public class ScheduleRequest extends AppDeploymentRequest{
+public class ScheduleRequest extends AppDeploymentRequest {
 
 	/**
 	 * The name of the Schedule.
@@ -65,7 +65,7 @@ public class ScheduleRequest extends AppDeploymentRequest{
 	 */
 	@Deprecated
 	public ScheduleRequest(AppDefinition definition, Map<String, String> schedulerProperties,
-			Map<String, String> deploymentProperties, String scheduleName, Resource resource) {
+Map<String, String> deploymentProperties, String scheduleName, Resource resource) {
 		this(definition, schedulerProperties, deploymentProperties, null, scheduleName, resource);
 	}
 
@@ -80,14 +80,14 @@ public class ScheduleRequest extends AppDeploymentRequest{
 	 * @param resource the resource associated with the request.
 	 */
 	@Deprecated
-	public ScheduleRequest(AppDefinition definition,  Map<String, String> schedulerProperties,
-			Map<String, String> deploymentProperties, List<String> commandlineArguments,
-			String scheduleName, Resource resource) {
+	public ScheduleRequest(AppDefinition definition, Map<String, String> schedulerProperties,
+Map<String, String> deploymentProperties, List<String> commandlineArguments,
+String scheduleName, Resource resource) {
 		super(definition, resource, deploymentProperties, commandlineArguments);
 		this.scheduleName = scheduleName;
 		this.schedulerProperties = schedulerProperties == null
-				? Collections.emptyMap()
-				: Collections.unmodifiableMap(schedulerProperties);
+	? Collections.emptyMap()
+	: Collections.unmodifiableMap(schedulerProperties);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class ScheduleRequest extends AppDeploymentRequest{
 	 * @param resource the resource associated with the request.
 	 */
 	public ScheduleRequest(AppDefinition definition,
-			Map<String, String> deploymentProperties, String scheduleName, Resource resource) {
+Map<String, String> deploymentProperties, String scheduleName, Resource resource) {
 		this(definition, deploymentProperties, (List<String>) null, scheduleName, resource);
 	}
 
@@ -113,8 +113,8 @@ public class ScheduleRequest extends AppDeploymentRequest{
 	 * @param resource the resource associated with the request.
 	 */
 	public ScheduleRequest(AppDefinition definition,
-			Map<String, String> deploymentProperties, List<String> commandlineArguments,
-			String scheduleName, Resource resource) {
+Map<String, String> deploymentProperties, List<String> commandlineArguments,
+String scheduleName, Resource resource) {
 		super(definition, resource, deploymentProperties, commandlineArguments);
 		this.scheduleName = scheduleName;
 	}
@@ -137,10 +137,10 @@ public class ScheduleRequest extends AppDeploymentRequest{
 	}
 
 	@Override
-	public String toString(){
+	public String toString() {
 		return new ToStringCreator(this)
-				.append("scheduleName", this.scheduleName)
-				.append("schedulerProperties", this.schedulerProperties)
-				.toString();
+	.append("scheduleName", this.scheduleName)
+	.append("schedulerProperties", this.schedulerProperties)
+	.toString();
 	}
 }

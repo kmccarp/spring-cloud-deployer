@@ -76,7 +76,7 @@ public class AppDeploymentRequest {
 	 * @param deploymentProperties map of deployment properties; may be {@code null}
 	 */
 	public AppDeploymentRequest(AppDefinition definition, Resource resource,
-			Map<String, String> deploymentProperties) {
+Map<String, String> deploymentProperties) {
 		this(definition, resource, deploymentProperties, null);
 	}
 
@@ -89,17 +89,17 @@ public class AppDeploymentRequest {
 	 * @param commandlineArguments set of command line arguments; may be {@code null}
 	 */
 	public AppDeploymentRequest(AppDefinition definition, Resource resource,
-			Map<String, String> deploymentProperties, List<String> commandlineArguments) {
+Map<String, String> deploymentProperties, List<String> commandlineArguments) {
 		Assert.notNull(definition, "definition must not be null");
 		Assert.notNull(resource, "resource must not be null");
 		this.definition = definition;
 		this.resource = resource;
 		this.deploymentProperties = deploymentProperties == null
-				? Collections.<String, String>emptyMap()
-				: Collections.unmodifiableMap(deploymentProperties);
+	? Collections.<String, String>emptyMap()
+	: Collections.unmodifiableMap(deploymentProperties);
 		this.commandlineArguments = commandlineArguments == null
-				? Collections.<String>emptyList()
-				: Collections.unmodifiableList(commandlineArguments);
+	? Collections.<String>emptyList()
+	: Collections.unmodifiableList(commandlineArguments);
 	}
 
 	/**
@@ -141,12 +141,12 @@ public class AppDeploymentRequest {
 	}
 
 	@Override
-	public String toString(){
+	public String toString() {
 		return new ToStringCreator(this)
-				.append("commandlineArguments", this.commandlineArguments)
-				.append("deploymentProperties", this.deploymentProperties)
-				.append("definition", this.definition)
-				.append("resource", this.resource)
-				.toString();
+	.append("commandlineArguments", this.commandlineArguments)
+	.append("deploymentProperties", this.deploymentProperties)
+	.append("definition", this.definition)
+	.append("resource", this.resource)
+	.toString();
 	}
 }

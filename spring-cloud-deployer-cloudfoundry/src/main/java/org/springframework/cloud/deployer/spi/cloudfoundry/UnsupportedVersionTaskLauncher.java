@@ -74,10 +74,12 @@ public class UnsupportedVersionTaskLauncher implements TaskLauncher {
 	public RuntimeEnvironmentInfo environmentInfo() {
 		return info;
 	}
+
 	@Override
 	public int getMaximumConcurrentTasks() {
 		throw failure();
 	}
+
 	@Override
 	public int getRunningTaskExecutionCount() {
 		throw failure();
@@ -90,8 +92,8 @@ public class UnsupportedVersionTaskLauncher implements TaskLauncher {
 
 	private UnsupportedOperationException failure() {
 		return new UnsupportedOperationException("Cloud Foundry API version " + actualVersion + " is earlier than "
-			+ MINIMUM_SUPPORTED_VERSION + " and is incompatible with cf-java-client " +
-			RuntimeVersionUtils.getVersion(CloudFoundryOperations.class)+ ". It is thus unsupported");
+	+ MINIMUM_SUPPORTED_VERSION + " and is incompatible with cf-java-client " +
+	RuntimeVersionUtils.getVersion(CloudFoundryOperations.class) + ". It is thus unsupported");
 	}
 
 }

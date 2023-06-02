@@ -36,80 +36,81 @@ import org.springframework.util.StringUtils;
  */
 abstract class ServiceParser {
 
-  private static Pattern serviceWithParameters = Pattern.compile("([^\\s]+)\\s*?(.*)?");
+	private static Pattern serviceWithParameters = Pattern.compile("([^\\s]+)\\s*?(.*)?");
 
-  private static Pattern singleQuotedLiteral = Pattern.compile("'([^']*?)'");
+	private static Pattern singleQuotedLiteral = Pattern.compile("'([^']*?)'");
 
-  /**
-   * @param serviceSpec the service instance followed by optional parameters.
-   * @return an Option<Map> of parameters.
-   */
-  static Optional<Map<String, String>> getServiceParameters(String serviceSpec) {
-    Matcher m = serviceWithParameters.matcher(serviceSpec);
+	/**
+	 @param serviceSpec the service instance followed by optional parameters.
+	 @return an Option<Map> of parameters.
+	*/
+	static Optional<Map<String, String>> getServiceParameters(String serviceSpec) {
+		Matcher m = serviceWithParameters.matcher(serviceSpec);
 
-    if (m.matches()) {
-      return parseParameters(m.group(2), serviceSpec);
-    }
+		if (m.matches()) {
+			return parseParameters(m.group(2), serviceSpec);
+		}
 
-    return Optional.ofNullable(null);
-  }
+		return Optional.ofNullable(null);
+	}
 
-  /**
-   * Extract the service name.
-   *
-   * @param serviceSpec the service instance name followed by optional parameters
-   * @return the service instance
-   */
-  static String getServiceInstanceName(String serviceSpec) {
-    Matcher m = serviceWithParameters.matcher(serviceSpec);
-    if (m.matches()) {
-      return m.group(1);
-    } else {
-      throw new IllegalArgumentException("invalid service specification: " + serviceSpec);
-    }
-  }
+	/**
+	 Extract the service name.
+	
+	 @param serviceSpec the service instance name followed by optional parameters
+	 @return the service instance
+	*/
+	static String getServiceInstanceName(String serviceSpec) {
+		Matcher m = serviceWithParameters.matcher(serviceSpec);
+		if (m.matches()) {
+			return m.group(1);
+		}
+		else {
+			throw new IllegalArgumentException("invalid service specification: " + serviceSpec);
+		}
+	}
 
-  static List<String> splitServiceProperties(String serviceProperties) {
-    List<String> serviceInstances = new ArrayList<>();
+	static List<String> splitServiceProperties(String serviceProperties) {
+		List<String> serviceInstances = new ArrayList<>();
 
-    if (StringUtils.hasText(serviceProperties)) {
-      Matcher m = singleQuotedLiteral.matcher(serviceProperties);
-      int index = 0;
+		if (StringUtils.hasText(serviceProperties)) {
+			Matcher m = singleQuotedLiteral.matcher(serviceProperties);
+			int index = 0;
 
-      while (index >= 0 && m.find(index)) {
-        String val = m.group().replaceAll("'", "");
-        serviceInstances.add(val);
-        serviceProperties = serviceProperties.replaceAll(m.group(), "");
-        index = serviceProperties.indexOf("'");
-        m = singleQuotedLiteral.matcher(serviceProperties);
-      }
+			while (index >= 0 && m.find(index)) {
+				String val = m.group().replaceAll("'", "");
+				serviceInstances.add(val);
+				serviceProperties = serviceProperties.replaceAll(m.group(), "");
+				index = serviceProperties.indexOf("'");
+				m = singleQuotedLiteral.matcher(serviceProperties);
+			}
 
-      Stream.of(serviceProperties.split(","))
-          .filter(StringUtils::hasText)
-          .map(String::trim)
-          .forEach(s -> serviceInstances.add(s));
-    }
+			Stream.of(serviceProperties.split(","))
+		.filter(StringUtils::hasText)
+		.map(String::trim)
+		.forEach(s -> serviceInstances.add(s));
+		}
 
-    return serviceInstances;
-  }
+		return serviceInstances;
+	}
 
-  private static Optional<Map<String, String>> parseParameters(
-      String rawParametersString, String serviceSpec) {
-    if (StringUtils.hasText(rawParametersString)) {
-      Map<String, String> parameters = new LinkedHashMap<>();
-      String[] entries = rawParametersString.split(",");
-      Stream.of(entries)
-          .forEach(
-              s -> {
-                String[] pair = s.split("[:|=]");
-                if (pair.length != 2) {
-                  throw new IllegalArgumentException(
-                      "invalid service specification: " + serviceSpec);
-                }
-                parameters.put(pair[0].trim(), pair[1].trim());
-              });
-      return Optional.of(parameters);
-    }
-    return Optional.ofNullable(null);
-  }
+	private static Optional<Map<String, String>> parseParameters(
+String rawParametersString, String serviceSpec) {
+		if (StringUtils.hasText(rawParametersString)) {
+			Map<String, String> parameters = new LinkedHashMap<>();
+			String[] entries = rawParametersString.split(",");
+			Stream.of(entries)
+		.forEach(
+	s -> {
+		String[] pair = s.split("[:|=]");
+		if (pair.length != 2) {
+			throw new IllegalArgumentException(
+		"invalid service specification: " + serviceSpec);
+		}
+		parameters.put(pair[0].trim(), pair[1].trim());
+	});
+			return Optional.of(parameters);
+		}
+		return Optional.ofNullable(null);
+	}
 }

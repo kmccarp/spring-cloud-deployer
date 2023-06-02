@@ -50,8 +50,7 @@ import static org.awaitility.Awaitility.await;
  * @author Thomas Risberg
  * @author Chris Schaefer
  */
-@SpringBootTest(classes = {KubernetesAutoConfiguration.class}, properties = {
-		"spring.cloud.deployer.kubernetes.namespace=default"
+@SpringBootTest(classes = {KubernetesAutoConfiguration.class}, properties = {"spring.cloud.deployer.kubernetes.namespace=default"
 })
 public class KubernetesTaskLauncherIntegrationIT extends AbstractTaskLauncherIntegrationJUnit5Tests {
 
@@ -93,12 +92,12 @@ public class KubernetesTaskLauncherIntegrationIT extends AbstractTaskLauncherInt
 		logger.info("Testing {}...", "JobPodAnnotation");
 
 		KubernetesTaskLauncher kubernetesTaskLauncher = new KubernetesTaskLauncher(new KubernetesDeployerProperties(),
-				new KubernetesTaskLauncherProperties(), kubernetesClient);
+	new KubernetesTaskLauncherProperties(), kubernetesClient);
 
 		AppDefinition definition = new AppDefinition(randomName(), null);
 		Resource resource = testApplication();
 		AppDeploymentRequest request = new AppDeploymentRequest(definition, resource,
-				Collections.singletonMap("spring.cloud.deployer.kubernetes.jobAnnotations", "key1:val1,key2:val2,key3:val31:val32"));
+	Collections.singletonMap("spring.cloud.deployer.kubernetes.jobAnnotations", "key1:val1,key2:val2,key3:val31:val32"));
 
 		logger.info("Launching {}...", request.getDefinition().getName());
 
@@ -106,10 +105,10 @@ public class KubernetesTaskLauncherIntegrationIT extends AbstractTaskLauncherInt
 		Timeout timeout = deploymentTimeout();
 
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-                .atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-                .untilAsserted(() -> {
-			assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.running);
-        });
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.running);
+	});
 
 		String taskName = request.getDefinition().getName();
 
@@ -133,10 +132,10 @@ public class KubernetesTaskLauncherIntegrationIT extends AbstractTaskLauncherInt
 		kubernetesTaskLauncher.destroy(taskName);
 
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-                .atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-                .untilAsserted(() -> {
-			assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.unknown);
-        });
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.unknown);
+	});
 	}
 
 	@Test
@@ -144,12 +143,12 @@ public class KubernetesTaskLauncherIntegrationIT extends AbstractTaskLauncherInt
 		logger.info("Testing {}...", "deploymentLabels");
 
 		KubernetesTaskLauncher kubernetesTaskLauncher = new KubernetesTaskLauncher(new KubernetesDeployerProperties(),
-				new KubernetesTaskLauncherProperties(), kubernetesClient);
+	new KubernetesTaskLauncherProperties(), kubernetesClient);
 
 		AppDefinition definition = new AppDefinition(randomName(), null);
 		Resource resource = testApplication();
 		AppDeploymentRequest request = new AppDeploymentRequest(definition, resource,
-				Collections.singletonMap("spring.cloud.deployer.kubernetes.deploymentLabels", "label1:value1,label2:value2"));
+	Collections.singletonMap("spring.cloud.deployer.kubernetes.deploymentLabels", "label1:value1,label2:value2"));
 
 		logger.info("Launching {}...", request.getDefinition().getName());
 
@@ -157,10 +156,10 @@ public class KubernetesTaskLauncherIntegrationIT extends AbstractTaskLauncherInt
 		Timeout timeout = deploymentTimeout();
 
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-                .atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-                .untilAsserted(() -> {
-			assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.running);
-        });
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.running);
+	});
 
 		String taskName = request.getDefinition().getName();
 
@@ -184,10 +183,10 @@ public class KubernetesTaskLauncherIntegrationIT extends AbstractTaskLauncherInt
 		kubernetesTaskLauncher.destroy(taskName);
 
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-                .atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-                .untilAsserted(() -> {
-			assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.unknown);
-        });
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.unknown);
+	});
 	}
 
 	@Test
@@ -195,12 +194,12 @@ public class KubernetesTaskLauncherIntegrationIT extends AbstractTaskLauncherInt
 		logger.info("Testing {}...", "TaskAdditionalContainer");
 
 		KubernetesTaskLauncher kubernetesTaskLauncher = new KubernetesTaskLauncher(new KubernetesDeployerProperties(),
-				new KubernetesTaskLauncherProperties(), kubernetesClient);
+	new KubernetesTaskLauncherProperties(), kubernetesClient);
 
 		AppDefinition definition = new AppDefinition(randomName(), null);
 		Resource resource = testApplication();
 		Map<String, String> props = Collections.singletonMap("spring.cloud.deployer.kubernetes.additionalContainers",
-				"[{name: 'test', image: 'busybox:latest', command: ['sh', '-c', 'echo hello']}]");
+	"[{name: 'test', image: 'busybox:latest', command: ['sh', '-c', 'echo hello']}]");
 		AppDeploymentRequest request = new AppDeploymentRequest(definition, resource, props);
 
 		logger.info("Launching {}...", request.getDefinition().getName());
@@ -209,10 +208,10 @@ public class KubernetesTaskLauncherIntegrationIT extends AbstractTaskLauncherInt
 		Timeout timeout = deploymentTimeout();
 
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-                .atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-                .untilAsserted(() -> {
-			assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.running);
-        });
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.running);
+	});
 
 		String taskName = request.getDefinition().getName();
 
@@ -242,9 +241,9 @@ public class KubernetesTaskLauncherIntegrationIT extends AbstractTaskLauncherInt
 		kubernetesTaskLauncher.destroy(taskName);
 
 		await().pollInterval(Duration.ofMillis(timeout.pause))
-                .atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
-                .untilAsserted(() -> {
-			assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.unknown);
-        });
+	.atMost(Duration.ofMillis((long) timeout.maxAttempts * (long) timeout.pause))
+	.untilAsserted(() -> {
+		assertThat(taskLauncher().status(launchId).getState()).isEqualTo(LaunchState.unknown);
+	});
 	}
 }

@@ -27,7 +27,7 @@ import org.springframework.util.StringUtils;
  *
  * @author Eric Bottard
  */
-public class DurationConverter implements Converter <String, Duration> {
+public class DurationConverter implements Converter<String, Duration> {
 
 	@Override
 	public Duration convert(String source) {

@@ -53,55 +53,55 @@ public class ResourceLoadingAutoConfigurationTests {
 	};
 
 	private final static Condition<DelegatingResourceLoader> mavenCondition = new Condition<>(
-			l -> l.getLoaders().containsKey("maven"), "maven loader");
+l -> l.getLoaders().containsKey("maven"), "maven loader");
 
 	private final static Condition<DelegatingResourceLoader> mavenReplacedCondition = new Condition<>(
-			l -> l.getLoaders().get("maven").equals(mockResourceLoader), "maven loader replaced");
+l -> l.getLoaders().get("maven").equals(mockResourceLoader), "maven loader replaced");
 
 	private final static Condition<DelegatingResourceLoader> foobarCondition = new Condition<>(
-			l -> l.getLoaders().containsKey("foobar"), "foobar mock loader");
+l -> l.getLoaders().containsKey("foobar"), "foobar mock loader");
 
 	private final static Condition<MavenProperties> offlineCondition = new Condition<>(
-			p -> p.isOffline(), "offline");
+p -> p.isOffline(), "offline");
 
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-			.withConfiguration(AutoConfigurations.of(ResourceLoadingAutoConfiguration.class));
+.withConfiguration(AutoConfigurations.of(ResourceLoadingAutoConfiguration.class));
 
 
 	@Test
 	public void testAutoConfigNoProperties() {
 		this.contextRunner
-				.run((context) -> {
-					assertThat(context).hasSingleBean(DelegatingResourceLoader.class);
-					assertThat(context).getBean(DelegatingResourceLoader.class).has(mavenCondition);
-				});
+	.run((context) -> {
+		assertThat(context).hasSingleBean(DelegatingResourceLoader.class);
+		assertThat(context).getBean(DelegatingResourceLoader.class).has(mavenCondition);
+	});
 	}
 
 	@Test
 	public void testMavenProperties() {
 		this.contextRunner
-				.withPropertyValues("maven.offline=true")
-				.run((context) -> {
-					assertThat(context).getBean(MavenProperties.class).has(offlineCondition);
-				});
+	.withPropertyValues("maven.offline=true")
+	.run((context) -> {
+		assertThat(context).getBean(MavenProperties.class).has(offlineCondition);
+	});
 	}
 
 	@Test
 	public void testBuilderRegistration() {
 		this.contextRunner
-				.withUserConfiguration(CustomBuilderCustomizerConfig.class)
-				.run((context) -> {
-					assertThat(context).getBean(DelegatingResourceLoader.class).has(foobarCondition);
-				});
+	.withUserConfiguration(CustomBuilderCustomizerConfig.class)
+	.run((context) -> {
+		assertThat(context).getBean(DelegatingResourceLoader.class).has(foobarCondition);
+	});
 	}
 
 	@Test
 	public void testBuilderOrderRegistration() {
 		this.contextRunner
-				.withUserConfiguration(MavenReplacingBuilderCustomizerConfig.class)
-				.run((context) -> {
-					assertThat(context).getBean(DelegatingResourceLoader.class).has(mavenReplacedCondition);
-				});
+	.withUserConfiguration(MavenReplacingBuilderCustomizerConfig.class)
+	.run((context) -> {
+		assertThat(context).getBean(DelegatingResourceLoader.class).has(mavenReplacedCondition);
+	});
 	}
 
 	@Configuration

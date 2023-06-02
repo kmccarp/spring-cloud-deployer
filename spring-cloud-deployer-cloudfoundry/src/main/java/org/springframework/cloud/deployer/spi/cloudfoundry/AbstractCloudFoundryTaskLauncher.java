@@ -57,8 +57,8 @@ abstract class AbstractCloudFoundryTaskLauncher extends AbstractCloudFoundryDepl
 	private final Mono<String> spaceId;
 
 	AbstractCloudFoundryTaskLauncher(CloudFoundryClient client,
-			CloudFoundryDeploymentProperties deploymentProperties,
-			RuntimeEnvironmentInfo runtimeEnvironmentInfo) {
+CloudFoundryDeploymentProperties deploymentProperties,
+RuntimeEnvironmentInfo runtimeEnvironmentInfo) {
 		super(deploymentProperties, runtimeEnvironmentInfo);
 		this.client = client;
 		organizationId = organizationId();
@@ -75,10 +75,10 @@ abstract class AbstractCloudFoundryTaskLauncher extends AbstractCloudFoundryDepl
 	@Override
 	public void cancel(String id) {
 		requestCancelTask(id)
-				.timeout(Duration.ofSeconds(this.deploymentProperties.getApiTimeout()))
-				.doOnSuccess(r -> logger.info("Task {} cancellation successful", id))
-				.doOnError(logError(String.format("Task %s cancellation failed", id)))
-				.subscribe();
+	.timeout(Duration.ofSeconds(this.deploymentProperties.getApiTimeout()))
+	.doOnSuccess(r -> logger.info("Task {} cancellation successful", id))
+	.doOnError(logError(String.format("Task %s cancellation failed", id)))
+	.subscribe();
 	}
 
 	/**
@@ -91,9 +91,9 @@ abstract class AbstractCloudFoundryTaskLauncher extends AbstractCloudFoundryDepl
 	public TaskStatus status(String id) {
 		try {
 			return getStatus(id)
-					.doOnSuccess(v -> logger.info("Successfully computed status [{}] for id={}", v, id))
-					.doOnError(logError(String.format("Failed to compute status for %s", id)))
-					.block(Duration.ofMillis(this.deploymentProperties.getStatusTimeout()));
+		.doOnSuccess(v -> logger.info("Successfully computed status [{}] for id={}", v, id))
+		.doOnError(logError(String.format("Failed to compute status for %s", id)))
+		.block(Duration.ofMillis(this.deploymentProperties.getStatusTimeout()));
 		}
 		catch (Exception timeoutDueToBlock) {
 			logger.error("Caught exception while querying for status of id={}", id, timeoutDueToBlock);
@@ -104,20 +104,20 @@ abstract class AbstractCloudFoundryTaskLauncher extends AbstractCloudFoundryDepl
 	@Override
 	public int getRunningTaskExecutionCount() {
 
-		Mono<Tuple2<String,String>> orgAndSpace = Mono.zip(organizationId, spaceId);
+		Mono<Tuple2<String, String>> orgAndSpace = Mono.zip(organizationId, spaceId);
 
-		Mono<ListTasksRequest> listTasksRequest = orgAndSpace.map(tuple->
-				ListTasksRequest.builder()
-				.state(TaskState.RUNNING)
-				.organizationId(tuple.getT1())
-				.spaceId(tuple.getT2())
-				.build());
+		Mono<ListTasksRequest> listTasksRequest = orgAndSpace.map(tuple ->
+	ListTasksRequest.builder()
+.state(TaskState.RUNNING)
+.organizationId(tuple.getT1())
+.spaceId(tuple.getT2())
+.build());
 
-		return listTasksRequest.flatMap(request-> this.client.tasks().list(request))
-				.map(listTasksResponse -> listTasksResponse.getPagination().getTotalResults())
-				.doOnError(logError("Failed to list running tasks"))
-				.doOnSuccess(count -> logger.info(String.format("There are %d running tasks", count)))
-				.block(Duration.ofMillis(this.deploymentProperties.getStatusTimeout()));
+		return listTasksRequest.flatMap(request -> this.client.tasks().list(request))
+	.map(listTasksResponse -> listTasksResponse.getPagination().getTotalResults())
+	.doOnError(logError("Failed to list running tasks"))
+	.doOnSuccess(count -> logger.info(String.format("There are %d running tasks", count)))
+	.block(Duration.ofMillis(this.deploymentProperties.getStatusTimeout()));
 	}
 
 	@Override
@@ -131,13 +131,13 @@ abstract class AbstractCloudFoundryTaskLauncher extends AbstractCloudFoundryDepl
 
 	private Mono<TaskStatus> getStatus(String id) {
 		return requestGetTask(id)
-				.map(this::toTaskStatus)
-				.onErrorResume(isNotFoundError(), t -> {
-					logger.debug("Task for id={} does not exist", id);
-					return Mono.just(new TaskStatus(id, LaunchState.unknown, null));
-				})
-				.transform(statusRetry(id))
-				.onErrorReturn(createErrorTaskStatus(id));
+	.map(this::toTaskStatus)
+	.onErrorResume(isNotFoundError(), t -> {
+		logger.debug("Task for id={} does not exist", id);
+		return Mono.just(new TaskStatus(id, LaunchState.unknown, null));
+	})
+	.transform(statusRetry(id))
+	.onErrorReturn(createErrorTaskStatus(id));
 	}
 
 	private TaskStatus createErrorTaskStatus(String id) {
@@ -146,55 +146,55 @@ abstract class AbstractCloudFoundryTaskLauncher extends AbstractCloudFoundryDepl
 
 	protected TaskStatus toTaskStatus(GetTaskResponse response) {
 		switch (response.getState()) {
-		case SUCCEEDED:
-			return new TaskStatus(response.getId(), LaunchState.complete, null);
-		case RUNNING:
-			return new TaskStatus(response.getId(), LaunchState.running, null);
-		case PENDING:
-			return new TaskStatus(response.getId(), LaunchState.launching, null);
-		case CANCELING:
-			return new TaskStatus(response.getId(), LaunchState.cancelled, null);
-		case FAILED:
-			return new TaskStatus(response.getId(), LaunchState.failed, null);
-		default:
-			throw new IllegalStateException(String.format("Unsupported CF task state %s", response.getState()));
+			case SUCCEEDED:
+				return new TaskStatus(response.getId(), LaunchState.complete, null);
+			case RUNNING:
+				return new TaskStatus(response.getId(), LaunchState.running, null);
+			case PENDING:
+				return new TaskStatus(response.getId(), LaunchState.launching, null);
+			case CANCELING:
+				return new TaskStatus(response.getId(), LaunchState.cancelled, null);
+			case FAILED:
+				return new TaskStatus(response.getId(), LaunchState.failed, null);
+			default:
+				throw new IllegalStateException(String.format("Unsupported CF task state %s", response.getState()));
 		}
 	}
 
 	private Mono<CancelTaskResponse> requestCancelTask(String taskId) {
 		return this.client.tasks()
-				.cancel(CancelTaskRequest.builder()
-						.taskId(taskId)
-						.build());
+	.cancel(CancelTaskRequest.builder()
+.taskId(taskId)
+.build());
 	}
 
 	private Mono<GetTaskResponse> requestGetTask(String taskId) {
 		return this.client.tasks()
-				.get(GetTaskRequest.builder()
-						.taskId(taskId)
-						.build());
+	.get(GetTaskRequest.builder()
+.taskId(taskId)
+.build());
 	}
 
 	private Mono<String> organizationId() {
 		String org = this.runtimeEnvironmentInfo.getPlatformSpecificInfo().get(CloudFoundryPlatformSpecificInfo.ORG);
-		Assert.hasText(org,"Missing runtimeEnvironmentInfo : 'org' required.");
-		ListOrganizationsRequest listOrganizationsRequest =  ListOrganizationsRequest.builder()
-				.name(org).build();
+		Assert.hasText(org, "Missing runtimeEnvironmentInfo : 'org' required.");
+		ListOrganizationsRequest listOrganizationsRequest = ListOrganizationsRequest.builder()
+	.name(org).build();
 		return this.client.organizations().list(listOrganizationsRequest)
-				.doOnError(logError("Failed to list organizations"))
-				.map(listOrganizationsResponse -> listOrganizationsResponse.getResources().get(0).getMetadata().getId())
-				.cache(aValue -> Duration.ofMillis(Long.MAX_VALUE), aValue -> Duration.ZERO, () -> Duration.ZERO);
+	.doOnError(logError("Failed to list organizations"))
+	.map(listOrganizationsResponse -> listOrganizationsResponse.getResources().get(0).getMetadata().getId())
+	.cache(aValue -> Duration.ofMillis(Long.MAX_VALUE), aValue -> Duration.ZERO, () -> Duration.ZERO);
 	}
 
 	private Mono<String> spaceId() {
 		String space = this.runtimeEnvironmentInfo.getPlatformSpecificInfo().get(CloudFoundryPlatformSpecificInfo.SPACE);
-		Assert.hasText(space,"Missing runtimeEnvironmentInfo : 'space' required.");
+		Assert.hasText(space, "Missing runtimeEnvironmentInfo : 'space' required.");
 		ListSpacesRequest listSpacesRequest = ListSpacesRequest.builder()
-				.name(space).build();
+	.name(space).build();
 		return this.client.spaces().list(listSpacesRequest)
-				.doOnError(logError("Failed to list spaces"))
-				.map(listSpacesResponse -> listSpacesResponse.getResources().get(0).getMetadata().getId())
-				.cache(aValue -> Duration.ofMillis(Long.MAX_VALUE), aValue -> Duration.ZERO, () -> Duration.ZERO);
+	.doOnError(logError("Failed to list spaces"))
+	.map(listSpacesResponse -> listSpacesResponse.getResources().get(0).getMetadata().getId())
+	.cache(aValue -> Duration.ofMillis(Long.MAX_VALUE), aValue -> Duration.ZERO, () -> Duration.ZERO);
 	}
 
 	@Override

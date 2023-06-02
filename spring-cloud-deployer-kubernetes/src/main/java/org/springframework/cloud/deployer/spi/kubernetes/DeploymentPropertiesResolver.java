@@ -99,18 +99,18 @@ class DeploymentPropertiesResolver {
 		List<Toleration> tolerations = new ArrayList<>();
 
 		KubernetesDeployerProperties deployerProperties = bindProperties(kubernetesDeployerProperties,
-				this.propertyPrefix + ".tolerations", "tolerations" );
+	this.propertyPrefix + ".tolerations", "tolerations");
 
 		deployerProperties.getTolerations().forEach(toleration -> tolerations.add(
-				new Toleration(toleration.getEffect(), toleration.getKey(), toleration.getOperator(),
-						toleration.getTolerationSeconds(), toleration.getValue())));
+	new Toleration(toleration.getEffect(), toleration.getKey(), toleration.getOperator(),
+toleration.getTolerationSeconds(), toleration.getValue())));
 
 		this.properties.getTolerations().stream()
-				.filter(toleration -> tolerations.stream()
-						.noneMatch(existing -> existing.getKey().equals(toleration.getKey())))
-				.collect(Collectors.toList())
-				.forEach(toleration -> tolerations.add(new Toleration(toleration.getEffect(), toleration.getKey(),
-						toleration.getOperator(), toleration.getTolerationSeconds(), toleration.getValue())));
+	.filter(toleration -> tolerations.stream()
+.noneMatch(existing -> existing.getKey().equals(toleration.getKey())))
+	.collect(Collectors.toList())
+	.forEach(toleration -> tolerations.add(new Toleration(toleration.getEffect(), toleration.getKey(),
+toleration.getOperator(), toleration.getTolerationSeconds(), toleration.getValue())));
 
 		return tolerations;
 	}
@@ -134,16 +134,16 @@ class DeploymentPropertiesResolver {
 		List<Volume> volumes = new ArrayList<>();
 
 		KubernetesDeployerProperties deployerProperties = bindProperties(kubernetesDeployerProperties,
-				this.propertyPrefix + ".volumes", "volumes");
+	this.propertyPrefix + ".volumes", "volumes");
 
 		volumes.addAll(deployerProperties.getVolumes());
 
 		// only add volumes that have not already been added, based on the volume's name
 		// i.e. allow provided deployment volumes to override deployer defined volumes
 		volumes.addAll(properties.getVolumes().stream()
-				.filter(volume -> volumes.stream()
-						.noneMatch(existingVolume -> existingVolume.getName().equals(volume.getName())))
-				.collect(Collectors.toList()));
+	.filter(volume -> volumes.stream()
+.noneMatch(existingVolume -> existingVolume.getName().equals(volume.getName())))
+	.collect(Collectors.toList()));
 
 		return volumes;
 	}
@@ -160,34 +160,34 @@ class DeploymentPropertiesResolver {
 	 */
 	Map<String, Quantity> deduceResourceLimits(Map<String, String> kubernetesDeployerProperties) {
 		String memory = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".limits.memory");
+	this.propertyPrefix + ".limits.memory");
 
 		if (!StringUtils.hasText(memory)) {
 			memory = properties.getLimits().getMemory();
 		}
 
 		String cpu = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".limits.cpu");
+	this.propertyPrefix + ".limits.cpu");
 
 		if (!StringUtils.hasText(cpu)) {
 			cpu = properties.getLimits().getCpu();
 		}
 
 		String gpuVendor = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-			this.propertyPrefix + ".limits.gpuVendor");
+	this.propertyPrefix + ".limits.gpuVendor");
 
 		if (!StringUtils.hasText(gpuVendor)) {
 			gpuVendor = properties.getLimits().getGpuVendor();
 		}
 
 		String gpuCount = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-			this.propertyPrefix + ".limits.gpuCount");
+	this.propertyPrefix + ".limits.gpuCount");
 
 		if (!StringUtils.hasText(gpuCount)) {
 			gpuCount = properties.getLimits().getGpuCount();
 		}
 
-		Map<String,Quantity> limits = new HashMap<String,Quantity>();
+		Map<String, Quantity> limits = new HashMap<String, Quantity>();
 
 		if (StringUtils.hasText(memory)) {
 			limits.put("memory", new Quantity(memory));
@@ -213,12 +213,13 @@ class DeploymentPropertiesResolver {
 	 */
 	ImagePullPolicy deduceImagePullPolicy(Map<String, String> kubernetesDeployerProperties) {
 		String pullPolicyOverride = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-						this.propertyPrefix + ".imagePullPolicy");
+	this.propertyPrefix + ".imagePullPolicy");
 
 		ImagePullPolicy pullPolicy;
 		if (pullPolicyOverride == null) {
 			pullPolicy = properties.getImagePullPolicy();
-		} else {
+		}
+		else {
 			pullPolicy = ImagePullPolicy.relaxedValueOf(pullPolicyOverride);
 			if (pullPolicy == null) {
 				logger.warn("Parsing of pull policy " + pullPolicyOverride + " failed, using default \"IfNotPresent\".");
@@ -241,7 +242,7 @@ class DeploymentPropertiesResolver {
 	 */
 	Map<String, Quantity> deduceResourceRequests(Map<String, String> kubernetesDeployerProperties) {
 		String memOverride = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".requests.memory");
+	this.propertyPrefix + ".requests.memory");
 
 		if (memOverride == null) {
 			memOverride = properties.getRequests().getMemory();
@@ -249,7 +250,7 @@ class DeploymentPropertiesResolver {
 
 
 		String cpuOverride = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".requests.cpu");
+	this.propertyPrefix + ".requests.cpu");
 
 		if (cpuOverride == null) {
 			cpuOverride = properties.getRequests().getCpu();
@@ -257,7 +258,7 @@ class DeploymentPropertiesResolver {
 
 		logger.debug("Using requests - cpu: " + cpuOverride + " mem: " + memOverride);
 
-		Map<String,Quantity> requests = new HashMap<String, Quantity>();
+		Map<String, Quantity> requests = new HashMap<String, Quantity>();
 
 		if (memOverride != null) {
 			requests.put("memory", new Quantity(memOverride));
@@ -278,7 +279,7 @@ class DeploymentPropertiesResolver {
 	 */
 	String getStatefulSetVolumeClaimTemplateName(Map<String, String> kubernetesDeployerProperties) {
 		String name = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".statefulSet.volumeClaimTemplate.name");
+	this.propertyPrefix + ".statefulSet.volumeClaimTemplate.name");
 
 		if (name == null && properties.getStatefulSet() != null && properties.getStatefulSet().getVolumeClaimTemplate() != null) {
 			name = properties.getStatefulSet().getVolumeClaimTemplate().getName();
@@ -295,7 +296,7 @@ class DeploymentPropertiesResolver {
 	 */
 	String getStatefulSetStorageClassName(Map<String, String> kubernetesDeployerProperties) {
 		String storageClassName = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".statefulSet.volumeClaimTemplate.storageClassName");
+	this.propertyPrefix + ".statefulSet.volumeClaimTemplate.storageClassName");
 
 		if (storageClassName == null && properties.getStatefulSet() != null && properties.getStatefulSet().getVolumeClaimTemplate() != null) {
 			storageClassName = properties.getStatefulSet().getVolumeClaimTemplate().getStorageClassName();
@@ -312,7 +313,7 @@ class DeploymentPropertiesResolver {
 	 */
 	String getStatefulSetStorage(Map<String, String> kubernetesDeployerProperties) {
 		String storage = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".statefulSet.volumeClaimTemplate.storage");
+	this.propertyPrefix + ".statefulSet.volumeClaimTemplate.storage");
 
 		if (storage == null && properties.getStatefulSet() != null && properties.getStatefulSet().getVolumeClaimTemplate() != null) {
 			storage = properties.getStatefulSet().getVolumeClaimTemplate().getStorage();
@@ -329,7 +330,7 @@ class DeploymentPropertiesResolver {
 	 */
 	boolean getHostNetwork(Map<String, String> kubernetesDeployerProperties) {
 		String hostNetworkOverride = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-						this.propertyPrefix + ".hostNetwork");
+	this.propertyPrefix + ".hostNetwork");
 		boolean hostNetwork;
 
 		if (!StringUtils.hasText(hostNetworkOverride)) {
@@ -356,13 +357,13 @@ class DeploymentPropertiesResolver {
 		String nodeSelector = this.properties.getNodeSelector();
 
 		String nodeSelectorDeploymentProperty = deploymentProperties
-				.getOrDefault(KubernetesDeployerProperties.KUBERNETES_DEPLOYMENT_NODE_SELECTOR, "");
+	.getOrDefault(KubernetesDeployerProperties.KUBERNETES_DEPLOYMENT_NODE_SELECTOR, "");
 
 		boolean hasGlobalNodeSelector = StringUtils.hasText(properties.getNodeSelector());
 		boolean hasDeployerPropertyNodeSelector = StringUtils.hasText(nodeSelectorDeploymentProperty);
 
 		if ((hasGlobalNodeSelector && hasDeployerPropertyNodeSelector) ||
-				(!hasGlobalNodeSelector && hasDeployerPropertyNodeSelector)) {
+	(!hasGlobalNodeSelector && hasDeployerPropertyNodeSelector)) {
 			nodeSelector = nodeSelectorDeploymentProperty;
 		}
 
@@ -380,9 +381,9 @@ class DeploymentPropertiesResolver {
 
 	String getImagePullSecret(Map<String, String> kubernetesDeployerProperties) {
 		String imagePullSecret = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".imagePullSecret", "");
+	this.propertyPrefix + ".imagePullSecret", "");
 
-		if(!StringUtils.hasText(imagePullSecret)) {
+		if (!StringUtils.hasText(imagePullSecret)) {
 			imagePullSecret = this.properties.getImagePullSecret();
 		}
 
@@ -392,18 +393,19 @@ class DeploymentPropertiesResolver {
 	List<String> getImagePullSecrets(Map<String, String> kubernetesDeployerProperties) {
 
 		KubernetesDeployerProperties deployerProperties = bindProperties(kubernetesDeployerProperties,
-				this.propertyPrefix + ".imagePullSecrets", "imagePullSecrets");
+	this.propertyPrefix + ".imagePullSecrets", "imagePullSecrets");
 
 		if (deployerProperties.getImagePullSecrets() == null || deployerProperties.getImagePullSecrets().isEmpty()) {
 			return properties.getImagePullSecrets();
-		} else {
+		}
+		else {
 			return deployerProperties.getImagePullSecrets();
 		}
 	}
 
 	String getDeploymentServiceAccountName(Map<String, String> kubernetesDeployerProperties) {
 		String deploymentServiceAccountName = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".deploymentServiceAccountName");
+	this.propertyPrefix + ".deploymentServiceAccountName");
 
 		if (!StringUtils.hasText(deploymentServiceAccountName)) {
 			deploymentServiceAccountName = properties.getDeploymentServiceAccountName();
@@ -414,13 +416,13 @@ class DeploymentPropertiesResolver {
 
 	Boolean getShareProcessNamespace(Map<String, String> kubernetesDeployerProperties) {
 		KubernetesDeployerProperties deployerProperties = bindProperties(kubernetesDeployerProperties,
-				this.propertyPrefix + ".shareProcessNamespace", "shareProcessNamespace");
+	this.propertyPrefix + ".shareProcessNamespace", "shareProcessNamespace");
 		return deployerProperties.getShareProcessNamespace();
 	}
 
 	String getPriorityClassName(Map<String, String> kubernetesDeployerProperties) {
 		KubernetesDeployerProperties deployerProperties = bindProperties(kubernetesDeployerProperties,
-				this.propertyPrefix + ".priorityClassName", "priorityClassName");
+	this.propertyPrefix + ".priorityClassName", "priorityClassName");
 		return deployerProperties.getPriorityClassName();
 	}
 
@@ -428,11 +430,12 @@ class DeploymentPropertiesResolver {
 		PodSecurityContext podSecurityContext = null;
 
 		KubernetesDeployerProperties deployerProperties = bindProperties(kubernetesDeployerProperties,
-				this.propertyPrefix + ".podSecurityContext", "podSecurityContext");
+	this.propertyPrefix + ".podSecurityContext", "podSecurityContext");
 
 		if (deployerProperties.getPodSecurityContext() != null) {
 			podSecurityContext = buildPodSecurityContext(deployerProperties);
-		} else if (this.properties.getPodSecurityContext() != null ) {
+		}
+		else if (this.properties.getPodSecurityContext() != null) {
 			podSecurityContext = buildPodSecurityContext(this.properties);
 		}
 		return podSecurityContext;
@@ -440,37 +443,37 @@ class DeploymentPropertiesResolver {
 
 	private PodSecurityContext buildPodSecurityContext(KubernetesDeployerProperties deployerProperties) {
 		PodSecurityContextBuilder podSecurityContextBuilder = new PodSecurityContextBuilder()
-				.withRunAsUser(deployerProperties.getPodSecurityContext().getRunAsUser())
-				.withRunAsGroup(deployerProperties.getPodSecurityContext().getRunAsGroup())
-				.withRunAsNonRoot(deployerProperties.getPodSecurityContext().getRunAsNonRoot())
-				.withFsGroup(deployerProperties.getPodSecurityContext().getFsGroup())
-				.withFsGroupChangePolicy(deployerProperties.getPodSecurityContext().getFsGroupChangePolicy())
-				.withSupplementalGroups(deployerProperties.getPodSecurityContext().getSupplementalGroups());
+	.withRunAsUser(deployerProperties.getPodSecurityContext().getRunAsUser())
+	.withRunAsGroup(deployerProperties.getPodSecurityContext().getRunAsGroup())
+	.withRunAsNonRoot(deployerProperties.getPodSecurityContext().getRunAsNonRoot())
+	.withFsGroup(deployerProperties.getPodSecurityContext().getFsGroup())
+	.withFsGroupChangePolicy(deployerProperties.getPodSecurityContext().getFsGroupChangePolicy())
+	.withSupplementalGroups(deployerProperties.getPodSecurityContext().getSupplementalGroups());
 		if (deployerProperties.getPodSecurityContext().getSeccompProfile() != null) {
 			podSecurityContextBuilder.withNewSeccompProfile(
-					deployerProperties.getPodSecurityContext().getSeccompProfile().getLocalhostProfile(),
-					deployerProperties.getPodSecurityContext().getSeccompProfile().getType());
+		deployerProperties.getPodSecurityContext().getSeccompProfile().getLocalhostProfile(),
+		deployerProperties.getPodSecurityContext().getSeccompProfile().getType());
 		}
 		if (deployerProperties.getPodSecurityContext().getSeLinuxOptions() != null) {
 			podSecurityContextBuilder.withNewSeLinuxOptions(
-					deployerProperties.getPodSecurityContext().getSeLinuxOptions().getLevel(),
-					deployerProperties.getPodSecurityContext().getSeLinuxOptions().getRole(),
-					deployerProperties.getPodSecurityContext().getSeLinuxOptions().getType(),
-					deployerProperties.getPodSecurityContext().getSeLinuxOptions().getUser());
+		deployerProperties.getPodSecurityContext().getSeLinuxOptions().getLevel(),
+		deployerProperties.getPodSecurityContext().getSeLinuxOptions().getRole(),
+		deployerProperties.getPodSecurityContext().getSeLinuxOptions().getType(),
+		deployerProperties.getPodSecurityContext().getSeLinuxOptions().getUser());
 		}
-		if (!CollectionUtils.isEmpty(deployerProperties.getPodSecurityContext().getSysctls()))  {
+		if (!CollectionUtils.isEmpty(deployerProperties.getPodSecurityContext().getSysctls())) {
 			List<Sysctl> sysctls = deployerProperties.getPodSecurityContext().getSysctls().stream()
-					.map((sysctlInfo) -> new SysctlBuilder().withName(sysctlInfo.getName())
-							.withValue(sysctlInfo.getValue()).build())
-					.collect(Collectors.toList());
+		.map((sysctlInfo) -> new SysctlBuilder().withName(sysctlInfo.getName())
+	.withValue(sysctlInfo.getValue()).build())
+		.collect(Collectors.toList());
 			podSecurityContextBuilder.withSysctls(sysctls);
 		}
 		if (deployerProperties.getPodSecurityContext().getWindowsOptions() != null) {
 			podSecurityContextBuilder.withNewWindowsOptions(
-					deployerProperties.getPodSecurityContext().getWindowsOptions().getGmsaCredentialSpec(),
-					deployerProperties.getPodSecurityContext().getWindowsOptions().getGmsaCredentialSpecName(),
-					deployerProperties.getPodSecurityContext().getWindowsOptions().getHostProcess(),
-					deployerProperties.getPodSecurityContext().getWindowsOptions().getRunAsUserName());
+		deployerProperties.getPodSecurityContext().getWindowsOptions().getGmsaCredentialSpec(),
+		deployerProperties.getPodSecurityContext().getWindowsOptions().getGmsaCredentialSpecName(),
+		deployerProperties.getPodSecurityContext().getWindowsOptions().getHostProcess(),
+		deployerProperties.getPodSecurityContext().getWindowsOptions().getRunAsUserName());
 		}
 		return podSecurityContextBuilder.build();
 	}
@@ -479,11 +482,12 @@ class DeploymentPropertiesResolver {
 		SecurityContext securityContext = null;
 
 		KubernetesDeployerProperties deployerProperties = bindProperties(kubernetesDeployerProperties,
-				this.propertyPrefix + ".containerSecurityContext", "containerSecurityContext");
+	this.propertyPrefix + ".containerSecurityContext", "containerSecurityContext");
 
 		if (deployerProperties.getContainerSecurityContext() != null) {
 			securityContext = buildContainerSecurityContext(deployerProperties);
-		} else if (this.properties.getContainerSecurityContext() != null ) {
+		}
+		else if (this.properties.getContainerSecurityContext() != null) {
 			securityContext = buildContainerSecurityContext(this.properties);
 		}
 		return securityContext;
@@ -491,38 +495,38 @@ class DeploymentPropertiesResolver {
 
 	private SecurityContext buildContainerSecurityContext(KubernetesDeployerProperties deployerProperties) {
 		SecurityContextBuilder securityContextBuilder = new SecurityContextBuilder()
-				.withAllowPrivilegeEscalation(deployerProperties.getContainerSecurityContext().getAllowPrivilegeEscalation())
-				.withPrivileged(deployerProperties.getContainerSecurityContext().getPrivileged())
-				.withProcMount(deployerProperties.getContainerSecurityContext().getProcMount())
-				.withReadOnlyRootFilesystem(deployerProperties.getContainerSecurityContext().getReadOnlyRootFilesystem())
-				.withRunAsUser(deployerProperties.getContainerSecurityContext().getRunAsUser())
-				.withRunAsGroup(deployerProperties.getContainerSecurityContext().getRunAsGroup())
-				.withRunAsNonRoot(deployerProperties.getContainerSecurityContext().getRunAsNonRoot());
+	.withAllowPrivilegeEscalation(deployerProperties.getContainerSecurityContext().getAllowPrivilegeEscalation())
+	.withPrivileged(deployerProperties.getContainerSecurityContext().getPrivileged())
+	.withProcMount(deployerProperties.getContainerSecurityContext().getProcMount())
+	.withReadOnlyRootFilesystem(deployerProperties.getContainerSecurityContext().getReadOnlyRootFilesystem())
+	.withRunAsUser(deployerProperties.getContainerSecurityContext().getRunAsUser())
+	.withRunAsGroup(deployerProperties.getContainerSecurityContext().getRunAsGroup())
+	.withRunAsNonRoot(deployerProperties.getContainerSecurityContext().getRunAsNonRoot());
 
 		if (deployerProperties.getContainerSecurityContext().getCapabilities() != null) {
 			securityContextBuilder.withCapabilities(
-					new CapabilitiesBuilder().withAdd(deployerProperties.getContainerSecurityContext().getCapabilities().getAdd())
-							.withDrop(deployerProperties.getContainerSecurityContext().getCapabilities().getDrop())
-							.build());
+		new CapabilitiesBuilder().withAdd(deployerProperties.getContainerSecurityContext().getCapabilities().getAdd())
+	.withDrop(deployerProperties.getContainerSecurityContext().getCapabilities().getDrop())
+	.build());
 		}
 		if (deployerProperties.getContainerSecurityContext().getSeccompProfile() != null) {
 			securityContextBuilder.withNewSeccompProfile(
-					deployerProperties.getContainerSecurityContext().getSeccompProfile().getLocalhostProfile(),
-					deployerProperties.getContainerSecurityContext().getSeccompProfile().getType());
+		deployerProperties.getContainerSecurityContext().getSeccompProfile().getLocalhostProfile(),
+		deployerProperties.getContainerSecurityContext().getSeccompProfile().getType());
 		}
 		if (deployerProperties.getContainerSecurityContext().getSeLinuxOptions() != null) {
 			securityContextBuilder.withNewSeLinuxOptions(
-					deployerProperties.getContainerSecurityContext().getSeLinuxOptions().getLevel(),
-					deployerProperties.getContainerSecurityContext().getSeLinuxOptions().getRole(),
-					deployerProperties.getContainerSecurityContext().getSeLinuxOptions().getType(),
-					deployerProperties.getContainerSecurityContext().getSeLinuxOptions().getUser());
+		deployerProperties.getContainerSecurityContext().getSeLinuxOptions().getLevel(),
+		deployerProperties.getContainerSecurityContext().getSeLinuxOptions().getRole(),
+		deployerProperties.getContainerSecurityContext().getSeLinuxOptions().getType(),
+		deployerProperties.getContainerSecurityContext().getSeLinuxOptions().getUser());
 		}
 		if (deployerProperties.getContainerSecurityContext().getWindowsOptions() != null) {
 			securityContextBuilder.withNewWindowsOptions(
-					deployerProperties.getContainerSecurityContext().getWindowsOptions().getGmsaCredentialSpec(),
-					deployerProperties.getContainerSecurityContext().getWindowsOptions().getGmsaCredentialSpecName(),
-					deployerProperties.getContainerSecurityContext().getWindowsOptions().getHostProcess(),
-					deployerProperties.getContainerSecurityContext().getWindowsOptions().getRunAsUserName());
+		deployerProperties.getContainerSecurityContext().getWindowsOptions().getGmsaCredentialSpec(),
+		deployerProperties.getContainerSecurityContext().getWindowsOptions().getGmsaCredentialSpecName(),
+		deployerProperties.getContainerSecurityContext().getWindowsOptions().getHostProcess(),
+		deployerProperties.getContainerSecurityContext().getWindowsOptions().getRunAsUserName());
 		}
 		return securityContextBuilder.build();
 	}
@@ -535,49 +539,52 @@ class DeploymentPropertiesResolver {
 		String podAntiAffinityPropertyKey = this.propertyPrefix + ".affinity.podAntiAffinity";
 
 		String nodeAffinityValue = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				nodeAffinityPropertyKey);
+	nodeAffinityPropertyKey);
 		String podAffinityValue = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				podAffinityPropertyKey);
+	podAffinityPropertyKey);
 		String podAntiAffinityValue = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				podAntiAffinityPropertyKey);
+	podAntiAffinityPropertyKey);
 
 		if (properties.getNodeAffinity() != null && !StringUtils.hasText(nodeAffinityValue)) {
 			affinity.setNodeAffinity(new AffinityBuilder()
-					.withNodeAffinity(properties.getNodeAffinity())
-					.buildNodeAffinity());
-		} else if (StringUtils.hasText(nodeAffinityValue)) {
+		.withNodeAffinity(properties.getNodeAffinity())
+		.buildNodeAffinity());
+		}
+		else if (StringUtils.hasText(nodeAffinityValue)) {
 			KubernetesDeployerProperties nodeAffinityProperties = bindProperties(kubernetesDeployerProperties,
-					nodeAffinityPropertyKey, "nodeAffinity");
+		nodeAffinityPropertyKey, "nodeAffinity");
 
 			affinity.setNodeAffinity(new AffinityBuilder()
-					.withNodeAffinity(nodeAffinityProperties.getNodeAffinity())
-					.buildNodeAffinity());
+		.withNodeAffinity(nodeAffinityProperties.getNodeAffinity())
+		.buildNodeAffinity());
 		}
 
 		if (properties.getPodAffinity() != null && !StringUtils.hasText(podAffinityValue)) {
 			affinity.setPodAffinity(new AffinityBuilder()
-					.withPodAffinity(properties.getPodAffinity())
-					.buildPodAffinity());
-		} else if (StringUtils.hasText(podAffinityValue)) {
+		.withPodAffinity(properties.getPodAffinity())
+		.buildPodAffinity());
+		}
+		else if (StringUtils.hasText(podAffinityValue)) {
 			KubernetesDeployerProperties podAffinityProperties = bindProperties(kubernetesDeployerProperties,
-					podAffinityPropertyKey, "podAffinity");
+		podAffinityPropertyKey, "podAffinity");
 
 			affinity.setPodAffinity(new AffinityBuilder()
-					.withPodAffinity(podAffinityProperties.getPodAffinity())
-					.buildPodAffinity());
+		.withPodAffinity(podAffinityProperties.getPodAffinity())
+		.buildPodAffinity());
 		}
 
 		if (properties.getPodAntiAffinity() != null && !StringUtils.hasText(podAntiAffinityValue)) {
 			affinity.setPodAntiAffinity(new AffinityBuilder()
-					.withPodAntiAffinity(properties.getPodAntiAffinity())
-					.buildPodAntiAffinity());
-		} else if (StringUtils.hasText(podAntiAffinityValue)) {
+		.withPodAntiAffinity(properties.getPodAntiAffinity())
+		.buildPodAntiAffinity());
+		}
+		else if (StringUtils.hasText(podAntiAffinityValue)) {
 			KubernetesDeployerProperties podAntiAffinityProperties = bindProperties(kubernetesDeployerProperties,
-					podAntiAffinityPropertyKey, "podAntiAffinity");
+		podAntiAffinityPropertyKey, "podAntiAffinity");
 
 			affinity.setPodAntiAffinity(new AffinityBuilder()
-					.withPodAntiAffinity(podAntiAffinityProperties.getPodAntiAffinity())
-					.buildPodAntiAffinity());
+		.withPodAntiAffinity(podAntiAffinityProperties.getPodAntiAffinity())
+		.buildPodAntiAffinity());
 		}
 
 		return affinity;
@@ -586,31 +593,31 @@ class DeploymentPropertiesResolver {
 	Container getInitContainer(Map<String, String> kubernetesDeployerProperties) {
 		Container container = null;
 		KubernetesDeployerProperties deployerProperties = bindProperties(kubernetesDeployerProperties,
-				this.propertyPrefix + ".initContainer", "initContainer");
+	this.propertyPrefix + ".initContainer", "initContainer");
 
 		if (deployerProperties.getInitContainer() == null) {
 			String containerName = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-					this.propertyPrefix + ".initContainer.containerName");
+		this.propertyPrefix + ".initContainer.containerName");
 
 			String imageName = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-					this.propertyPrefix + ".initContainer.imageName");
+		this.propertyPrefix + ".initContainer.imageName");
 
 			String commands = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-					this.propertyPrefix + ".initContainer.commands");
+		this.propertyPrefix + ".initContainer.commands");
 
 			String envString = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-					this.propertyPrefix + ".initContainer.environmentVariables");
+		this.propertyPrefix + ".initContainer.environmentVariables");
 
 			List<VolumeMount> vms = this.getInitContainerVolumeMounts(kubernetesDeployerProperties);
 
 			if (StringUtils.hasText(containerName) && StringUtils.hasText(imageName)) {
 				container = new ContainerBuilder()
-						.withName(containerName)
-						.withImage(imageName)
-						.withCommand(commands)
-						.withEnv(toEnvironmentVariables((envString != null)? envString.split(","): new String[0]))
-						.addAllToVolumeMounts(vms)
-						.build();
+			.withName(containerName)
+			.withImage(imageName)
+			.withCommand(commands)
+			.withEnv(toEnvironmentVariables((envString != null) ? envString.split(",") : new String[0]))
+			.addAllToVolumeMounts(vms)
+			.build();
 			}
 		}
 		else {
@@ -618,12 +625,12 @@ class DeploymentPropertiesResolver {
 
 			if (initContainer != null) {
 				container = new ContainerBuilder()
-						.withName(initContainer.getContainerName())
-						.withImage(initContainer.getImageName())
-						.withCommand(initContainer.getCommands())
-						.withEnv(toEnvironmentVariables(initContainer.getEnvironmentVariables()))
-						.addAllToVolumeMounts(Optional.ofNullable(initContainer.getVolumeMounts()).orElse(Collections.emptyList()))
-						.build();
+			.withName(initContainer.getContainerName())
+			.withImage(initContainer.getImageName())
+			.withCommand(initContainer.getCommands())
+			.withEnv(toEnvironmentVariables(initContainer.getEnvironmentVariables()))
+			.addAllToVolumeMounts(Optional.ofNullable(initContainer.getVolumeMounts()).orElse(Collections.emptyList()))
+			.build();
 			}
 		}
 
@@ -651,19 +658,19 @@ class DeploymentPropertiesResolver {
 		List<Container> containers = new ArrayList<>();
 
 		KubernetesDeployerProperties deployerProperties = bindProperties(deploymentProperties,
-				this.propertyPrefix + ".additionalContainers", "additionalContainers" );
+	this.propertyPrefix + ".additionalContainers", "additionalContainers");
 
 		if (deployerProperties.getAdditionalContainers() != null) {
 			deployerProperties.getAdditionalContainers().forEach(container ->
-					containers.add(container));
+		containers.add(container));
 		}
 
 		// Add the containers from the original properties excluding the containers with the matching names from the
 		// deployment properties
 		if (this.properties.getAdditionalContainers() != null) {
 			this.properties.getAdditionalContainers().stream()
-					.filter(container -> containers.stream().noneMatch(existing -> existing.getName().equals(container.getName())))
-					.forEachOrdered(container -> containers.add(container));
+		.filter(container -> containers.stream().noneMatch(existing -> existing.getName().equals(container.getName())))
+		.forEachOrdered(container -> containers.add(container));
 		}
 
 		return containers;
@@ -671,7 +678,7 @@ class DeploymentPropertiesResolver {
 
 	Map<String, String> getPodAnnotations(Map<String, String> kubernetesDeployerProperties) {
 		String annotationsValue = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".podAnnotations", "");
+	this.propertyPrefix + ".podAnnotations", "");
 
 		if (!StringUtils.hasText(annotationsValue)) {
 			annotationsValue = properties.getPodAnnotations();
@@ -682,7 +689,7 @@ class DeploymentPropertiesResolver {
 
 	Map<String, String> getServiceAnnotations(Map<String, String> kubernetesDeployerProperties) {
 		String annotationsProperty = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".serviceAnnotations", "");
+	this.propertyPrefix + ".serviceAnnotations", "");
 
 		if (!StringUtils.hasText(annotationsProperty)) {
 			annotationsProperty = this.properties.getServiceAnnotations();
@@ -695,12 +702,12 @@ class DeploymentPropertiesResolver {
 		Map<String, String> labels = new HashMap<>();
 
 		String deploymentLabels = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".deploymentLabels", "");
+	this.propertyPrefix + ".deploymentLabels", "");
 
 		// Add deployment labels set at the deployer level.
 		String updatedLabels = StringUtils.hasText(this.properties.getDeploymentLabels()) ?
-				new StringBuilder().append(deploymentLabels).append(StringUtils.hasText(deploymentLabels) ? ",": "")
-						.append(this.properties.getDeploymentLabels()).toString() : deploymentLabels;
+	new StringBuilder().append(deploymentLabels).append(StringUtils.hasText(deploymentLabels) ? "," : "")
+.append(this.properties.getDeploymentLabels()).toString() : deploymentLabels;
 
 		if (StringUtils.hasText(updatedLabels)) {
 			String[] deploymentLabel = updatedLabels.split(",");
@@ -708,7 +715,7 @@ class DeploymentPropertiesResolver {
 			for (String label : deploymentLabel) {
 				String[] labelPair = label.split(":");
 				Assert.isTrue(labelPair.length == 2,
-						String.format("Invalid label format, expected 'labelKey:labelValue', got: '%s'", labelPair));
+			String.format("Invalid label format, expected 'labelKey:labelValue', got: '%s'", labelPair));
 				labels.put(labelPair[0].trim(), labelPair[1].trim());
 			}
 		}
@@ -717,7 +724,7 @@ class DeploymentPropertiesResolver {
 
 	RestartPolicy getRestartPolicy(Map<String, String> kubernetesDeployerProperties) {
 		String restartPolicy = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".restartPolicy", "");
+	this.propertyPrefix + ".restartPolicy", "");
 
 		if (StringUtils.hasText(restartPolicy)) {
 			return RestartPolicy.valueOf(restartPolicy);
@@ -728,7 +735,7 @@ class DeploymentPropertiesResolver {
 
 	String getTaskServiceAccountName(Map<String, String> kubernetesDeployerProperties) {
 		String taskServiceAccountName = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".taskServiceAccountName", "");
+	this.propertyPrefix + ".taskServiceAccountName", "");
 		if (StringUtils.hasText(taskServiceAccountName)) {
 			return taskServiceAccountName;
 		}
@@ -745,7 +752,7 @@ class DeploymentPropertiesResolver {
 	 * @return a {@link KubernetesDeployerProperties} with the bound property data
 	 */
 	private static KubernetesDeployerProperties bindProperties(Map<String, String> kubernetesDeployerProperties,
-			String propertyKey, String yamlLabel) {
+String propertyKey, String yamlLabel) {
 		String deploymentPropertyValue = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties, propertyKey);
 
 		KubernetesDeployerProperties deployerProperties = new KubernetesDeployerProperties();
@@ -758,10 +765,10 @@ class DeploymentPropertiesResolver {
 				Properties yaml = properties.getObject();
 				MapConfigurationPropertySource source = new MapConfigurationPropertySource(yaml);
 				deployerProperties = new Binder(source)
-						.bind("", Bindable.of(KubernetesDeployerProperties.class)).get();
+			.bind("", Bindable.of(KubernetesDeployerProperties.class)).get();
 			} catch (Exception e) {
 				throw new IllegalArgumentException(
-						String.format("Invalid binding property '%s'", deploymentPropertyValue), e);
+			String.format("Invalid binding property '%s'", deploymentPropertyValue), e);
 			}
 		}
 
@@ -770,7 +777,7 @@ class DeploymentPropertiesResolver {
 
 	String getStatefulSetInitContainerImageName(Map<String, String> kubernetesDeployerProperties) {
 		String statefulSetInitContainerImageName = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".statefulSetInitContainerImageName", "");
+	this.propertyPrefix + ".statefulSetInitContainerImageName", "");
 
 		if (StringUtils.hasText(statefulSetInitContainerImageName)) {
 			return statefulSetInitContainerImageName;
@@ -787,7 +794,7 @@ class DeploymentPropertiesResolver {
 
 	Map<String, String> getJobAnnotations(Map<String, String> kubernetesDeployerProperties) {
 		String annotationsProperty = PropertyParserUtils.getDeploymentPropertyValue(kubernetesDeployerProperties,
-				this.propertyPrefix + ".jobAnnotations", "");
+	this.propertyPrefix + ".jobAnnotations", "");
 
 		if (!StringUtils.hasText(annotationsProperty)) {
 			annotationsProperty = this.properties.getJobAnnotations();
@@ -812,7 +819,7 @@ class DeploymentPropertiesResolver {
 	 */
 	List<VolumeMount> getVolumeMounts(Map<String, String> deploymentProperties) {
 		return this.getVolumeMounts(PropertyParserUtils.getDeploymentPropertyValue(deploymentProperties,
-				this.propertyPrefix + ".volumeMounts"));
+	this.propertyPrefix + ".volumeMounts"));
 	}
 
 	/**
@@ -831,7 +838,7 @@ class DeploymentPropertiesResolver {
 	 */
 	private List<VolumeMount> getInitContainerVolumeMounts(Map<String, String> deploymentProperties) {
 		return this.getVolumeMounts(PropertyParserUtils.getDeploymentPropertyValue(deploymentProperties,
-				this.propertyPrefix + ".initContainer.volumeMounts"));
+	this.propertyPrefix + ".initContainer.volumeMounts"));
 	}
 
 	private List<VolumeMount> getVolumeMounts(String propertyValue) {
@@ -845,19 +852,19 @@ class DeploymentPropertiesResolver {
 				Properties yaml = properties.getObject();
 				MapConfigurationPropertySource source = new MapConfigurationPropertySource(yaml);
 				KubernetesDeployerProperties deployerProperties = new Binder(source)
-						.bind("", Bindable.of(KubernetesDeployerProperties.class)).get();
+			.bind("", Bindable.of(KubernetesDeployerProperties.class)).get();
 				volumeMounts.addAll(deployerProperties.getVolumeMounts());
 			} catch (Exception e) {
 				throw new IllegalArgumentException(
-						String.format("Invalid volume mount '%s'", propertyValue), e);
+			String.format("Invalid volume mount '%s'", propertyValue), e);
 			}
 		}
 
 		// only add volume mounts that have not already been added, based on the volume mount's name
 		// i.e. allow provided deployment volume mounts to override deployer defined volume mounts
 		volumeMounts.addAll(this.properties.getVolumeMounts().stream().filter(volumeMount -> volumeMounts.stream()
-				.noneMatch(existingVolumeMount -> existingVolumeMount.getName().equals(volumeMount.getName())))
-				.collect(Collectors.toList()));
+	.noneMatch(existingVolumeMount -> existingVolumeMount.getName().equals(volumeMount.getName())))
+	.collect(Collectors.toList()));
 
 		return volumeMounts;
 	}
@@ -870,7 +877,7 @@ class DeploymentPropertiesResolver {
 	 */
 	List<String> getContainerCommand(Map<String, String> deploymentProperties) {
 		String containerCommand = PropertyParserUtils.getDeploymentPropertyValue(deploymentProperties,
-				this.propertyPrefix + ".containerCommand", "");
+	this.propertyPrefix + ".containerCommand", "");
 
 		return new CommandLineTokenizer(containerCommand).getArgs();
 	}
@@ -880,21 +887,21 @@ class DeploymentPropertiesResolver {
 	 * @param deploymentProperties the kubernetes deployer properties map
 	 * @return Lifecycle spec
 	 */
-	KubernetesDeployerProperties.Lifecycle getLifeCycle(Map<String,String> deploymentProperties) {
+	KubernetesDeployerProperties.Lifecycle getLifeCycle(Map<String, String> deploymentProperties) {
 		KubernetesDeployerProperties.Lifecycle lifecycle = properties.getLifecycle();
 
 		if (deploymentProperties.keySet().stream()
-				.noneMatch(s -> s.startsWith(propertyPrefix + ".lifecycle"))) {
+	.noneMatch(s -> s.startsWith(propertyPrefix + ".lifecycle"))) {
 			return lifecycle;
 		}
 		String postStart = PropertyParserUtils.getDeploymentPropertyValue(deploymentProperties,
-				this.propertyPrefix + ".lifecycle.postStart.exec.command");
+	this.propertyPrefix + ".lifecycle.postStart.exec.command");
 		if (StringUtils.hasText(postStart)) {
 			lifecycle.setPostStart(lifecycleHook(postStart));
 		}
 
 		String preStop = PropertyParserUtils.getDeploymentPropertyValue(deploymentProperties,
-				this.propertyPrefix + ".lifecycle.preStop.exec.command");
+	this.propertyPrefix + ".lifecycle.preStop.exec.command");
 		if (StringUtils.hasText(preStop)) {
 			lifecycle.setPreStop(lifecycleHook(preStop));
 		}
@@ -916,7 +923,7 @@ class DeploymentPropertiesResolver {
 	 */
 	Long determineTerminationGracePeriodSeconds(Map<String, String> deploymentProperties) {
 		String gracePeriodStr = PropertyParserUtils.getDeploymentPropertyValue(deploymentProperties,
-				this.propertyPrefix + ".terminationGracePeriodSeconds", null);
+	this.propertyPrefix + ".terminationGracePeriodSeconds", null);
 		if (gracePeriodStr != null) {
 			return Long.parseLong(gracePeriodStr);
 		}
@@ -930,7 +937,7 @@ class DeploymentPropertiesResolver {
 	List<Integer> getContainerPorts(Map<String, String> deploymentProperties) {
 		List<Integer> containerPortList = new ArrayList<>();
 		String containerPorts = PropertyParserUtils.getDeploymentPropertyValue(deploymentProperties,
-				this.propertyPrefix + ".containerPorts", null);
+	this.propertyPrefix + ".containerPorts", null);
 
 		if (containerPorts != null) {
 			String[] containerPortSplit = containerPorts.split(",");
@@ -951,7 +958,7 @@ class DeploymentPropertiesResolver {
 	Map<String, String> getAppEnvironmentVariables(Map<String, String> deploymentProperties) {
 		Map<String, String> appEnvVarMap = new HashMap<>();
 		String appEnvVar = PropertyParserUtils.getDeploymentPropertyValue(deploymentProperties,
-				this.propertyPrefix + ".environmentVariables", null);
+	this.propertyPrefix + ".environmentVariables", null);
 
 		if (appEnvVar != null) {
 			String[] appEnvVars = new NestedCommaDelimitedVariableParser().parse(appEnvVar);
@@ -976,7 +983,7 @@ class DeploymentPropertiesResolver {
 			Matcher m = pattern.matcher(value);
 
 			while (m.find()) {
-				String replacedVar = m.group(1).replaceAll("'","");
+				String replacedVar = m.group(1).replaceAll("'", "");
 
 				if (StringUtils.hasText(replacedVar)) {
 					vars.add(replacedVar);
@@ -996,7 +1003,7 @@ class DeploymentPropertiesResolver {
 	EntryPointStyle determineEntryPointStyle(Map<String, String> deploymentProperties) {
 		EntryPointStyle entryPointStyle = null;
 		String deployerPropertyValue = PropertyParserUtils.getDeploymentPropertyValue(deploymentProperties,
-				this.propertyPrefix + ".entryPointStyle", null);
+	this.propertyPrefix + ".entryPointStyle", null);
 
 		if (deployerPropertyValue != null) {
 			try {
@@ -1016,7 +1023,7 @@ class DeploymentPropertiesResolver {
 	ProbeType determineProbeType(Map<String, String> deploymentProperties) {
 		ProbeType probeType = this.properties.getProbeType();
 		String deployerPropertyValue = PropertyParserUtils.getDeploymentPropertyValue(deploymentProperties,
-				this.propertyPrefix + ".probeType", null);
+	this.propertyPrefix + ".probeType", null);
 
 		if (StringUtils.hasText(deployerPropertyValue)) {
 			probeType = ProbeType.valueOf(deployerPropertyValue.toUpperCase());
@@ -1028,16 +1035,16 @@ class DeploymentPropertiesResolver {
 	List<EnvVar> getConfigMapKeyRefs(Map<String, String> deploymentProperties) {
 		List<EnvVar> configMapKeyRefs = new ArrayList<>();
 		KubernetesDeployerProperties deployerProperties = bindProperties(deploymentProperties,
-				this.propertyPrefix + ".configMapKeyRefs", "configMapKeyRefs");
+	this.propertyPrefix + ".configMapKeyRefs", "configMapKeyRefs");
 
 		deployerProperties.getConfigMapKeyRefs().forEach(configMapKeyRef ->
-				configMapKeyRefs.add(buildConfigMapKeyRefEnvVar(configMapKeyRef)));
+	configMapKeyRefs.add(buildConfigMapKeyRefEnvVar(configMapKeyRef)));
 
 		properties.getConfigMapKeyRefs().stream()
-				.filter(configMapKeyRef -> configMapKeyRefs.stream()
-						.noneMatch(existing -> existing.getName().equals(configMapKeyRef.getEnvVarName())))
-				.collect(Collectors.toList())
-				.forEach(configMapKeyRef -> configMapKeyRefs.add(buildConfigMapKeyRefEnvVar(configMapKeyRef)));
+	.filter(configMapKeyRef -> configMapKeyRefs.stream()
+.noneMatch(existing -> existing.getName().equals(configMapKeyRef.getEnvVarName())))
+	.collect(Collectors.toList())
+	.forEach(configMapKeyRef -> configMapKeyRefs.add(buildConfigMapKeyRefEnvVar(configMapKeyRef)));
 
 		return configMapKeyRefs;
 	}
@@ -1061,16 +1068,16 @@ class DeploymentPropertiesResolver {
 		List<EnvVar> secretKeyRefs = new ArrayList<>();
 
 		KubernetesDeployerProperties deployerProperties = bindProperties(deploymentProperties,
-				this.propertyPrefix + ".secretKeyRefs", "secretKeyRefs" );
+	this.propertyPrefix + ".secretKeyRefs", "secretKeyRefs");
 
 		deployerProperties.getSecretKeyRefs().forEach(secretKeyRef ->
-				secretKeyRefs.add(buildSecretKeyRefEnvVar(secretKeyRef)));
+	secretKeyRefs.add(buildSecretKeyRefEnvVar(secretKeyRef)));
 
 		properties.getSecretKeyRefs().stream()
-				.filter(secretKeyRef -> secretKeyRefs.stream()
-						.noneMatch(existing -> existing.getName().equals(secretKeyRef.getEnvVarName())))
-				.collect(Collectors.toList())
-				.forEach(secretKeyRef -> secretKeyRefs.add(buildSecretKeyRefEnvVar(secretKeyRef)));
+	.filter(secretKeyRef -> secretKeyRefs.stream()
+.noneMatch(existing -> existing.getName().equals(secretKeyRef.getEnvVarName())))
+	.collect(Collectors.toList())
+	.forEach(secretKeyRef -> secretKeyRefs.add(buildSecretKeyRefEnvVar(secretKeyRef)));
 
 		return secretKeyRefs;
 	}
@@ -1093,17 +1100,17 @@ class DeploymentPropertiesResolver {
 	List<EnvFromSource> getConfigMapRefs(Map<String, String> deploymentProperties) {
 		List<EnvFromSource> configMapRefs = new ArrayList<>();
 		KubernetesDeployerProperties deployerProperties = bindProperties(deploymentProperties,
-				this.propertyPrefix + ".configMapRefs", "configMapRefs");
+	this.propertyPrefix + ".configMapRefs", "configMapRefs");
 
 		deployerProperties.getConfigMapRefs().forEach(configMapRef ->
-				configMapRefs.add(buildConfigMapRefEnvVar(configMapRef)));
+	configMapRefs.add(buildConfigMapRefEnvVar(configMapRef)));
 
 		if (deployerProperties.getConfigMapRefs().isEmpty()) {
 			properties.getConfigMapRefs().stream()
-					.filter(configMapRef -> configMapRefs.stream()
-							.noneMatch(existing -> existing.getConfigMapRef().getName().equals(configMapRef)))
-					.collect(Collectors.toList())
-					.forEach(configMapRef -> configMapRefs.add(buildConfigMapRefEnvVar(configMapRef)));
+		.filter(configMapRef -> configMapRefs.stream()
+	.noneMatch(existing -> existing.getConfigMapRef().getName().equals(configMapRef)))
+		.collect(Collectors.toList())
+		.forEach(configMapRef -> configMapRefs.add(buildConfigMapRefEnvVar(configMapRef)));
 		}
 
 		return configMapRefs;
@@ -1122,17 +1129,17 @@ class DeploymentPropertiesResolver {
 	List<EnvFromSource> getSecretRefs(Map<String, String> deploymentProperties) {
 		List<EnvFromSource> secretRefs = new ArrayList<>();
 		KubernetesDeployerProperties deployerProperties = bindProperties(deploymentProperties,
-				this.propertyPrefix + ".secretRefs", "secretRefs");
+	this.propertyPrefix + ".secretRefs", "secretRefs");
 
 		deployerProperties.getSecretRefs().forEach(secretRef ->
-				secretRefs.add(buildSecretRefEnvVar(secretRef)));
+	secretRefs.add(buildSecretRefEnvVar(secretRef)));
 
 		if (deployerProperties.getSecretRefs().isEmpty()) {
 			properties.getSecretRefs().stream()
-					.filter(secretRef -> secretRefs.stream()
-							.noneMatch(existing -> existing.getSecretRef().getName().equals(secretRef)))
-					.collect(Collectors.toList())
-					.forEach(secretRef -> secretRefs.add(buildSecretRefEnvVar(secretRef)));
+		.filter(secretRef -> secretRefs.stream()
+	.noneMatch(existing -> existing.getSecretRef().getName().equals(secretRef)))
+		.collect(Collectors.toList())
+		.forEach(secretRef -> secretRefs.add(buildSecretRefEnvVar(secretRef)));
 		}
 
 		return secretRefs;

@@ -35,12 +35,12 @@ import org.springframework.util.StringUtils;
  */
 public class ArgumentSanitizer {
 
-	private static final String[] REGEX_PARTS = { "*", "$", "^", "+" };
+	private static final String[] REGEX_PARTS = {"*", "$", "^", "+"};
 
 	private static final String REDACTION_STRING = "******";
 
-	private static final String[] KEYS_TO_SANITIZE = { "username", "password", "secret", "key", "token", ".*credentials.*",
-			"vcap_services", "url" };
+	private static final String[] KEYS_TO_SANITIZE = {"username", "password", "secret", "key", "token", ".*credentials.*",
+"vcap_services", "url"};
 
 	private Pattern[] keysToSanitize;
 
@@ -114,7 +114,7 @@ public class ArgumentSanitizer {
 	public Map<String, String> sanitizeProperties(Map<String, String> properties) {
 		if (!CollectionUtils.isEmpty(properties)) {
 			final Map<String, String> sanitizedProperties = new LinkedHashMap<>(properties.size());
-			for (Map.Entry<String, String > property : properties.entrySet()) {
+			for (Map.Entry<String, String> property : properties.entrySet()) {
 				sanitizedProperties.put(property.getKey(), this.sanitize(property.getKey(), property.getValue()));
 			}
 			return sanitizedProperties;

@@ -28,102 +28,102 @@ import static org.assertj.core.api.Assertions.entry;
 /** @author David Turanski */
 public class ServiceParserTests {
 
-  @Test
-  public void plainService() {
-    assertThat(ServiceParser.getServiceParameters("test-service").isPresent()).isFalse();
-    assertThat(ServiceParser.getServiceInstanceName("test-service")).isEqualTo("test-service");
-  }
+	@Test
+	public void plainService() {
+		assertThat(ServiceParser.getServiceParameters("test-service").isPresent()).isFalse();
+		assertThat(ServiceParser.getServiceInstanceName("test-service")).isEqualTo("test-service");
+	}
 
-  @Test
-  public void plainServiceWithSpecialCharacters() {
-    assertThat(ServiceParser.getServiceParameters("test.service.$$").isPresent()).isFalse();
-  }
+	@Test
+	public void plainServiceWithSpecialCharacters() {
+		assertThat(ServiceParser.getServiceParameters("test.service.$$").isPresent()).isFalse();
+	}
 
-  @Test
-  public void serviceWithParameters() {
-    String serviceSpec = "test-service foo:bar";
-    assertThat(ServiceParser.getServiceParameters(serviceSpec).get())
-        .isEqualTo(Collections.singletonMap("foo", "bar"));
-  }
+	@Test
+	public void serviceWithParameters() {
+		String serviceSpec = "test-service foo:bar";
+		assertThat(ServiceParser.getServiceParameters(serviceSpec).get())
+	.isEqualTo(Collections.singletonMap("foo", "bar"));
+	}
 
-  @Test
-  public void getServiceInstanceName() {
-    String serviceSpec = "test-service foo:bar";
-    assertThat(ServiceParser.getServiceInstanceName(serviceSpec)).isEqualTo("test-service");
-  }
+	@Test
+	public void getServiceInstanceName() {
+		String serviceSpec = "test-service foo:bar";
+		assertThat(ServiceParser.getServiceInstanceName(serviceSpec)).isEqualTo("test-service");
+	}
 
-  @Test
-  public void serviceWithSpacesParameters() {
-    assertThat(ServiceParser.getServiceParameters("test-service foo : bar").get())
-        .isEqualTo(Collections.singletonMap("foo", "bar"));
-  }
+	@Test
+	public void serviceWithSpacesParameters() {
+		assertThat(ServiceParser.getServiceParameters("test-service foo : bar").get())
+	.isEqualTo(Collections.singletonMap("foo", "bar"));
+	}
 
-  @Test
-  public void serviceWithEqualsInParameters() {
-    assertThat(ServiceParser.getServiceParameters("test-service foo=bar").get())
-        .isEqualTo(Collections.singletonMap("foo", "bar"));
-  }
+	@Test
+	public void serviceWithEqualsInParameters() {
+		assertThat(ServiceParser.getServiceParameters("test-service foo=bar").get())
+	.isEqualTo(Collections.singletonMap("foo", "bar"));
+	}
 
-  @Test
-  public void realWorldExample() {
+	@Test
+	public void realWorldExample() {
 
-    Map<String,String> params = ServiceParser.getServiceParameters(
-        "nfs share:1.2.3.4/export, uid:65534, gid:65534, mount:/var/scdf")
-        .get();
+		Map<String, String> params = ServiceParser.getServiceParameters(
+	"nfs share:1.2.3.4/export, uid:65534, gid:65534, mount:/var/scdf")
+	.get();
 
-    assertThat(params).containsOnly(
-        entry("share","1.2.3.4/export"),
-        entry("uid","65534"),
-        entry("gid","65534"),
-        entry("mount","/var/scdf")
-    );
-  }
+		assertThat(params).containsOnly(
+	entry("share", "1.2.3.4/export"),
+	entry("uid", "65534"),
+	entry("gid", "65534"),
+	entry("mount", "/var/scdf")
+		);
+	}
 
-  @Test
-  public void anotherRealWorldExample() {
-    Map<String,String> params = ServiceParser.getServiceParameters(
-        "nfs share=1.2.3.4/export, uid=65534, gid=65534, mount=/var/scdf")
-        .get();
+	@Test
+	public void anotherRealWorldExample() {
+		Map<String, String> params = ServiceParser.getServiceParameters(
+	"nfs share=1.2.3.4/export, uid=65534, gid=65534, mount=/var/scdf")
+	.get();
 
-    assertThat(params).containsOnly(
-        entry("share","1.2.3.4/export"),
-        entry("uid","65534"),
-        entry("gid","65534"),
-        entry("mount","/var/scdf")
-    );
-  }
+		assertThat(params).containsOnly(
+	entry("share", "1.2.3.4/export"),
+	entry("uid", "65534"),
+	entry("gid", "65534"),
+	entry("mount", "/var/scdf")
+		);
+	}
 
-  @Test
-  public void serviceWithInvalidParameters() {
+	@Test
+	public void serviceWithInvalidParameters() {
 		assertThatThrownBy(() -> {
 			ServiceParser.getServiceParameters("test-service foo bar");
 		}).isInstanceOf(IllegalArgumentException.class).hasMessageContaining(
-				"invalid service specification: test-service foo bar");
-  }
+	"invalid service specification: test-service foo bar");
+	}
 
-  @Test
-  public void splitServiceProperties() {
+	@Test
+	public void splitServiceProperties() {
 
-     assertThat(ServiceParser.splitServiceProperties(
-        "'nfs share:10.194.2.6/export,uid:65534,gid:65534,mount:/var/scdf',mysql,'foo bar:baz'"))
-         .containsExactlyInAnyOrder(
-             "nfs share:10.194.2.6/export,uid:65534,gid:65534,mount:/var/scdf",
-             "mysql",
-             "foo bar:baz");
+		assertThat(ServiceParser.splitServiceProperties(
+	"'nfs share:10.194.2.6/export,uid:65534,gid:65534,mount:/var/scdf',mysql,'foo bar:baz'"))
+	.containsExactlyInAnyOrder(
+"nfs share:10.194.2.6/export,uid:65534,gid:65534,mount:/var/scdf",
+"mysql",
+"foo bar:baz");
 
-    assertThat(ServiceParser.splitServiceProperties("mysql,rabbit,redis"))
-        .containsExactlyInAnyOrder(
-            "mysql",
-            "rabbit",
-            "redis");
+		assertThat(ServiceParser.splitServiceProperties("mysql,rabbit,redis"))
+	.containsExactlyInAnyOrder(
+"mysql",
+"rabbit",
+"redis");
 
-    assertThat(ServiceParser.splitServiceProperties(
-        "redis,  'nfs share:10.194.2.6/export,uid:65534,gid:65534,mount:/var/scdf', mysql ,  'foo bar:baz'"))
-        .containsExactlyInAnyOrder(
-            "redis",
-            "nfs share:10.194.2.6/export,uid:65534,gid:65534,mount:/var/scdf",
-            "mysql",
-            "foo bar:baz");
-  }
+		assertThat(ServiceParser.splitServiceProperties(
+	"redis,  'nfs share:10.194.2.6/export,uid:65534,gid:65534,mount:/var/scdf', mysql ,  'foo bar:baz'"))
+	.containsExactlyInAnyOrder(
+"redis",
+"nfs share:10.194.2.6/export,uid:65534,gid:65534,mount:/var/scdf",
+"mysql",
+"foo bar:baz");
+	}
 
 }
