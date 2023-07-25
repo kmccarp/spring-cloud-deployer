@@ -36,9 +36,9 @@ import org.springframework.util.StringUtils;
  */
 abstract class ServiceParser {
 
-  private static Pattern serviceWithParameters = Pattern.compile("([^\\s]+)\\s*?(.*)?");
+    private static final Pattern serviceWithParameters = Pattern.compile("([^\\s]+)\\s*?(.*)?");
 
-  private static Pattern singleQuotedLiteral = Pattern.compile("'([^']*?)'");
+    private static final Pattern singleQuotedLiteral = Pattern.compile("'([^']*?)'");
 
   /**
    * @param serviceSpec the service instance followed by optional parameters.
@@ -87,7 +87,7 @@ abstract class ServiceParser {
       Stream.of(serviceProperties.split(","))
           .filter(StringUtils::hasText)
           .map(String::trim)
-          .forEach(s -> serviceInstances.add(s));
+          .forEach(serviceInstances::add);
     }
 
     return serviceInstances;

@@ -40,7 +40,7 @@ public class DockerResourceLoaderTests {
 		DockerResource dockerResource = (DockerResource) resource;
 		assertEquals(location, dockerResource.getURI().toString());
 		assertEquals("springcloud/test-app:v1", dockerResource.getURI().getSchemeSpecificPart());
-		assertEquals("docker", dockerResource.getURI().getScheme().toString());
+		assertEquals("docker", dockerResource.getURI().getScheme());
 	}
 
 	@Test
@@ -52,7 +52,7 @@ public class DockerResourceLoaderTests {
 		DockerResource dockerResource = (DockerResource) resource;
 		assertEquals("docker:springcloud/test-app:v1", dockerResource.getURI().toString());
 		assertEquals("springcloud/test-app:v1", dockerResource.getURI().getSchemeSpecificPart());
-		assertEquals("docker", dockerResource.getURI().getScheme().toString());
+		assertEquals("docker", dockerResource.getURI().getScheme());
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class DockerResourceLoaderTests {
 		DockerResource dockerResource = (DockerResource) resource;
 		assertEquals(DockerResource.URI_SCHEME + ":" + location, dockerResource.getURI().toString());
 		assertEquals("springcloud/test-app:v1", dockerResource.getURI().getSchemeSpecificPart());
-		assertEquals("docker", dockerResource.getURI().getScheme().toString());
+		assertEquals("docker", dockerResource.getURI().getScheme());
 	}
 
 }

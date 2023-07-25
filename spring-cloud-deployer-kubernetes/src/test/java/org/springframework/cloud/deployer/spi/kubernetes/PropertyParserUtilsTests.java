@@ -41,7 +41,7 @@ public class PropertyParserUtilsTests {
 		assertThat(annotations.isEmpty()).isFalse();
 		assertThat(annotations.size() == 1).isTrue();
 		assertThat(annotations.containsKey("annotation")).isTrue();
-		assertThat(annotations.get("annotation").equals("value")).isTrue();
+		assertThat("value".equals(annotations.get("annotation"))).isTrue();
 	}
 
 	@Test
@@ -50,9 +50,9 @@ public class PropertyParserUtilsTests {
 		assertThat(annotations.isEmpty()).isFalse();
 		assertThat(annotations.size() == 2).isTrue();
 		assertThat(annotations.containsKey("annotation1")).isTrue();
-		assertThat(annotations.get("annotation1").equals("value1")).isTrue();
+		assertThat("value1".equals(annotations.get("annotation1"))).isTrue();
 		assertThat(annotations.containsKey("annotation2")).isTrue();
-		assertThat(annotations.get("annotation2").equals("value2")).isTrue();
+		assertThat("value2".equals(annotations.get("annotation2"))).isTrue();
 	}
 
 	@Test
@@ -86,9 +86,9 @@ public class PropertyParserUtilsTests {
 		assertThat(annotations.isEmpty()).isFalse();
 		assertThat(annotations.size() == 2).isTrue();
 		assertThat(annotations.containsKey("annotation1")).isTrue();
-		assertThat(annotations.get("annotation1").equals("\"value1\"")).isTrue();
+		assertThat("\"value1\"".equals(annotations.get("annotation1"))).isTrue();
 		assertThat(annotations.containsKey("annotation2")).isTrue();
-		assertThat(annotations.get("annotation2").equals("value2")).isTrue();
+		assertThat("value2".equals(annotations.get("annotation2"))).isTrue();
 	}
 
 	@Test
@@ -99,11 +99,11 @@ public class PropertyParserUtilsTests {
 		assertThat(annotations.isEmpty()).isFalse();
 		assertThat(annotations.size() == 3).isTrue();
 		assertThat(annotations.containsKey("iam.amazonaws.com/role")).isTrue();
-		assertThat(annotations.get("iam.amazonaws.com/role").equals("arn:aws:iam::12345678:role/role-name")).isTrue();
+		assertThat("arn:aws:iam::12345678:role/role-name".equals(annotations.get("iam.amazonaws.com/role"))).isTrue();
 		assertThat(annotations.containsKey("key1")).isTrue();
-		assertThat(annotations.get("key1").equals("val1:val2:val3")).isTrue();
+		assertThat("val1:val2:val3".equals(annotations.get("key1"))).isTrue();
 		assertThat(annotations.containsKey("key2")).isTrue();
-		assertThat(annotations.get("key2").equals("val4::val5:val6::val7:val8")).isTrue();
+		assertThat("val4::val5:val6::val7:val8".equals(annotations.get("key2"))).isTrue();
 	}
 
 	@Test
@@ -124,12 +124,12 @@ public class PropertyParserUtilsTests {
 		deploymentProps.put("spring.cloud.deployer.kubernetes.shareProcessNamespace", "true");
 		deploymentProps.put("spring.cloud.deployer.kubernetes.priority-class-name", "high-priority");
 		deploymentProps.put("spring.cloud.deployer.kubernetes.init-container.commands", "['sh','echo hello']");
-		assertThat(PropertyParserUtils.getDeploymentPropertyValue(deploymentProps, "spring.cloud.deployer.kubernetes.podAnnotations").equals("key1:value1,key2:value2")).isTrue();
-		assertThat(PropertyParserUtils.getDeploymentPropertyValue(deploymentProps, "spring.cloud.deployer.kubernetes.serviceAnnotations").equals("key3:value3,key4:value4")).isTrue();
-		assertThat(PropertyParserUtils.getDeploymentPropertyValue(deploymentProps, "spring.cloud.deployer.kubernetes.initContainer.imageName").equals("springcloud/openjdk")).isTrue();
-		assertThat(PropertyParserUtils.getDeploymentPropertyValue(deploymentProps, "spring.cloud.deployer.kubernetes.initContainer.imageName").equals("springcloud/openjdk")).isTrue();
-		assertThat(PropertyParserUtils.getDeploymentPropertyValue(deploymentProps, "spring.cloud.deployer.kubernetes.imagePullPolicy").equals("Never")).isTrue();
-		assertThat(PropertyParserUtils.getDeploymentPropertyValue(deploymentProps, "spring.cloud.deployer.kubernetes.priority-class-name").equals("high-priority")).isTrue();
-		assertThat(PropertyParserUtils.getDeploymentPropertyValue(deploymentProps, "spring.cloud.deployer.kubernetes.shareProcessNamespace").equals("true")).isTrue();
+		assertThat("key1:value1,key2:value2".equals(PropertyParserUtils.getDeploymentPropertyValue(deploymentProps, "spring.cloud.deployer.kubernetes.podAnnotations"))).isTrue();
+		assertThat("key3:value3,key4:value4".equals(PropertyParserUtils.getDeploymentPropertyValue(deploymentProps, "spring.cloud.deployer.kubernetes.serviceAnnotations"))).isTrue();
+		assertThat("springcloud/openjdk".equals(PropertyParserUtils.getDeploymentPropertyValue(deploymentProps, "spring.cloud.deployer.kubernetes.initContainer.imageName"))).isTrue();
+		assertThat("springcloud/openjdk".equals(PropertyParserUtils.getDeploymentPropertyValue(deploymentProps, "spring.cloud.deployer.kubernetes.initContainer.imageName"))).isTrue();
+		assertThat("Never".equals(PropertyParserUtils.getDeploymentPropertyValue(deploymentProps, "spring.cloud.deployer.kubernetes.imagePullPolicy"))).isTrue();
+		assertThat("high-priority".equals(PropertyParserUtils.getDeploymentPropertyValue(deploymentProps, "spring.cloud.deployer.kubernetes.priority-class-name"))).isTrue();
+		assertThat("true".equals(PropertyParserUtils.getDeploymentPropertyValue(deploymentProps, "spring.cloud.deployer.kubernetes.shareProcessNamespace"))).isTrue();
 	}
 }

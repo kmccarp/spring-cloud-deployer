@@ -216,7 +216,7 @@ public class CloudFoundryAppDeployer extends AbstractCloudFoundryDeployer implem
 		List<LogMessage> logMessageList = getLogMessage(id).collectList().block(Duration.ofSeconds(this.deploymentProperties.getApiTimeout()));
 		StringBuilder stringBuilder = new StringBuilder();
 		for (LogMessage logMessage: logMessageList) {
-			stringBuilder.append(logMessage.getMessage() + System.lineSeparator());
+			stringBuilder.append(logMessage.getMessage()).append(System.lineSeparator());
 		}
 		return stringBuilder.toString();
 	}

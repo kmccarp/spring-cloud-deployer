@@ -93,7 +93,7 @@ public class CloudFoundryDeploymentProperties {
 	 * The host name to use as part of the route. Defaults to hostname derived by Cloud
 	 * Foundry.
 	 */
-	private String host = null;
+	private String host;
 
 	/**
 	 * The domain to use when mapping routes for applications.
