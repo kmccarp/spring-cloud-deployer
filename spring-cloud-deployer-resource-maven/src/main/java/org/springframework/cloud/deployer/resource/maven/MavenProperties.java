@@ -34,7 +34,7 @@ public class MavenProperties {
 	/**
 	 * Default file path to a locally available maven repository.
 	 */
-	private static String DEFAULT_LOCAL_REPO = System.getProperty("user.home") +
+	private static final String DEFAULT_LOCAL_REPO = System.getProperty("user.home") +
 			File.separator + ".m2" + File.separator + "repository";
 
 	/**
@@ -83,7 +83,7 @@ public class MavenProperties {
 	/**
 	 * Add the ConsoleRepositoryListener to the session for debugging of artifact resolution.
 	 */
-	private boolean enableRepositoryListener = false;
+	private boolean enableRepositoryListener;
 
 	boolean isIncludeDefaultRemoteRepos() {
 		return includeDefaultRemoteRepos;
@@ -255,12 +255,12 @@ public class MavenProperties {
 		}
 	}
 
-	public static enum WagonHttpMethod {
+	public enum WagonHttpMethod {
 		// directly maps to http methods in org.apache.maven.wagon.shared.http.HttpConfiguration
 		all,
 		get,
 		put,
-		head;
+		head
 	}
 
 	public static class WagonHttpMethodProperties {

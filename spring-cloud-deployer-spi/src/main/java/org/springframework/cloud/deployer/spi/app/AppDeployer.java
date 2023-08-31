@@ -159,7 +159,7 @@ public interface AppDeployer {
 	 * @return the app deployment statuses
 	 */
 	default Flux<AppStatus> statusesReactive(String... ids) {
-		return Flux.fromArray(ids).flatMap(id -> statusReactive(id));
+		return Flux.fromArray(ids).flatMap(this::statusReactive);
 	}
 
 	/**

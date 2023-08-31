@@ -26,11 +26,11 @@ import org.springframework.cloud.deployer.spi.core.AppDeploymentRequest;
  * @author Chris Schaefer
  */
 public class ContainerConfiguration {
-	private String appId;
+	private final String appId;
 	private Integer externalPort;
 	private boolean isHostNetwork;
 	private Secret probeCredentialsSecret;
-	private AppDeploymentRequest appDeploymentRequest;
+	private final AppDeploymentRequest appDeploymentRequest;
 
 	public ContainerConfiguration(String appId, AppDeploymentRequest appDeploymentRequest) {
 		this.appId = appId;

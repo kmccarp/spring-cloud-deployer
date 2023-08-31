@@ -28,62 +28,62 @@ import org.springframework.util.Assert;
  *
  * @author Thomas Risberg
  */
-public class RuntimeEnvironmentInfo {
+public final class RuntimeEnvironmentInfo {
 
 	/**
 	 * The SPI version used by this implementation.
 	 */
-	private String spiVersion;
+	private final String spiVersion;
 
 	/**
 	 * The name of this implementation (could be simple class name).
 	 */
-	private String implementationName;
+	private final String implementationName;
 
 	/**
 	 * The version of this implementation.
 	 */
-	private String implementationVersion;
+	private final String implementationVersion;
 
 	/**
 	 * The platform type for this implementation.
 	 */
-	private String platformType;
+	private final String platformType;
 
 	/**
 	 * The platform API version for this implementation.
 	 */
-	private String platformApiVersion;
+	private final String platformApiVersion;
 
 	/**
 	 * The client library version used by this implementation.
 	 */
-	private String platformClientVersion;
+	private final String platformClientVersion;
 
 	/**
 	 * The version running on the host of the platform used by this implementation.
 	 */
-	private String platformHostVersion;
+	private final String platformHostVersion;
 
 	/**
 	 * The Java version used by this implementation.
 	 */
-	private String javaVersion;
+	private final String javaVersion;
 
 	/**
 	 * The Spring Framework version used by this implementation.
 	 */
-	private String springVersion;
+	private final String springVersion;
 
 	/**
 	 * The Spring Boot version used by this implementation.
 	 */
-	private String springBootVersion;
+	private final String springBootVersion;
 
 	/**
 	 * Platform specific properties
 	 */
-	private Map<String, String> platformSpecificInfo = new HashMap<>();
+	private final Map<String, String> platformSpecificInfo = new HashMap<>();
 
 	private RuntimeEnvironmentInfo(Class spiClass, String implementationName, String implementationVersion,
 	                               String platformType, String platformApiVersion, String platformClientVersion,

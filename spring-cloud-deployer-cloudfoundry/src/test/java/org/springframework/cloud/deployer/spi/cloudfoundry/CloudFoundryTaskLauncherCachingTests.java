@@ -81,23 +81,17 @@ public class CloudFoundryTaskLauncherCachingTests {
 
 		CloudFoundryTaskLauncher launcher = new CloudFoundryTaskLauncher(client, deploymentProperties, operations, runtimeEnvironmentInfo);
 
-		Throwable thrown1 = catchThrowable(() -> {
-			launcher.getRunningTaskExecutionCount();
-		});
+		Throwable thrown1 = catchThrowable(launcher::getRunningTaskExecutionCount);
 		assertThat(thrown1).isInstanceOf(RuntimeException.class).hasNoCause();
 
 		// space should still error
 		orgError.set(false);
-		Throwable thrown2 = catchThrowable(() -> {
-			launcher.getRunningTaskExecutionCount();
-		});
+		Throwable thrown2 = catchThrowable(launcher::getRunningTaskExecutionCount);
 		assertThat(thrown2).isInstanceOf(RuntimeException.class).hasNoCause();
 
 		// cache should now be getting cleared as space doesn't error
 		spaceError.set(false);
-		Throwable thrown3 = catchThrowable(() -> {
-			launcher.getRunningTaskExecutionCount();
-		});
+		Throwable thrown3 = catchThrowable(launcher::getRunningTaskExecutionCount);
 		assertThat(thrown3).doesNotThrowAnyException();
 		assertThat(launcher.getRunningTaskExecutionCount()).isEqualTo(1);
 	}

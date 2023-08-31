@@ -35,8 +35,8 @@ abstract class ProbeCreator {
     static final String READINESS_DEPLOYER_PROPERTY_PREFIX = KUBERNETES_DEPLOYER_PREFIX + ".readiness";
     static final String STARTUP_DEPLOYER_PROPERTY_PREFIX = KUBERNETES_DEPLOYER_PREFIX + ".startup";
 
-    private ContainerConfiguration containerConfiguration;
-    private KubernetesDeployerProperties kubernetesDeployerProperties;
+	private final ContainerConfiguration containerConfiguration;
+	private final KubernetesDeployerProperties kubernetesDeployerProperties;
 
     ProbeCreator(KubernetesDeployerProperties kubernetesDeployerProperties,
                  ContainerConfiguration containerConfiguration) {

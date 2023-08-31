@@ -78,12 +78,12 @@ public class KubernetesActuatorTemplateTests {
 					return new MockResponse().setBody(resourceAsString("actuator-bindings.json"))
 							.addHeader("Content-Type", "application/json").setResponseCode(200);
 				case "/actuator/bindings/input":
-					if (recordedRequest.getMethod().equals("GET")) {
+					if ("GET".equals(recordedRequest.getMethod())) {
 						return new MockResponse().setBody(resourceAsString("actuator-binding-input.json"))
 								.addHeader("Content-Type", "application/json")
 								.setResponseCode(200);
 					}
-					else if (recordedRequest.getMethod().equals("POST")) {
+					else if ("POST".equals(recordedRequest.getMethod())) {
 						if (!StringUtils.hasText(recordedRequest.getBody().toString())) {
 							return new MockResponse().setResponseCode(HttpStatus.BAD_REQUEST.value());
 						}

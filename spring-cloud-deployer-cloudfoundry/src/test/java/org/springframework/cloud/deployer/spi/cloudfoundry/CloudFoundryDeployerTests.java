@@ -39,8 +39,8 @@ public class CloudFoundryDeployerTests {
 	@Mock(answer = Answers.RETURNS_SMART_NULLS)
 	private RuntimeEnvironmentInfo runtimeEnvironmentInfo;
 
-	private Resource resource = new FileSystemResource("src/test/resources/demo-0.0.1-SNAPSHOT.jar");
-	private AppDefinition definition = new AppDefinition("test-application", Collections.emptyMap());
+	private final Resource resource = new FileSystemResource("src/test/resources/demo-0.0.1-SNAPSHOT.jar");
+	private final AppDefinition definition = new AppDefinition("test-application", Collections.emptyMap());
 
 	@Test
 	public void testBuildpacksDefault() {

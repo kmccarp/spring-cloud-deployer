@@ -51,8 +51,8 @@ public final class QuartzCronExpression {
 	private static final Integer ALL_SPEC = ALL_SPEC_INT;
 	private static final Integer NO_SPEC = NO_SPEC_INT;
 
-	protected static final Map<String, Integer> monthMap = new HashMap<String, Integer>(20);
-	protected static final Map<String, Integer> dayMap = new HashMap<String, Integer>(60);
+	protected static final Map<String, Integer> monthMap = new HashMap<>(20);
+	protected static final Map<String, Integer> dayMap = new HashMap<>(60);
 	static {
 		monthMap.put("JAN", 0);
 		monthMap.put("FEB", 1);
@@ -85,9 +85,9 @@ public final class QuartzCronExpression {
 	private TreeSet<Integer> daysOfWeek;
 	private TreeSet<Integer> years;
 
-	private int nthdayOfWeek = 0;
-	private boolean lastdayOfMonth = false;
-	private int lastdayOffset = 0;
+	private int nthdayOfWeek;
+	private boolean lastdayOfMonth;
+	private int lastdayOffset;
 
 	public static final int MAX_YEAR = Calendar.getInstance().get(Calendar.YEAR) + 100;
 
@@ -242,8 +242,9 @@ public final class QuartzCronExpression {
 
 		if (c == 'L') {
 			if (type == DAY_OF_WEEK) {
-				if(val < 1 || val > 7)
+				if (val < 1 || val > 7) {
 					throw new ParseException("Day-of-Week values must be between 1 and 7", -1);
+				}
 			} else {
 				throw new ParseException("'L' option is not valid here. (pos=" + i + ")", i);
 			}
@@ -257,8 +258,9 @@ public final class QuartzCronExpression {
 			if (type != DAY_OF_MONTH) {
 				throw new ParseException("'W' option is not valid here. (pos=" + i + ")", i);
 			}
-			if(val > 31)
+			if (val > 31) {
 				throw new ParseException("The 'W' option does not make sense with values larger than 31 (max number of days in a month)", i);
+			}
 			TreeSet<Integer> set = getSet(type);
 			set.add(val);
 			i++;
@@ -364,7 +366,6 @@ public final class QuartzCronExpression {
 
 	protected int skipWhiteSpace(int i, String s) {
 		for (; i < s.length() && (s.charAt(i) == ' ' || s.charAt(i) == '\t'); i++) {
-			;
 		}
 
 		return i;
@@ -372,7 +373,6 @@ public final class QuartzCronExpression {
 
 	protected int findNextWhiteSpace(int i, String s) {
 		for (; i < s.length() && (s.charAt(i) != ' ' || s.charAt(i) != '\t'); i++) {
-			;
 		}
 
 		return i;
@@ -600,7 +600,7 @@ public final class QuartzCronExpression {
 			return i;
 		}
 		char c = s.charAt(i);
-		if ((c >= 'A') && (c <= 'Z') && (!s.equals("L")) && (!s.equals("LW")) && (!s.matches("^L-[0-9]*[W]?"))) {
+		if ((c >= 'A') && (c <= 'Z') && (!"L".equals(s)) && (!"LW".equals(s)) && (!s.matches("^L-[0-9]*[W]?"))) {
 			String sub = s.substring(i, i + 3);
 			int sval = -1;
 			int eval = -1;
@@ -663,7 +663,7 @@ public final class QuartzCronExpression {
 				incr = 1;
 			}
 			addToSet(sval, eval, incr, type);
-			return (i + 3);
+			return i + 3;
 		}
 
 		if (c == '?') {
@@ -735,8 +735,9 @@ public final class QuartzCronExpression {
 				if(c == '-') {
 					ValueSet vs = getValue(0, s, i+1);
 					lastdayOffset = vs.value;
-					if(lastdayOffset > 30)
-						throw new ParseException("Offset from last day must be <= 30", i+1);
+					if (lastdayOffset > 30) {
+						throw new ParseException("Offset from last day must be <= 30", i + 1);
+					}
 					i = vs.pos;
 				}
 				if(s.length() > i) {

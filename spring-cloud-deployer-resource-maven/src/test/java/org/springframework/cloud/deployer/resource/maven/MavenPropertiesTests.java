@@ -37,7 +37,7 @@ public class MavenPropertiesTests {
 	public void testDefaults() {
 		this.contextRunner
 			.withUserConfiguration(Config1.class)
-			.run((context) -> {
+			.run(context -> {
 				MavenProperties properties = context.getBean(MavenProperties.class);
 				assertThat(properties.isUseWagon()).isFalse();
 			});
@@ -53,7 +53,7 @@ public class MavenPropertiesTests {
 					StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, map));
 			})
 			.withUserConfiguration(Config1.class)
-			.run((context) -> {
+			.run(context -> {
 				MavenProperties properties = context.getBean(MavenProperties.class);
 				assertThat(properties.isUseWagon()).isTrue();
 			});
@@ -75,7 +75,7 @@ public class MavenPropertiesTests {
 					StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, map));
 			})
 			.withUserConfiguration(Config1.class)
-			.run((context) -> {
+			.run(context -> {
 				MavenProperties properties = context.getBean(MavenProperties.class);
 				assertThat(properties.getRemoteRepositories().size()).isEqualTo(1);
 				assertThat(properties.getRemoteRepositories()).containsOnlyKeys("repo1");
