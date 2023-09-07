@@ -226,9 +226,9 @@ class MavenArtifactResolver {
 	 * @return boolean true if the proxy settings are provided.
 	 */
 	private boolean isProxyEnabled() {
-		return (this.properties.getProxy() != null &&
+		return this.properties.getProxy() != null &&
 				this.properties.getProxy().getHost() != null &&
-				this.properties.getProxy().getPort() > 0);
+				this.properties.getProxy().getPort() > 0;
 	}
 
 	/**
@@ -237,10 +237,10 @@ class MavenArtifactResolver {
 	 * @return boolean true if both the username/password are set
 	 */
 	private boolean proxyHasCredentials() {
-		return (this.properties.getProxy() != null &&
+		return this.properties.getProxy() != null &&
 				this.properties.getProxy().getAuth() != null &&
 				this.properties.getProxy().getAuth().getUsername() != null &&
-				this.properties.getProxy().getAuth().getPassword() != null);
+				this.properties.getProxy().getAuth().getPassword() != null;
 	}
 
 	/**
@@ -354,13 +354,13 @@ class MavenArtifactResolver {
 	}
 
 	private String actualRemoteRepositoriesDescription() {
-		return this.remoteRepositories.stream().map((repo) -> String.format("%s (%s)", repo.getId(), repo.getUrl()))
+		return this.remoteRepositories.stream().map(repo -> String.format("%s (%s)", repo.getId(), repo.getUrl()))
 				.collect(Collectors.joining(", ", "[", "]"));
 	}
 
 	private String configuredRemoteRepositoriesDescription() {
 		return this.properties.getRemoteRepositories().entrySet().stream()
-				.map((e) -> String.format("%s (%s)", e.getKey(), e.getValue().getUrl()))
+				.map(e -> String.format("%s (%s)", e.getKey(), e.getValue().getUrl()))
 				.collect(Collectors.joining(", ", "[", "]"));
 	}
 

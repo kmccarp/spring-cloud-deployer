@@ -67,6 +67,6 @@ public enum DeploymentState {
 	/**
 	 * The app or group deployment is not known to the system.
 	 */
-	unknown;
+	unknown
 
 }

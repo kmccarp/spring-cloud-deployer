@@ -69,7 +69,7 @@ import static org.awaitility.Awaitility.await;
  * @author Corneil du Plessis
  */
 public abstract class AbstractAppDeployerIntegrationJUnit5Tests extends AbstractIntegrationJUnit5Tests {
-	final static int DESIRED_COUNT = 3;
+	static final int DESIRED_COUNT = 3;
 	private AppDeployerWrapper deployerWrapper;
 
 	/**
