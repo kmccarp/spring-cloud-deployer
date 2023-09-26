@@ -71,15 +71,15 @@ import org.springframework.retry.support.RetryTemplate;
  */
 public class CloudFoundryAppScheduler implements Scheduler {
 
-	public final static String CRON_EXPRESSION_KEY = "spring.cloud.deployer.cloudfoundry.cron.expression";
+	public static final String CRON_EXPRESSION_KEY = "spring.cloud.deployer.cloudfoundry.cron.expression";
 
-	private final static int PCF_PAGE_START_NUM = 1; //First PageNum for PCFScheduler starts at 1.
+	private static final int PCF_PAGE_START_NUM = 1; //First PageNum for PCFScheduler starts at 1.
 
-	private final static int MAX_SCHEDULE_NAME_LENGTH = 255;
+	private static final int MAX_SCHEDULE_NAME_LENGTH = 255;
 
-	private final static String SCHEDULER_SERVICE_ERROR_MESSAGE = "Scheduler Service returned a null response.";
+	private static final String SCHEDULER_SERVICE_ERROR_MESSAGE = "Scheduler Service returned a null response.";
 
-	protected final static Log logger = LogFactory.getLog(CloudFoundryAppScheduler.class);
+	protected static final Log logger = LogFactory.getLog(CloudFoundryAppScheduler.class);
 	private final SchedulerClient client;
 	private final CloudFoundryOperations operations;
 	private final CloudFoundryConnectionProperties properties;
@@ -231,24 +231,20 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	 */
 	private void scheduleTask(String appName, String scheduleName,
 			String expression, String command) {
-		logger.debug(String.format("Scheduling Task: ", appName));
+		logger.debug(String.format("Scheduling Task: "));
 
 		ScheduleJobResponse response = getApplicationByAppName(appName)
-				.flatMap(abstractApplicationSummary -> {
-					return this.client.jobs().create(CreateJobRequest.builder()
+				.flatMap(abstractApplicationSummary -> this.client.jobs().create(CreateJobRequest.builder()
 							.applicationId(abstractApplicationSummary.getId()) // App GUID
 							.command(command)
 							.name(scheduleName)
-							.build());
-				}).flatMap(createJobResponse -> {
-			return this.client.jobs().schedule(ScheduleJobRequest.
+							.build())).flatMap(createJobResponse -> this.client.jobs().schedule(ScheduleJobRequest.
 					builder().
 					jobId(createJobResponse.getId()).
 					expression(expression).
 					expressionType(ExpressionType.CRON).
 					enabled(true).
-					build());
-		})
+					build()))
 				.onErrorMap(e -> {
 					if (e instanceof SSLException) {
 						throw new CloudFoundryScheduleSSLException("Failed to schedule" + scheduleName, e);
@@ -269,8 +265,7 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	 * @return the command string for the scheduled task.
 	 */
 	private String stageTask(ScheduleRequest scheduleRequest) {
-		logger.debug(String.format("Staging Task: ",
-				scheduleRequest.getDefinition().getName()));
+		logger.debug(String.format("Staging Task: "));
 		AppDeploymentRequest request = new AppDeploymentRequest(
 				scheduleRequest.getDefinition(),
 				scheduleRequest.getResource(),
@@ -352,14 +347,12 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	 */
 	private Flux<ScheduleInfo> getSchedules(int pageNumber) {
 		Flux<ApplicationSummary> applicationSummaries = cacheAppSummaries();
-		return this.getSpace(this.properties.getSpace()).flatMap(requestSummary -> {
-			return this.client.jobs().list(ListJobsRequest.builder()
+		return this.getSpace(this.properties.getSpace()).flatMap(requestSummary -> this.client.jobs().list(ListJobsRequest.builder()
 					.spaceId(requestSummary.getId())
 					.page(pageNumber)
-					.detailed(true).build());})
-				.flatMapIterable(jobs -> jobs.getResources())// iterate over the resources returned.
-				.flatMap(job -> {
-					return getApplication(applicationSummaries,
+					.detailed(true).build()))
+				.flatMapIterable(ListJobsResponse::getResources)// iterate over the resources returned.
+				.flatMap(job -> getApplication(applicationSummaries,
 							job.getApplicationId()) // get the application name for each job.
 							.map(optionalApp -> {
 								ScheduleInfo scheduleInfo = new ScheduleInfo();
@@ -374,8 +367,7 @@ public class CloudFoundryAppScheduler implements Scheduler {
 									logger.warn(String.format("Job %s does not have an associated schedule", job.getName()));
 								}
 								return scheduleInfo;
-							});
-				});
+							}));
 	}
 
 	/**
@@ -383,11 +375,9 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	 * @return an int containing the number of available pages.
 	 */
 	private int getJobPageCount() {
-		ListJobsResponse response = this.getSpace(this.properties.getSpace()).flatMap(requestSummary -> {
-			return this.client.jobs().list(ListJobsRequest.builder()
+		ListJobsResponse response = this.getSpace(this.properties.getSpace()).flatMap(requestSummary -> this.client.jobs().list(ListJobsRequest.builder()
 					.spaceId(requestSummary.getId())
-					.detailed(false).build());
-		}).block();
+					.detailed(false).build())).block();
 		if(response == null) {
 			throw new SchedulerException(SCHEDULER_SERVICE_ERROR_MESSAGE);
 		}
@@ -401,14 +391,13 @@ public class CloudFoundryAppScheduler implements Scheduler {
 	 * @return {@link Mono} containing the {@link Job} if found or null if not found.
 	 */
 	private Mono<Job> getJobMono(String jobName, int page) {
-		return this.getSpace(this.properties.getSpace()).flatMap(requestSummary -> {
-			return this.client
+		return this.getSpace(this.properties.getSpace()).flatMap(requestSummary -> this.client
 					.jobs()
 					.list(ListJobsRequest.builder()
 							.spaceId(requestSummary.getId())
 							.page(page)
-							.build()); })
-				.flatMapIterable(jobs -> jobs.getResources())
+							.build()))
+				.flatMapIterable(ListJobsResponse::getResources)
 				.filter(job -> job.getName().equals(jobName))
 				.singleOrEmpty();// iterate over the resources returned.
 	}

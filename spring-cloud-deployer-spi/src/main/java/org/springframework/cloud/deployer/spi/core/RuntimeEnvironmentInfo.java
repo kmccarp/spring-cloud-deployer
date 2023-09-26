@@ -28,62 +28,62 @@ import org.springframework.util.Assert;
  *
  * @author Thomas Risberg
  */
-public class RuntimeEnvironmentInfo {
+public final class RuntimeEnvironmentInfo {
 
-	/**
-	 * The SPI version used by this implementation.
-	 */
-	private String spiVersion;
+    /**
+     * The SPI version used by this implementation.
+     */
+    private final String spiVersion;
 
-	/**
-	 * The name of this implementation (could be simple class name).
-	 */
-	private String implementationName;
+    /**
+     * The name of this implementation (could be simple class name).
+     */
+    private final String implementationName;
 
-	/**
-	 * The version of this implementation.
-	 */
-	private String implementationVersion;
+    /**
+     * The version of this implementation.
+     */
+    private final String implementationVersion;
 
-	/**
-	 * The platform type for this implementation.
-	 */
-	private String platformType;
+    /**
+     * The platform type for this implementation.
+     */
+    private final String platformType;
 
-	/**
-	 * The platform API version for this implementation.
-	 */
-	private String platformApiVersion;
+    /**
+     * The platform API version for this implementation.
+     */
+    private final String platformApiVersion;
 
-	/**
-	 * The client library version used by this implementation.
-	 */
-	private String platformClientVersion;
+    /**
+     * The client library version used by this implementation.
+     */
+    private final String platformClientVersion;
 
-	/**
-	 * The version running on the host of the platform used by this implementation.
-	 */
-	private String platformHostVersion;
+    /**
+     * The version running on the host of the platform used by this implementation.
+     */
+    private final String platformHostVersion;
 
-	/**
-	 * The Java version used by this implementation.
-	 */
-	private String javaVersion;
+    /**
+     * The Java version used by this implementation.
+     */
+    private final String javaVersion;
 
-	/**
-	 * The Spring Framework version used by this implementation.
-	 */
-	private String springVersion;
+    /**
+     * The Spring Framework version used by this implementation.
+     */
+    private final String springVersion;
 
-	/**
-	 * The Spring Boot version used by this implementation.
-	 */
-	private String springBootVersion;
+    /**
+     * The Spring Boot version used by this implementation.
+     */
+    private final String springBootVersion;
 
-	/**
-	 * Platform specific properties
-	 */
-	private Map<String, String> platformSpecificInfo = new HashMap<>();
+    /**
+     * Platform specific properties
+     */
+    private final Map<String, String> platformSpecificInfo = new HashMap<>();
 
 	private RuntimeEnvironmentInfo(Class spiClass, String implementationName, String implementationVersion,
 	                               String platformType, String platformApiVersion, String platformClientVersion,

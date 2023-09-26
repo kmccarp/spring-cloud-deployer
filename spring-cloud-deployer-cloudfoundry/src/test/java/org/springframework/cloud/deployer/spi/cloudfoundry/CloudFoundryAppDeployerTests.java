@@ -128,7 +128,7 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 
 		String deploymentId = this.deployer.deploy(
 				new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
-						Collections.EMPTY_MAP));
+                        Collections.emptyMap()));
 
 		assertThat(deploymentId).isEqualTo("test-application-id");
 	}
@@ -216,7 +216,7 @@ public class CloudFoundryAppDeployerTests extends AbstractAppDeployerTestSupport
 
 		deployer.deploy(
 				new AppDeploymentRequest(new AppDefinition("test-application", Collections.emptyMap()), resource,
-						Collections.EMPTY_MAP));
+                        Collections.emptyMap()));
 
 	}
 

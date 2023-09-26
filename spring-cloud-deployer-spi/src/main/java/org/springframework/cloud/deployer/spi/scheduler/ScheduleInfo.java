@@ -70,15 +70,16 @@ public class ScheduleInfo {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof ScheduleInfo)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ScheduleInfo)) {
+            return false;
+        }
 
 		ScheduleInfo that = (ScheduleInfo) o;
 
-		if (scheduleName != null ? !scheduleName.equals(that.scheduleName) : that.scheduleName != null)
-			return false;
-
-		return true;
+        return !(scheduleName != null ? !scheduleName.equals(that.scheduleName) : that.scheduleName != null);
 	}
 
 	@Override
