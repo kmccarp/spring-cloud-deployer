@@ -442,7 +442,7 @@ public class KubernetesTaskLauncher extends AbstractKubernetesDeployer implement
 		String restartPolicyString =
 				PropertyParserUtils.getDeploymentPropertyValue(request.getDeploymentProperties(),
 						"spring.cloud.deployer.kubernetes.restartPolicy");
-		RestartPolicy restartPolicy =  (!StringUtils.hasText(restartPolicyString)) ? this.taskLauncherProperties.getRestartPolicy() :
+		RestartPolicy restartPolicy =  !StringUtils.hasText(restartPolicyString) ? this.taskLauncherProperties.getRestartPolicy() :
 				RestartPolicy.valueOf(restartPolicyString);
 		if (this.properties.isCreateJob()) {
 			Assert.isTrue(!restartPolicy.equals(RestartPolicy.Always), "RestartPolicy should not be 'Always' when the JobSpec is used.");

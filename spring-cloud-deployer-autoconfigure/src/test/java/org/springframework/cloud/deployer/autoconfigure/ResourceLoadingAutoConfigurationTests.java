@@ -39,7 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class ResourceLoadingAutoConfigurationTests {
 
-	private final static ResourceLoader mockResourceLoader = new ResourceLoader() {
+	private static final ResourceLoader mockResourceLoader = new ResourceLoader() {
 
 		@Override
 		public Resource getResource(String location) {
@@ -52,17 +52,17 @@ public class ResourceLoadingAutoConfigurationTests {
 		}
 	};
 
-	private final static Condition<DelegatingResourceLoader> mavenCondition = new Condition<>(
+	private static final Condition<DelegatingResourceLoader> mavenCondition = new Condition<>(
 			l -> l.getLoaders().containsKey("maven"), "maven loader");
 
-	private final static Condition<DelegatingResourceLoader> mavenReplacedCondition = new Condition<>(
+	private static final Condition<DelegatingResourceLoader> mavenReplacedCondition = new Condition<>(
 			l -> l.getLoaders().get("maven").equals(mockResourceLoader), "maven loader replaced");
 
-	private final static Condition<DelegatingResourceLoader> foobarCondition = new Condition<>(
+	private static final Condition<DelegatingResourceLoader> foobarCondition = new Condition<>(
 			l -> l.getLoaders().containsKey("foobar"), "foobar mock loader");
 
-	private final static Condition<MavenProperties> offlineCondition = new Condition<>(
-			p -> p.isOffline(), "offline");
+	private static final Condition<MavenProperties> offlineCondition = new Condition<>(
+			MavenProperties::isOffline, "offline");
 
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(ResourceLoadingAutoConfiguration.class));
@@ -71,7 +71,7 @@ public class ResourceLoadingAutoConfigurationTests {
 	@Test
 	public void testAutoConfigNoProperties() {
 		this.contextRunner
-				.run((context) -> {
+				.run(context -> {
 					assertThat(context).hasSingleBean(DelegatingResourceLoader.class);
 					assertThat(context).getBean(DelegatingResourceLoader.class).has(mavenCondition);
 				});
@@ -81,7 +81,7 @@ public class ResourceLoadingAutoConfigurationTests {
 	public void testMavenProperties() {
 		this.contextRunner
 				.withPropertyValues("maven.offline=true")
-				.run((context) -> {
+				.run(context -> {
 					assertThat(context).getBean(MavenProperties.class).has(offlineCondition);
 				});
 	}
@@ -90,7 +90,7 @@ public class ResourceLoadingAutoConfigurationTests {
 	public void testBuilderRegistration() {
 		this.contextRunner
 				.withUserConfiguration(CustomBuilderCustomizerConfig.class)
-				.run((context) -> {
+				.run(context -> {
 					assertThat(context).getBean(DelegatingResourceLoader.class).has(foobarCondition);
 				});
 	}
@@ -99,7 +99,7 @@ public class ResourceLoadingAutoConfigurationTests {
 	public void testBuilderOrderRegistration() {
 		this.contextRunner
 				.withUserConfiguration(MavenReplacingBuilderCustomizerConfig.class)
-				.run((context) -> {
+				.run(context -> {
 					assertThat(context).getBean(DelegatingResourceLoader.class).has(mavenReplacedCondition);
 				});
 	}

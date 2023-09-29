@@ -60,7 +60,7 @@ public class DelegatingResourceLoader implements ResourceLoader, ResourceLoaderA
 	 */
 	public DelegatingResourceLoader(Map<String, ResourceLoader> loaders) {
 		this.loaders = CollectionUtils.isEmpty(loaders)
-				? Collections.<String, ResourceLoader>emptyMap()
+				? Collections.emptyMap()
 				: Collections.unmodifiableMap(loaders);
 	}
 
@@ -79,7 +79,7 @@ public class DelegatingResourceLoader implements ResourceLoader, ResourceLoaderA
 			Assert.notNull(scheme, "a scheme (prefix) is required");
 			ResourceLoader loader = this.loaders.get(scheme);
 			if (loader == null) {
-				if (scheme.equalsIgnoreCase("http") || scheme.equalsIgnoreCase("https")) {
+				if ("http".equalsIgnoreCase(scheme) || "https".equalsIgnoreCase(scheme)) {
 					loader = new DownloadingUrlResourceLoader();
 				}
 				else {

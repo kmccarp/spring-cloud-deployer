@@ -40,7 +40,7 @@ public final class RelaxedNames implements Iterable<String> {
 
 	private final String name;
 
-	private final Set<String> values = new LinkedHashSet<String>();
+	private final Set<String> values = new LinkedHashSet<>();
 
 	/**
 	 * Create a new {@link RelaxedNames} instance.
@@ -48,7 +48,7 @@ public final class RelaxedNames implements Iterable<String> {
 	 * using dashed notation (e.g. {@literal my-property-name}
 	 */
 	public RelaxedNames(String name) {
-		this.name = (name != null ? name : "");
+		this.name = name != null ? name : "";
 		initialize(RelaxedNames.this.name, this.values);
 	}
 
@@ -90,7 +90,7 @@ public final class RelaxedNames implements Iterable<String> {
 
 			@Override
 			public String apply(String value) {
-				return (value.isEmpty() ? value : value.toLowerCase(Locale.ENGLISH));
+				return value.isEmpty() ? value : value.toLowerCase(Locale.ENGLISH);
 			}
 
 		},
@@ -99,7 +99,7 @@ public final class RelaxedNames implements Iterable<String> {
 
 			@Override
 			public String apply(String value) {
-				return (value.isEmpty() ? value : value.toUpperCase(Locale.ENGLISH));
+				return value.isEmpty() ? value : value.toUpperCase(Locale.ENGLISH);
 			}
 
 		};
@@ -126,7 +126,7 @@ public final class RelaxedNames implements Iterable<String> {
 
 			@Override
 			public String apply(String value) {
-				return (value.indexOf('-') != -1 ? value.replace('-', '_') : value);
+				return value.indexOf('-') != -1 ? value.replace('-', '_') : value;
 			}
 
 		},
@@ -135,7 +135,7 @@ public final class RelaxedNames implements Iterable<String> {
 
 			@Override
 			public String apply(String value) {
-				return (value.indexOf('_') != -1 ? value.replace('_', '.') : value);
+				return value.indexOf('_') != -1 ? value.replace('_', '.') : value;
 			}
 
 		},
@@ -144,7 +144,7 @@ public final class RelaxedNames implements Iterable<String> {
 
 			@Override
 			public String apply(String value) {
-				return (value.indexOf('.') != -1 ? value.replace('.', '_') : value);
+				return value.indexOf('.') != -1 ? value.replace('.', '_') : value;
 			}
 
 		},
@@ -224,7 +224,7 @@ public final class RelaxedNames implements Iterable<String> {
 			}
 			StringBuilder builder = new StringBuilder();
 			for (String field : SEPARATED_TO_CAMEL_CASE_PATTERN.split(value)) {
-				field = (caseInsensitive ? field.toLowerCase(Locale.ENGLISH) : field);
+				field = caseInsensitive ? field.toLowerCase(Locale.ENGLISH) : field;
 				builder.append(
 						builder.length() != 0 ? StringUtils.capitalize(field) : field);
 			}

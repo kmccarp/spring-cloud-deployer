@@ -71,9 +71,9 @@ public class KubernetesTaskLauncherWithJobIntegrationIT extends AbstractKubernet
 		logTestInfo(testInfo);
 		launchTaskJobAndValidateCreatedJobAndPodWithCleanup(
 				Collections.singletonMap("spring.cloud.deployer.kubernetes.jobAnnotations", "key1:val1,key2:val2,key3:val31:val32"),
-				(job) -> assertThat(job.getMetadata().getAnnotations()).isNotEmpty()
+				job -> assertThat(job.getMetadata().getAnnotations()).isNotEmpty()
 						.contains(entry("key1", "val1"), entry("key2", "val2"), entry("key3", "val31:val32")),
-				(pod) -> assertThat(pod.getMetadata().getAnnotations()).isNotEmpty()
+				pod -> assertThat(pod.getMetadata().getAnnotations()).isNotEmpty()
 						.contains(entry("key1", "val1"), entry("key2", "val2"), entry("key3", "val31:val32")));
 	}
 
@@ -85,8 +85,8 @@ public class KubernetesTaskLauncherWithJobIntegrationIT extends AbstractKubernet
 		deploymentProps.put("spring.cloud.deployer.kubernetes.backoffLimit", "5");
 		launchTaskJobAndValidateCreatedJobAndPodWithCleanup(
 				deploymentProps,
-				(job) -> assertThat(job.getSpec().getBackoffLimit()).isEqualTo(5),
-				(pod) -> {});
+				job -> assertThat(job.getSpec().getBackoffLimit()).isEqualTo(5),
+				pod -> {});
 	}
 
 	private void launchTaskJobAndValidateCreatedJobAndPodWithCleanup(Map<String, String> deploymentProps,
