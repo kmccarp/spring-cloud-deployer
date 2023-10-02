@@ -1815,7 +1815,7 @@ public class KubernetesAppDeployerIntegrationIT extends AbstractAppDeployerInteg
 			assertThat(statefulSets).hasSize(1)
 					.element(0, InstanceOfAssertFactories.type(StatefulSet.class))
 					.extracting("spec.template.spec", InstanceOfAssertFactories.type(PodSpec.class))
-					.satisfies((podSpec) -> {
+					.satisfies(podSpec -> {
 						assertThat(podSpec.getSecurityContext()).isEqualTo(expectedPodSecurityContext);
 						assertThat(podSpec.getInitContainers())
 								.hasSize(1)
@@ -1836,7 +1836,7 @@ public class KubernetesAppDeployerIntegrationIT extends AbstractAppDeployerInteg
 	private void assertThatContainerExistsWithSecurityContext(List<Container> containers, String expectedName, SecurityContext expectedSecurityContext) {
 		assertThat(containers
 				.stream().filter(c -> c.getName().equals(expectedName)).findFirst())
-				.hasValueSatisfying((initContainer) -> assertThat(initContainer.getSecurityContext()).isEqualTo(expectedSecurityContext));
+				.hasValueSatisfying(initContainer -> assertThat(initContainer.getSecurityContext()).isEqualTo(expectedSecurityContext));
 	}
 
     @Test
