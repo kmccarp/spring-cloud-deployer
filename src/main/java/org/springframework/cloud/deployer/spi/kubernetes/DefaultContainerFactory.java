@@ -58,7 +58,7 @@ import org.springframework.util.StringUtils;
  * @author Corneil du Plessis
  */
 public class DefaultContainerFactory implements ContainerFactory {
-    private static Log logger = LogFactory.getLog(DefaultContainerFactory.class);
+    private static final Log logger = LogFactory.getLog(DefaultContainerFactory.class);
     private static final String SPRING_APPLICATION_JSON = "SPRING_APPLICATION_JSON";
     private static final String SPRING_CLOUD_APPLICATION_GUID = "SPRING_CLOUD_APPLICATION_GUID";
 
@@ -332,14 +332,14 @@ public class DefaultContainerFactory implements ContainerFactory {
 
     private String getArgOption(String arg) {
         int indexOfAssignment = arg.indexOf("=");
-        String argOption = (indexOfAssignment < 0) ? arg : arg.substring(0, indexOfAssignment);
+        String argOption = indexOfAssignment < 0 ? arg : arg.substring(0, indexOfAssignment);
         return argOption.trim().replaceAll("^--", "");
     }
 
     private DeploymentPropertiesResolver getDeploymentPropertiesResolver(AppDeploymentRequest request) {
-        String propertiesPrefix = (request instanceof ScheduleRequest &&
+        String propertiesPrefix = request instanceof ScheduleRequest &&
                 ((ScheduleRequest) request).getSchedulerProperties() != null &&
-                ((ScheduleRequest) request).getSchedulerProperties().size() > 0) ? KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX :
+                ((ScheduleRequest) request).getSchedulerProperties().size() > 0 ? KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX :
                 KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX;
         return new DeploymentPropertiesResolver(propertiesPrefix, this.properties);
     }

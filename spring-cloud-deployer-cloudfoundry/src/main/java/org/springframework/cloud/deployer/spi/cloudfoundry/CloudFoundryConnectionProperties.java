@@ -87,7 +87,7 @@ public class CloudFoundryConnectionProperties {
 	/**
 	 * Allow operation using self-signed certificates.
 	 */
-	private boolean skipSslValidation = false;
+	private boolean skipSslValidation;
 
 	public String getOrg() {
 		return org;

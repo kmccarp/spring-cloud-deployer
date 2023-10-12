@@ -56,7 +56,7 @@ public class AppDefinition {
 		Assert.notNull(name, "name must not be null");
 		this.name = name;
 		this.properties = properties == null
-				? Collections.<String, String>emptyMap()
+				? Collections.emptyMap()
 				: Collections.unmodifiableMap(new HashMap<String, String>(properties));
 	}
 

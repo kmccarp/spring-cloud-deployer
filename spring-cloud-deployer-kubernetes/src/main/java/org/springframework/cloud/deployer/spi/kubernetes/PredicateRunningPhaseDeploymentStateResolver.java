@@ -29,7 +29,7 @@ import org.springframework.cloud.deployer.spi.app.DeploymentState;
  * @author David Turanski
  **/
 public class PredicateRunningPhaseDeploymentStateResolver implements RunningPhaseDeploymentStateResolver {
-	private static Log logger = LogFactory.getLog(PredicateRunningPhaseDeploymentStateResolver.class);
+    private static final Log logger = LogFactory.getLog(PredicateRunningPhaseDeploymentStateResolver.class);
 	private final ContainerStatusCondition[] conditions;
 	private final DeploymentState resolvedState;
 	protected final KubernetesDeployerProperties properties;
@@ -46,7 +46,7 @@ public class PredicateRunningPhaseDeploymentStateResolver implements RunningPhas
 	public DeploymentState resolve(ContainerStatus containerStatus) {
 
 		Stream<Predicate<ContainerStatus>> conditionsStream = Stream.of(conditions);
-		Boolean allConditionsMet = conditionsStream.reduce((x, y) -> x.and(y)).get().test(containerStatus);
+		Boolean allConditionsMet = conditionsStream.reduce(java.util.function.Predicate::and).get().test(containerStatus);
 
 		if (allConditionsMet) {
 			logger.debug("deployment state is " + resolvedState.name());
@@ -70,7 +70,7 @@ public class PredicateRunningPhaseDeploymentStateResolver implements RunningPhas
 		return null;
 	}
 
-	static abstract class ContainerStatusCondition implements Predicate<ContainerStatus> {
+	abstract static class ContainerStatusCondition implements Predicate<ContainerStatus> {
 		private final String description;
 
 		ContainerStatusCondition(String description) {

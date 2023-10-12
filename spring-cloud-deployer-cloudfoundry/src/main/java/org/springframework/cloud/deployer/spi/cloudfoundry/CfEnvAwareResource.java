@@ -40,7 +40,7 @@ import org.springframework.core.io.Resource;
  * @author David Turanski
  * @since 2.4
  */
-class CfEnvAwareResource implements Resource {
+final class CfEnvAwareResource implements Resource {
 	private final Resource resource;
 
 	private final boolean hasCfEnv;
@@ -121,7 +121,7 @@ class CfEnvAwareResource implements Resource {
 		) {
 			try {
 				String scheme = app.getURI().getScheme().toLowerCase();
-				if (scheme.equals("docker")) {
+				if ("docker".equals(scheme)) {
 					return false;
 				}
 			}

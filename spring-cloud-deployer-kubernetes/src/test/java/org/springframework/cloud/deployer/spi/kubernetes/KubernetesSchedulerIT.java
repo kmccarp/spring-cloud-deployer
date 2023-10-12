@@ -160,7 +160,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 	@ValueSource(booleans = {true, false})
 	public void testMissingSchedule(boolean isDeprecated) {
 		AppDefinition appDefinition = new AppDefinition(randomName(), null);
-		ScheduleRequest scheduleRequest = (isDeprecated) ?
+		ScheduleRequest scheduleRequest = isDeprecated ?
 				new ScheduleRequest(appDefinition, null, null, null, null, testApplication()) :
 				new ScheduleRequest(appDefinition, null, (List<String>) null, null, testApplication());
 
@@ -173,7 +173,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 	@ValueSource(booleans = {true, false})
 	public void testInvalidNameSchedule(boolean isDeprecated) {
 		AppDefinition appDefinition = new AppDefinition("AAAAAA", null);
-		ScheduleRequest scheduleRequest = (isDeprecated) ?
+		ScheduleRequest scheduleRequest = isDeprecated ?
 				new ScheduleRequest(appDefinition, null, null, null, "AAAAA", testApplication()) :
 				new ScheduleRequest(appDefinition, null, (List<String>) null, "AAAAA", testApplication());
 
@@ -250,7 +250,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 		this.kubernetesClient.batch().v1().cronjobs().create(cronJob3);
 		List<ScheduleInfo> scheduleInfos = this.scheduler.list();
 		assertThat(scheduleInfos.size() == 1);
-		assertThat(scheduleInfos.get(0).getScheduleName().equals("job1"));
+		assertThat("job1".equals(scheduleInfos.get(0).getScheduleName()));
 	}
 
 	@ParameterizedTest
@@ -259,7 +259,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 		Map<String, String> schedulerProperties = Collections.singletonMap(SchedulerPropertyKeys.CRON_EXPRESSION, "1 2 3 4");
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), null);
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, schedulerProperties, null, null, randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, schedulerProperties, null, null, randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, schedulerProperties, (List<String>) null, randomName(), testApplication());
 
 		assertThatThrownBy(() -> {
@@ -270,18 +270,18 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 	@ParameterizedTest
 	@ValueSource(booleans = {true, false})
 	public void testNameTooLong(boolean isDeprecated) {
-		final String baseScheduleName = (isDeprecated) ? "tencharlng-scdf-itcouldbesaidthatthisislongtoowayold" :
+		final String baseScheduleName = isDeprecated ? "tencharlng-scdf-itcouldbesaidthatthisislongtoowayold" :
 				"tencharlng-scdf-itcouldbesaidthatthisislongtoowaytoo";
 		Map<String, String> schedulerProperties = Collections.singletonMap(SchedulerPropertyKeys.CRON_EXPRESSION, "0/10 * * * *");
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), null);
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, schedulerProperties, null, null, baseScheduleName, testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, schedulerProperties, null, null, baseScheduleName, testApplication()) :
 				new ScheduleRequest(appDefinition, schedulerProperties, (List<String>) null, baseScheduleName, testApplication());
 
 		//verify no validation fired.
 		scheduler.schedule(scheduleRequest);
 
-		ScheduleRequest scheduleRequest2 = (isDeprecated) ? new ScheduleRequest(appDefinition, schedulerProperties, null, null, baseScheduleName + "1", testApplication()) :
+		ScheduleRequest scheduleRequest2 = isDeprecated ? new ScheduleRequest(appDefinition, schedulerProperties, null, null, baseScheduleName + "1", testApplication()) :
 				new ScheduleRequest(appDefinition, schedulerProperties, (List<String>) null, baseScheduleName + "1", testApplication());
 		assertThatThrownBy(() -> {
 			scheduler.schedule(scheduleRequest2);
@@ -306,7 +306,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 				kubernetesDeployerProperties);
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), getAppProperties());
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, getSchedulerProperties(), null, getCommandLineArgs(), randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, getSchedulerProperties(), null, getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, getDeploymentProperties(), getCommandLineArgs(), randomName(), testApplication());
 
 		CronJob cronJob = kubernetesScheduler.createCronJob(scheduleRequest);
@@ -339,7 +339,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 				kubernetesDeployerProperties);
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), getAppProperties());
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, getSchedulerProperties(), null, getCommandLineArgs(), randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, getSchedulerProperties(), null, getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, getSchedulerProperties(), getCommandLineArgs(), randomName(), testApplication());
 		CronJob cronJob = kubernetesScheduler.createCronJob(scheduleRequest);
 		CronJobSpec cronJobSpec = cronJob.getSpec();
@@ -371,7 +371,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 				kubernetesDeployerProperties);
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), getAppProperties());
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, getSchedulerProperties(), null, getCommandLineArgs(), randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, getSchedulerProperties(), null, getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, getSchedulerProperties(), getCommandLineArgs(), randomName(), testApplication());
 		CronJob cronJob = kubernetesScheduler.createCronJob(scheduleRequest);
 		CronJobSpec cronJobSpec = cronJob.getSpec();
@@ -453,7 +453,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 		schedulerProperties.put(prefix + ".entryPointStyle", "boot");
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), getAppProperties());
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, schedulerProperties, null, getCommandLineArgs(), randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, schedulerProperties, null, getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, schedulerProperties, getCommandLineArgs(), randomName(), testApplication());
 
 		CronJob cronJob = kubernetesScheduler.createCronJob(scheduleRequest);
@@ -490,7 +490,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 				kubernetesDeployerProperties);
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), getAppProperties());
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, getSchedulerProperties(), Collections.emptyMap(), getCommandLineArgs(), randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, getSchedulerProperties(), Collections.emptyMap(), getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, getDeploymentProperties(), getCommandLineArgs(), randomName(), testApplication());
 
 		CronJob cronJob = kubernetesScheduler.createCronJob(scheduleRequest);
@@ -525,7 +525,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 		schedulerProperties.put(prefix + ".imagePullPolicy", "Always");
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), getAppProperties());
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, schedulerProperties, null, getCommandLineArgs(), randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, schedulerProperties, null, getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, schedulerProperties, getCommandLineArgs(), randomName(), testApplication());
 
 		CronJob cronJob = kubernetesScheduler.createCronJob(scheduleRequest);
@@ -556,7 +556,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 				kubernetesDeployerProperties);
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), getAppProperties());
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, getSchedulerProperties(), null, getCommandLineArgs(), randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, getSchedulerProperties(), null, getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, getSchedulerProperties(), getCommandLineArgs(), randomName(), testApplication());
 
 		CronJob cronJob = kubernetesScheduler.createCronJob(scheduleRequest);
@@ -627,7 +627,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 			scheduleProperties.put("spring.cloud.deployer.kubernetes.deploymentLabels", "requestLabel1:requestValue1,requestLabel2:requestValue2");
 			scheduleProperties.put("spring.cloud.deployer.kubernetes.podAnnotations", "requestPod1:requestPodValue1");
 		}
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, scheduleProperties, null, getCommandLineArgs(), randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, scheduleProperties, null, getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, scheduleProperties, getCommandLineArgs(), randomName(), testApplication());
 		CronJob cronJob = kubernetesScheduler.createCronJob(scheduleRequest);
 
@@ -669,7 +669,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 		Map<String, String> schedulerProperties = new HashMap<>(getSchedulerProperties());
 		schedulerProperties.put(prefix + ".jobAnnotations", "test1:value2");
 
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, schedulerProperties, null, getCommandLineArgs(), randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, schedulerProperties, null, getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, schedulerProperties, getCommandLineArgs(), randomName(), testApplication());
 
 		CronJob cronJob = kubernetesScheduler.createCronJob(scheduleRequest);
@@ -695,7 +695,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 				kubernetesDeployerProperties);
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), getAppProperties());
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, getSchedulerProperties(), Collections.emptyMap(), getCommandLineArgs(), randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, getSchedulerProperties(), Collections.emptyMap(), getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, getDeploymentProperties(), getCommandLineArgs(), randomName(), testApplication());
 		CronJob cronJob = kubernetesScheduler.createCronJob(scheduleRequest);
 		CronJobSpec cronJobSpec = cronJob.getSpec();
@@ -729,7 +729,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 		schedulerProperties.put(prefix + ".imagePullSecret", secretName);
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), getAppProperties());
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, schedulerProperties, null, getCommandLineArgs(), randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, schedulerProperties, null, getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, schedulerProperties, getCommandLineArgs(), randomName(), testApplication());
 		CronJob cronJob = kubernetesScheduler.createCronJob(scheduleRequest);
 		CronJobSpec cronJobSpec = cronJob.getSpec();
@@ -756,7 +756,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 				kubernetesDeployerProperties);
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), getAppProperties());
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, getSchedulerProperties(), Collections.emptyMap(), getCommandLineArgs(), randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, getSchedulerProperties(), Collections.emptyMap(), getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, getDeploymentProperties(), getCommandLineArgs(), randomName(), testApplication());
 
 		CronJob cronJob = kubernetesScheduler.createCronJob(scheduleRequest);
@@ -787,7 +787,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 				kubernetesDeployerProperties);
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), getAppProperties());
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, getSchedulerProperties(), Collections.emptyMap(), getCommandLineArgs(), randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, getSchedulerProperties(), Collections.emptyMap(), getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, getDeploymentProperties(), getCommandLineArgs(), randomName(), testApplication());
 
 		CronJob cronJob = kubernetesScheduler.createCronJob(scheduleRequest);
@@ -803,7 +803,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 	@ParameterizedTest
 	@ValueSource(booleans = {true, false})
 	public void testCustomEnvironmentVariables(boolean isDeprecated) {
-		String prefix = (isDeprecated) ? KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX :
+		String prefix = isDeprecated ? KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX :
 				KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX;
 
 		Map<String, String> schedulerProperties = new HashMap<>(getSchedulerProperties());
@@ -834,7 +834,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 	@ParameterizedTest
 	@ValueSource(booleans = {true, false})
 	public void testCustomEnvironmentVariablesWithNestedComma(boolean isDeprecated) {
-		String prefix = (isDeprecated) ? KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX :
+		String prefix = isDeprecated ? KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX :
 				KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX;
 
 		Map<String, String> schedulerProperties = new HashMap<>(getSchedulerProperties());
@@ -843,7 +843,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 		EnvVar[] expectedVars = new EnvVar[] {new EnvVar("MYVAR", "VAL1,VAL2", null),
 				new EnvVar("MYVAR2", "MYVAL2", null)};
 
-		testEnvironmentVariables((isDeprecated) ? new KubernetesSchedulerProperties() : new KubernetesDeployerProperties(), schedulerProperties, expectedVars, isDeprecated);
+		testEnvironmentVariables(isDeprecated ? new KubernetesSchedulerProperties() : new KubernetesDeployerProperties(), schedulerProperties, expectedVars, isDeprecated);
 	}
 
 	@ParameterizedTest
@@ -857,7 +857,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 		}
 		kubernetesDeployerProperties.setEnvironmentVariables(new String[] {"MYVAR1=MYVAL1", "MYVAR2=MYVAL2"});
 
-		String prefix = (isDeprecated) ? KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX :
+		String prefix = isDeprecated ? KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX :
 				KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX;
 
 		Map<String, String> schedulerProperties = new HashMap<>(getSchedulerProperties());
@@ -880,7 +880,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 		}
 		kubernetesDeployerProperties.setEnvironmentVariables(new String[] {"MYVAR1=MYVAL1", "MYVAR2=MYVAL2"});
 
-		String prefix = (isDeprecated) ? KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX :
+		String prefix = isDeprecated ? KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX :
 				KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX;
 
 		Map<String, String> schedulerProperties = new HashMap<>(getSchedulerProperties());
@@ -904,7 +904,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 				kubernetesDeployerProperties);
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), getAppProperties());
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, schedulerProperties, null, getCommandLineArgs(), randomName(), testApplication()) :
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, schedulerProperties, null, getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, schedulerProperties, getCommandLineArgs(), randomName(), testApplication());
 		CronJob cronJob = kubernetesScheduler.createCronJob(scheduleRequest);
 		CronJobSpec cronJobSpec = cronJob.getSpec();
@@ -967,7 +967,7 @@ public class KubernetesSchedulerIT extends AbstractSchedulerIntegrationJUnit5Tes
 				kubernetesDeployerProperties);
 
 		AppDefinition appDefinition = new AppDefinition(randomName(), getAppProperties());
-		ScheduleRequest scheduleRequest = (isDeprecated) ? new ScheduleRequest(appDefinition, getSchedulerProperties(),
+		ScheduleRequest scheduleRequest = isDeprecated ? new ScheduleRequest(appDefinition, getSchedulerProperties(),
 				getDeploymentProperties(), getCommandLineArgs(), randomName(), testApplication()) :
 				new ScheduleRequest(appDefinition, getDeploymentProperties(),
 						getCommandLineArgs(), randomName(), testApplication());
