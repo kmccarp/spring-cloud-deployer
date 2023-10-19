@@ -45,7 +45,7 @@ public abstract class AbstractExternalResourceTestSupport<R> implements TestRule
 
 	protected R resource;
 
-	private String resourceDescription;
+	private final String resourceDescription;
 
 	protected final Log logger = LogFactory.getLog(getClass());
 

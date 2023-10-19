@@ -351,7 +351,7 @@ public class LocalDeployerProperties {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((network == null) ? 0 : network.hashCode());
+			result = prime * result + (network == null ? 0 : network.hashCode());
 			return result;
 		}
 
@@ -369,7 +369,10 @@ public class LocalDeployerProperties {
 			Docker other = (Docker) obj;
 			if (network == null) {
 				return other.network == null;
-			} else return network.equals(other.network);
+			}
+			else {
+				return network.equals(other.network);
+			}
 		}
 	}
 
@@ -584,30 +587,70 @@ public class LocalDeployerProperties {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
 		LocalDeployerProperties that = (LocalDeployerProperties) o;
 
-		if (deleteFilesOnExit != that.deleteFilesOnExit) return false;
-		if (shutdownTimeout != that.shutdownTimeout) return false;
-		if (useSpringApplicationJson != that.useSpringApplicationJson) return false;
-		if (maximumConcurrentTasks != that.maximumConcurrentTasks) return false;
-		if (inheritLogging != that.inheritLogging) return false;
-		if (!Objects.equals(workingDirectoriesRoot, that.workingDirectoriesRoot)) return false;
+		if (deleteFilesOnExit != that.deleteFilesOnExit) {
+			return false;
+		}
+		if (shutdownTimeout != that.shutdownTimeout) {
+			return false;
+		}
+		if (useSpringApplicationJson != that.useSpringApplicationJson) {
+			return false;
+		}
+		if (maximumConcurrentTasks != that.maximumConcurrentTasks) {
+			return false;
+		}
+		if (inheritLogging != that.inheritLogging) {
+			return false;
+		}
+		if (!Objects.equals(workingDirectoriesRoot, that.workingDirectoriesRoot)) {
+			return false;
+		}
 		// Probably incorrect - comparing Object[] arrays with Arrays.equals
-		if (!Arrays.equals(envVarsToInherit, that.envVarsToInherit)) return false;
-		if (!Objects.equals(javaCmd, that.javaCmd)) return false;
-		if (!Objects.equals(javaOpts, that.javaOpts)) return false;
-		if (!portRange.equals(that.portRange)) return false;
-		if (!Objects.equals(debugPort, that.debugPort)) return false;
-		if (!Objects.equals(debugAddress, that.debugAddress)) return false;
-		if (debugSuspend != that.debugSuspend) return false;
-		if (!docker.equals(that.docker)) return false;
-		if (!Objects.equals(hostname, that.hostname)) return false;
-		if (!Objects.equals(javaHomePath, that.javaHomePath)) return false;
-		if (!Objects.equals(appAdmin, that.appAdmin)) return false;
-		if (!Objects.equals(startupProbe, that.startupProbe)) return false;
+		if (!Arrays.equals(envVarsToInherit, that.envVarsToInherit)) {
+			return false;
+		}
+		if (!Objects.equals(javaCmd, that.javaCmd)) {
+			return false;
+		}
+		if (!Objects.equals(javaOpts, that.javaOpts)) {
+			return false;
+		}
+		if (!portRange.equals(that.portRange)) {
+			return false;
+		}
+		if (!Objects.equals(debugPort, that.debugPort)) {
+			return false;
+		}
+		if (!Objects.equals(debugAddress, that.debugAddress)) {
+			return false;
+		}
+		if (debugSuspend != that.debugSuspend) {
+			return false;
+		}
+		if (!docker.equals(that.docker)) {
+			return false;
+		}
+		if (!Objects.equals(hostname, that.hostname)) {
+			return false;
+		}
+		if (!Objects.equals(javaHomePath, that.javaHomePath)) {
+			return false;
+		}
+		if (!Objects.equals(appAdmin, that.appAdmin)) {
+			return false;
+		}
+		if (!Objects.equals(startupProbe, that.startupProbe)) {
+			return false;
+		}
 		return Objects.equals(healthProbe, that.healthProbe);
 	}
 

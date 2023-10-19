@@ -119,7 +119,7 @@ public class KubernetesAppDeployer extends AbstractKubernetesDeployer implements
             }
 
             String indexedProperty = request.getDeploymentProperties().get(INDEXED_PROPERTY_KEY);
-            boolean indexed = (indexedProperty != null) ? Boolean.valueOf(indexedProperty) : false;
+            boolean indexed = indexedProperty != null ? Boolean.valueOf(indexedProperty) : false;
             logPossibleDownloadResourceMessage(request.getResource());
 
             createService(request);
@@ -267,7 +267,7 @@ public class KubernetesAppDeployer extends AbstractKubernetesDeployer implements
 
     private int getCountFromRequest(AppDeploymentRequest request) {
         String countProperty = request.getDeploymentProperties().get(COUNT_PROPERTY_KEY);
-        return (countProperty != null) ? Integer.parseInt(countProperty) : 1;
+        return countProperty != null ? Integer.parseInt(countProperty) : 1;
     }
 
     /**

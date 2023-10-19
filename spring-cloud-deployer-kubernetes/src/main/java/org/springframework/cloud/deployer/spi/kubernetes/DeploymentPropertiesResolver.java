@@ -83,8 +83,8 @@ class DeploymentPropertiesResolver {
 
 	private final Log logger = LogFactory.getLog(getClass().getName());
 
-	private String propertyPrefix;
-	private KubernetesDeployerProperties properties;
+	private final String propertyPrefix;
+	private final KubernetesDeployerProperties properties;
 
 	DeploymentPropertiesResolver(String propertyPrefix, KubernetesDeployerProperties properties) {
 		this.propertyPrefix = propertyPrefix;
@@ -187,7 +187,7 @@ class DeploymentPropertiesResolver {
 			gpuCount = properties.getLimits().getGpuCount();
 		}
 
-		Map<String,Quantity> limits = new HashMap<String,Quantity>();
+		Map<String,Quantity> limits = new HashMap<>();
 
 		if (StringUtils.hasText(memory)) {
 			limits.put("memory", new Quantity(memory));
@@ -257,7 +257,7 @@ class DeploymentPropertiesResolver {
 
 		logger.debug("Using requests - cpu: " + cpuOverride + " mem: " + memOverride);
 
-		Map<String,Quantity> requests = new HashMap<String, Quantity>();
+		Map<String,Quantity> requests = new HashMap<>();
 
 		if (memOverride != null) {
 			requests.put("memory", new Quantity(memOverride));
@@ -460,7 +460,7 @@ class DeploymentPropertiesResolver {
 		}
 		if (!CollectionUtils.isEmpty(deployerProperties.getPodSecurityContext().getSysctls()))  {
 			List<Sysctl> sysctls = deployerProperties.getPodSecurityContext().getSysctls().stream()
-					.map((sysctlInfo) -> new SysctlBuilder().withName(sysctlInfo.getName())
+					.map(sysctlInfo -> new SysctlBuilder().withName(sysctlInfo.getName())
 							.withValue(sysctlInfo.getValue()).build())
 					.collect(Collectors.toList());
 			podSecurityContextBuilder.withSysctls(sysctls);
@@ -608,7 +608,7 @@ class DeploymentPropertiesResolver {
 						.withName(containerName)
 						.withImage(imageName)
 						.withCommand(commands)
-						.withEnv(toEnvironmentVariables((envString != null)? envString.split(","): new String[0]))
+						.withEnv(toEnvironmentVariables(envString != null? envString.split(","): new String[0]))
 						.addAllToVolumeMounts(vms)
 						.build();
 			}
@@ -699,8 +699,7 @@ class DeploymentPropertiesResolver {
 
 		// Add deployment labels set at the deployer level.
 		String updatedLabels = StringUtils.hasText(this.properties.getDeploymentLabels()) ?
-				new StringBuilder().append(deploymentLabels).append(StringUtils.hasText(deploymentLabels) ? ",": "")
-						.append(this.properties.getDeploymentLabels()).toString() : deploymentLabels;
+				deploymentLabels + (StringUtils.hasText(deploymentLabels) ? ",": "") + this.properties.getDeploymentLabels() : deploymentLabels;
 
 		if (StringUtils.hasText(updatedLabels)) {
 			String[] deploymentLabel = updatedLabels.split(",");

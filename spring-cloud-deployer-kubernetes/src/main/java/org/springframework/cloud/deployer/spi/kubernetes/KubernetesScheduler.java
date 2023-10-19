@@ -68,7 +68,7 @@ public class KubernetesScheduler extends AbstractKubernetesDeployer implements S
 		this.properties = properties;
 		this.containerFactory = new DefaultContainerFactory(properties);
 		this.deploymentPropertiesResolver = new DeploymentPropertiesResolver(
-				(properties instanceof KubernetesSchedulerProperties) ?
+				properties instanceof KubernetesSchedulerProperties ?
 						KubernetesSchedulerProperties.KUBERNETES_SCHEDULER_PROPERTIES_PREFIX :
 						KubernetesDeployerProperties.KUBERNETES_DEPLOYER_PROPERTIES_PREFIX, properties);
 	}

@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  *
  * @author Eric Bottard
  */
-public class ByteSizeUtils {
+public final class ByteSizeUtils {
 
 	private ByteSizeUtils() {
 
@@ -44,7 +44,7 @@ public class ByteSizeUtils {
 				" Expected a number with optional 'm' or 'g' suffix", text));
 		}
 		long size = Long.parseLong(matcher.group("amount"));
-		if (matcher.group("unit").equalsIgnoreCase("g")) {
+		if ("g".equalsIgnoreCase(matcher.group("unit"))) {
 			size *= 1024L;
 		}
 		return size;
